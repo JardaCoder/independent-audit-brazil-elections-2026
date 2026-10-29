@@ -9,6 +9,9 @@ e cada número vem de um script que você pode ler e rodar. O trabalho foi confe
 independentes** que recalcularam os números sem usar o nosso código; os erros que elas acharam foram
 corrigidos (ver [seção 5](#5-problemas-encontrados-e-erros-corrigidos)).
 
+> **Relatório formal — metodologia, achados e conclusão da auditoria independente:**
+> [`docs/RELATORIO_DE_AUDITORIA.md`](docs/RELATORIO_DE_AUDITORIA.md)
+
 ---
 
 ## Sumário
@@ -522,6 +525,7 @@ Para refazer a extração de Presidente a partir dos .zip oficiais: `python3 scr
 
 ```
 README.md                          este arquivo
+docs/RELATORIO_DE_AUDITORIA.md     relatório formal: escopo, metodologia, achados, limitações e parecer
 analise/
   RESULTADOS.md                    réplica e testes do relatório (6.6 a 6.10)
   PRIMEIRO_TURNO.md                1º × 2º turno (6.11)

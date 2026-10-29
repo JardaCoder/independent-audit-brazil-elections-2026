@@ -1,4 +1,5 @@
 # Auditoria
 
-O relatório completo da auditoria, com veredito, método de cada verificação e limites, está no
-[README do repositório](../README.md). Os arquivos `*.md` desta pasta são as saídas detalhadas de cada script.
+O relatório formal (metodologia, achados, limitações e parecer) está em
+[`docs/RELATORIO_DE_AUDITORIA.md`](../docs/RELATORIO_DE_AUDITORIA.md). A explicação em linguagem simples, com
+gráficos, está no [README](../README.md). Os arquivos `*.md` desta pasta são as saídas detalhadas de cada script.
