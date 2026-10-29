@@ -269,12 +269,63 @@ def g8_margem(d, m):
     return itens
 
 
+def g9_biometria_estados(t2):
+    d = t2[t2.SG_UF != "ZZ"]
+    g = d.groupby("SG_UF")[["QT_BIOM_SEM_HAB", "QT_COMPARECIMENTO", "V_13", "V_22"]].sum()
+    taxa = g.QT_BIOM_SEM_HAB / g.QT_COMPARECIMENTO * 100
+    lula = g.V_13 / (g.V_13 + g.V_22) * 100
+    fig, ax = plt.subplots(figsize=(9, 5.4))
+    ax.scatter(taxa, lula, s=g.QT_COMPARECIMENTO / 2e4, color=[LULA if v >= 50 else ADV for v in lula], alpha=0.85,
+               edgecolor=FUNDO, linewidth=1.5)
+    for uf in g.index:
+        ax.annotate(uf, (taxa[uf], lula[uf]), (5, 3), textcoords="offset points", fontsize=8.5, color=TEXTO2)
+    ax.axhline(50, color=TEXTO2, lw=1, ls="--")
+    ax.set_xlabel("% dos eleitores liberados manualmente (digital falhou), 2º turno")
+    ax.set_ylabel("% de Lula (entre os dois finalistas)")
+    ax.set_title("Liberação manual por estado: alta tanto onde Lula venceu (PI, BA)\n"
+                 "quanto onde Flávio venceu (RS, SC). Tamanho do círculo = nº de votantes", fontsize=11)
+    salvar(fig, "09_biometria_por_estado.png")
+
+
+def g10_biometria_por_hora():
+    cache = os.path.join(RAIZ, "dados", "derivados", "biometria_logs_2t_2026.csv.gz")
+    if not os.path.exists(cache):
+        print("pulei g10 (rode biometria.py)")
+        return
+    r = pd.read_csv(cache)
+    fig, ax = plt.subplots(figsize=(10, 4.2))
+    estilos = {"amostra aleatória do Brasil": (CINZA, "-"), "fechou 19h ou depois": (LULA, "-"),
+               "vizinha que fechou até 17h15": (ADV, "--")}
+    for grupo, (cor, ls) in estilos.items():
+        x = r[r.grupo == grupo]
+        tot, man = {}, {}
+        for s in x.por_hora.dropna():
+            for item in str(s).split(";"):
+                if item.count(":") == 2:
+                    h, tp, n = item.split(":")
+                    tot[int(h)] = tot.get(int(h), 0) + int(n)
+                    if tp == "manual":
+                        man[int(h)] = man.get(int(h), 0) + int(n)
+        hs = [h for h in sorted(tot) if 8 <= h <= 18 and tot[h] >= 200]
+        ax.plot(hs, [man.get(h, 0) / tot[h] * 100 for h in hs], color=cor, ls=ls, lw=2, marker="o", ms=4,
+                label=f"{grupo} ({br(len(x), 0)} seções)")
+    ax.set_xticks(range(8, 19), [f"{h}h" for h in range(8, 19)])
+    ax.set_ylim(0, 10)
+    ax.set_xlabel("hora do voto (Brasília), pelo log de cada urna")
+    ax.set_ylabel("% dos votos daquela hora\nliberados manualmente")
+    ax.legend(frameon=False, fontsize=9, loc="upper right")
+    ax.set_title("A liberação manual é maior de manhã em todos os grupos; não sobe no horário estendido "
+                 "(horas com ≥ 200 votos)", fontsize=11)
+    salvar(fig, "10_liberacao_manual_por_hora_logs.png")
+
+
 if __name__ == "__main__":
     so = sys.argv[1:]
     t2, t1, d22 = carregar(), carregar(turno=1), carregar(ano=2022)
     mm = junta_turnos() if (not so or {"g5", "g6", "g8"} & set(so)) else None
     for nome, f in [("g1", lambda: g1_duas_eleicoes(t2, d22)), ("g2", lambda: g2_decomposicao(t2, t1)),
                     ("g3", lambda: g3_horarios(t1, t2, d22)), ("g4", g4_logs_tardias), ("g5", lambda: g5_modelo(mm)),
-                    ("g6", lambda: g6_residuo(mm)), ("g7", g7_logs), ("g8", lambda: print(g8_margem(t2, mm)))]:
+                    ("g6", lambda: g6_residuo(mm)), ("g7", g7_logs), ("g8", lambda: print(g8_margem(t2, mm))),
+                    ("g9", lambda: g9_biometria_estados(t2)), ("g10", g10_biometria_por_hora)]:
         if not so or nome in so:
             f()
