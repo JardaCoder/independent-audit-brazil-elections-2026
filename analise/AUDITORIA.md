@@ -84,7 +84,7 @@ dele. As conclusões, porém, não se sustentam:
 
 ```bash
 pip install pandas tabulate
-python3 scripts/baixar_dados_tse.py arquivos_urna_2t AC RR AP   # ~1,3 GB, só para a etapa 3
+scripts/remontar_arquivos_urna.sh   # junta as partes versionadas dos pacotes das urnas (etapa 3)
 cd analise
 python3 consistencia.py          # etapa 2
 python3 logs_urna.py AC RR AP    # etapa 3

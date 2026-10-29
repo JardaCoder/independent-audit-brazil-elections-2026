@@ -1,14 +1,16 @@
-# Conjuntos grandes demais para o Git. Baixe com: python3 scripts/baixar_dados_tse.py <conjunto>
-# Versionados: BUs do 2º turno de 2026 e de 2022 (controle) e correspondências esperadas de 2026.
+# Quase tudo que foi usado na auditoria está versionado. Fica de fora só o que passa dos limites do GitHub
+# e pode ser baixado de novo com: python3 scripts/baixar_dados_tse.py <conjunto>
 dados/tse/2026/*
 !dados/tse/2026/boletim_urna/
 !dados/tse/2026/correspondencias/
+!dados/tse/2026/arquivos_urna/
 dados/tse/2026/boletim_urna/*
 !dados/tse/2026/boletim_urna/2turno/
+# Pacotes das urnas: versionados em partes de 90 MB; o .zip inteiro é remontado localmente
+dados/tse/2026/arquivos_urna/2turno/*.zip
 dados/tse/2022/*
 !dados/tse/2022/boletim_urna/
 dados/tse/2022/boletim_urna/*
 !dados/tse/2022/boletim_urna/2turno/
-dados/derivados/
 *.part
 __pycache__/
