@@ -20,3 +20,5 @@ dados/tse/2022/boletim_urna/*
 !dados/tse/2022/boletim_urna/2turno/
 *.part
 __pycache__/
+# Parciais por UF da recontagem nacional (o resultado consolidado fica em dados/derivados/recontagem_rdv_2t_2026.csv.gz)
+dados/derivados/recontagem_rdv/
