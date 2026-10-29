@@ -167,9 +167,11 @@ def parte_planilhas():
     out()
     sem_br = uf.drop("Brasil")
     c = np.corrcoef(sem_br["taxa 2º turno (%)"], sem_br["% Lula 2º turno"])[0, 1]
+    ic = np.tanh(np.arctanh(c) + np.array([-1.96, 1.96]) / np.sqrt(len(sem_br) - 3))  # Fisher, n = 27 estados
     out(f"- A taxa vai de {sem_br['taxa 2º turno (%)'].min():.2f}% ({sem_br['taxa 2º turno (%)'].idxmin()}) a "
         f"{sem_br['taxa 2º turno (%)'].max():.2f}% ({sem_br['taxa 2º turno (%)'].idxmax()}). Correlação, entre estados, "
-        f"da taxa com a % de Lula: {c:.2f}.")
+        f"da taxa com a % de Lula: {c:.2f} (IC 95%: {ic[0]:.2f} a {ic[1]:.2f}; só 27 estados, sem ponderar pelo "
+        "tamanho, e é uma comparação entre regiões, não entre eleitores).")
     out(f"- Do 1º para o 2º turno a taxa nacional mudou {uf.loc['Brasil', 'variação (p.p.)']:+.2f} p.p.; a maior variação "
         f"estadual foi {sem_br['variação (p.p.)'].abs().max():.2f} p.p. A liberação não \"apareceu\" no 2º turno.")
     out()

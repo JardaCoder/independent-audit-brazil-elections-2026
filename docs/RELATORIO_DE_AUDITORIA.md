@@ -154,7 +154,7 @@ permitiu ler o RDV de todas as urnas e o log das urnas de interesse evitando bai
 | P9 | A diferença do grupo "até 17h" cai de −5,9 para −0,2 p.p. dentro do mesmo município, aparece em 2022 e já existia no 1º turno (−5,95 p.p.) | `analise/RESULTADOS.md` §2 |
 | P10 | 6.352 seções fecharam às 19h (pico real, só no 2º turno). Só 4.492 de 1.861.259 votos (0,24%) foram dados após as 17h. Mesmo comparecimento e voto que as seções do mesmo local que fecharam às 17h (diferenças de −0,06 e +0,03 p.p.) | `analise/LOGS_TARDIAS.md`, `RESULTADOS.md` §4 |
 | P11 | Dentro do município, os liberados votam quase como os demais (54% Lula); mais liberação vem com menos Lula do que o 1º turno previa; o aumento da liberação entre turnos não tem efeito | `analise/RESULTADOS.md` §5, `PRIMEIRO_TURNO.md` §5 |
-| P12 | O 1º turno explica 93,2% das diferenças entre seções da mesma cidade (98,5% no país). Nenhum grupo desvia a favor de Lula de forma significativa; nas seções das 19h o desvio fica entre −0,12 e +0,18 p.p., sem nenhuma forma distinguível de zero. O grupo de liberação ≥ 20% fica abaixo do previsto para Lula em todas as formas (−0,19 a −0,58 p.p., 3 a 10 mil votos a favor de Flávio). Limite superior de 95% para as seções das 19h, na forma mais desfavorável: 18.771 votos | `analise/PRIMEIRO_TURNO.md` |
+| P12 | O 1º turno explica 93,2% das diferenças entre seções da mesma cidade (98,5% no país). Nenhum grupo desvia a favor de Lula de forma significativa; nas seções das 19h o desvio fica entre −0,12 e +0,18 p.p., sem nenhuma forma distinguível de zero. O grupo de liberação ≥ 20% fica abaixo do previsto para Lula em todas as formas (−0,19 a −0,58 p.p., 3 a 10 mil votos a favor de Flávio). Limite superior de 95% para as seções das 19h, na forma mais desfavorável (EP por município ou por UF, média simples ou ponderada): 21.156 votos | `analise/PRIMEIRO_TURNO.md` |
 | P13 | Os dígitos dos votos reais são indistinguíveis dos de uma eleição honesta simulada; último dígito uniforme | `analise/RESULTADOS.md` §7 |
 | P15 | Taxa entre 4,1% (RR) e 9,0% (PI), alta também em estados pró-Flávio (RS 8,45%); estável entre turnos (+0,07 p.p.). Logs de 10.809 urnas: liberações = BU em 100%; mais liberações de manhã, queda ao longo do dia; nas seções das 19h só 245 liberações depois das 17h. 16 seções com ≥ 50 liberações por um mesário, sem favorecimento (Lula abaixo da zona em 11) | `analise/BIOMETRIA.md` |
 | P14 | Arquivos no servidor em 26/10 (~1 dia após a eleição); listados no catálogo em 27/10; ausentes do catálogo na consulta de 29/10, embora ainda no servidor e idênticos | README 6.12 |
@@ -204,7 +204,8 @@ afeta o resultado), **informativo**.
    dos dados públicos de votação.
 8. **Incerteza dos limites estatísticos.** Os limites das seções das 19h usam erro-padrão agrupado por município,
    e 75% dessas seções estão em 5 municípios, o que pode subestimar a incerteza. Como verificação grosseira,
-   dobrar o limite leva a cerca de 38 mil votos (0,8% da margem).
+   dobrar o limite leva a cerca de 42 mil votos (1,0% da margem). O limite usado já considera também o EP agrupado
+   por UF, mais largo.
 
 ---
 

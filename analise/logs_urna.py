@@ -79,7 +79,7 @@ def eventos_secao(log_jez):
             tipo, votou = None, True
             r["votos_log"] += 1
             votos_hora[hora[:2]] += 1
-            ultimo_voto = hora
+            ultimo_voto = max(ultimo_voto or hora, hora)  # logs aninhados não vêm em ordem
         if nivel == "ERRO" or ("Verificação de assinatura" in msg and "SUCESSO" not in msg):
             erros[msg.split("|")[0].strip()] += 1
     r["max_por_mesario"] = max(mesarios.values(), default=0)

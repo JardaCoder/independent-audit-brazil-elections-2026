@@ -1,10 +1,9 @@
 """Prova de que o horário gravado pela urna é o horário LOCAL do estado, e não o de Brasília.
 Gera analise/FUSO.md.
 
-Três testes:
-1. Hora de abertura: a lei manda abrir às 8h de Brasília no país todo.
-2. Hora em que o TSE recebeu cada BU: é anotada pelo servidor do TSE (Brasília), não pela urna.
-3. Logs das urnas de AC, RR e AP: o relógio é acertado à mão por um operador na preparação da urna.
+A prova é o teste 1 (hora de abertura: a lei manda abrir às 8h de Brasília no país todo). Os testes 2 (hora em
+que o TSE recebeu cada BU, anotada pelo servidor em Brasília) e 3 (logs de AC, RR e AP: relógio acertado à mão)
+são compatíveis com ele, mas sozinhos não distinguem o fuso.
 """
 import os
 import re
@@ -12,7 +11,7 @@ import zipfile
 
 import pandas as pd
 
-from carregar import RAIZ, carregar
+from carregar import RAIZ, carregar, fuso
 from estatistica import fmt, md
 from imagem_bu import PASTA_URNA
 from logs_urna import linhas_log
@@ -20,18 +19,14 @@ from logs_urna import linhas_log
 SAIDA = os.path.join(RAIZ, "analise", "FUSO.md")
 
 
-def grupo(uf):
-    if uf == "AC":
-        return "AC (UTC−5)"
-    if uf in ("AM", "MT", "MS", "RO", "RR"):
-        return "AM, MT, MS, RO, RR (UTC−4)"
-    return "demais estados (UTC−3, Brasília)"
+GRUPO = {2: "AC e oeste do AM (UTC−5)", 1: "AM, MT, MS, RO, RR (UTC−4)", 0: "demais (UTC−3, Brasília)",
+         -1: "Fernando de Noronha (UTC−2)"}
 
 
 def main():
     d = carregar()
     d = d[d.SG_UF != "ZZ"].copy()
-    d["grupo"] = d.SG_UF.map(grupo)
+    d["grupo"] = fuso(d).map(GRUPO)
     ab = pd.to_datetime(d.DT_ABERTURA)
     rec = pd.to_datetime(d.DT_BU_RECEBIDO)
     t = d.assign(abertura=ab.dt.strftime("%H:00")).groupby("grupo").abertura.agg(
@@ -46,7 +41,9 @@ def main():
          f"- BUs recebidos pelo TSE antes das 17h00 de Brasília: **{fmt((rec.dt.hour < 17).sum())}**.",
          "- Se as urnas do Acre estivessem no horário de Brasília, teriam aberto 2 horas antes do permitido e fechado às "
          "15h de Brasília, e seus boletins chegariam ao TSE entre 15h e 17h. Nenhum chegou antes das 17h.",
-         "- O menor intervalo entre \"fechou\" e \"chegou\" é o fuso de cada grupo (cerca de 2h, 1h e 0h).", ""]
+         "- O menor intervalo entre \"fechou\" e \"chegou\" é o fuso de cada grupo (cerca de 2h, 1h e 0h).",
+         "- Os testes 2 e 3 são compatíveis com o horário local, mas sozinhos não o provam: o TSE só recebe boletins "
+         "depois das 17h de Brasília, e o log mostra que a hora é digitada, não em qual fuso. A prova é a abertura.", ""]
     linhas = []
     for uf in ["AC", "RR", "AP"]:
         with zipfile.ZipFile(os.path.join(PASTA_URNA, f"bu_imgbu_logjez_rdv_vscmr_2026_2t_{uf}.zip")) as z:

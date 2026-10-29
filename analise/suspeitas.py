@@ -93,7 +93,7 @@ def secao_ate17(d, t1):
     linhas = []
     for nome, fe in [("sem controle", None), ("comparando dentro do mesmo estado", x.SG_UF),
                      ("comparando dentro do mesmo município", mun)]:
-        bb, se = coef_cluster(centrar(x.p, fe), centrar(x.g, fe), mun, peso=x.v)
+        bb, se = coef_cluster(centrar(x.p, fe, x.v), centrar(x.g, fe, x.v), mun, peso=x.v)
         linhas.append({"comparação": nome, "diferença de % Lula (grupo − resto)": f"{bb:+.2f} p.p. (EP {se:.2f})"})
     out()
     out(md(pd.DataFrame(linhas), index=False))
@@ -191,7 +191,7 @@ def secao_biometria(d, d1):
     p = x.V_13.sum() / V
     linhas = []
     for nome, fe in [("nacional", None), ("dentro do estado", x.SG_UF), ("dentro do município", mun)]:
-        b, se = coef_cluster(centrar(x.p, fe), centrar(x.bio, fe), mun, peso=x.v)
+        b, se = coef_cluster(centrar(x.p, fe, x.v), centrar(x.bio, fe, x.v), mun, peso=x.v)
         res = {"comparação": nome, "inclinação (EP)": f"{b:.3f} ({se:.3f})"}
         for rot, bb in [("estimativa", b), ("limite de 95%", b + 1.96 * se)]:
             po = p - bb * f  # % de Lula entre os não liberados
@@ -250,7 +250,7 @@ def secao_benford(d):
     ben2 = np.array([sum(np.log10(1 + 1 / (10 * k + j)) for k in range(1, 10)) for j in range(10)])
     rng = np.random.default_rng(2026)
     v = (x.V_13 + x.V_22).values
-    sim13 = rng.binomial(v, (x.V_13 / (x.V_13 + x.V_22)).values)
+    sims = [rng.binomial(v, (x.V_13 / (x.V_13 + x.V_22)).values) for _ in range(20)]  # 20 eleições honestas simuladas
     tab1 = {"Benford esperado %": (ben1 * 100).round(1)}
     for c, n in [("V_13", "Lula %"), ("V_22", "Flávio %")]:
         dig = x[c][x[c] > 0].astype(int).astype(str).str[0].astype(int)
@@ -273,16 +273,26 @@ def secao_benford(d):
         return ((obs - esp) ** 2 / esp).sum(), dig.mean()
 
     linhas = []
-    for nome, vals in [("Lula (real)", x.V_13.values), ("Flávio (real)", x.V_22.values),
-                       ("Lula (simulação honesta: sorteio binomial com o tamanho e a % de cada seção)", sim13)]:
+    for nome, vals in [("Lula (real)", x.V_13.values), ("Flávio (real)", x.V_22.values)]:
         chi, media = segundo(vals)
-        linhas.append({"série": nome, "média do 2º dígito": round(media, 3), "qui-quadrado vs Benford": round(chi)})
+        linhas.append({"série": nome, "média do 2º dígito": f"{media:.3f}", "qui-quadrado vs Benford": round(chi)})
+    faixa = {}
+    for nome, s in [("Lula", sims), ("Flávio", [v - s_ for s_ in sims])]:
+        r = np.array([segundo(s_) for s_ in s])
+        faixa[nome] = (r[:, 1].min(), r[:, 1].max())
+        linhas.append({"série": f"{nome} (20 eleições honestas simuladas: sorteio binomial com o tamanho e a % de cada "
+                                "seção; média e faixa)", "média do 2º dígito": f"{r[:, 1].mean():.3f} ({r[:, 1].min():.3f}–{r[:, 1].max():.3f})",
+                       "qui-quadrado vs Benford": f"{r[:, 0].mean():.0f} ({r[:, 0].min():.0f}–{r[:, 0].max():.0f})"})
     out("**2º dígito** (Benford esperado: média 4,187)")
     out()
     out(md(pd.DataFrame(linhas), index=False))
     out()
-    out("- O 2º dígito real \"falha\" em Benford, mas **a simulação de uma eleição honesta falha do mesmo jeito**: o que se "
-        "observa é o esperado para contagens desse tamanho, não sinal de manipulação.")
+    dentro = {n: lo <= segundo(vals)[1] <= hi for n, vals, (lo, hi) in
+              [("Lula", x.V_13.values, faixa["Lula"]), ("Flávio", x.V_22.values, faixa["Flávio"])]}
+    out("- O 2º dígito real \"falha\" em Benford, e as eleições honestas simuladas falham do mesmo jeito: contagens "
+        "desse tamanho não seguem Benford. " + "; ".join(
+            f"{n}: média real {'dentro' if ok else 'fora'} da faixa das simulações" for n, ok in dentro.items())
+        + ". Diferenças de centésimos no dígito médio estão abaixo do que esse teste consegue interpretar.")
     linhas = []
     for nome, c in [("Lula", "V_13"), ("Flávio", "V_22")]:
         vals = x[c][x[c] >= 10].astype(int) % 10

@@ -65,15 +65,18 @@ def recontar_uf(uf):
 
 
 def main(ufs):
-    partes = [recontar_uf(uf) for uf in ufs]
-    r = pd.concat(partes, ignore_index=True)
-    r.to_csv(SAIDA_CSV, index=False, compression="gzip")
+    if os.path.exists(SAIDA_CSV) and not os.path.isdir(PARCIAL):  # sem parciais: reusa o consolidado (não baixa ~2 h)
+        r = pd.read_csv(SAIDA_CSV, keep_default_na=False, na_values=[""]).query("SG_UF in @ufs")
+    else:
+        r = pd.concat([recontar_uf(uf) for uf in ufs], ignore_index=True)
+        r.to_csv(SAIDA_CSV, index=False, compression="gzip")
+    lido = r.rdv_total.notna() & (r.erro.fillna("") == "")
     ok = r[r._merge == "both"]
     igual = ((ok.rdv_13 == ok.bweb_13) & (ok.rdv_22 == ok.bweb_22) & (ok.rdv_branco == ok.bweb_branco)
              & (ok.rdv_nulo == ok.bweb_nulo))
     por_uf = r.groupby("SG_UF").agg(
         secoes_bweb=("bweb_comparecimento", lambda s: int(s.notna().sum())),
-        rdv_lidos=("rdv_total", lambda s: int(s.notna().sum())),
+        rdv_lidos=("rdv_total", lambda s: int(lido[s.index].sum())),
         erros=("erro", lambda s: int((s.fillna("") != "").sum())))
     por_uf["RDV = BWeb"] = igual.groupby(ok.SG_UF).sum().reindex(por_uf.index).fillna(0).astype(int)
     tot = {"Lula (RDV)": int(ok.rdv_13.sum()), "Lula (BWeb)": int(ok.bweb_13.sum()),
@@ -84,7 +87,8 @@ def main(ufs):
     L = ["# Recontagem nacional voto a voto pelo RDV — 2º turno 2026", "",
          "Cada RDV foi baixado do pacote oficial do TSE (\"arquivos transmitidos para totalização\") por download parcial "
          "e os votos de Presidente foram contados um a um. Ver `recontagem_rdv.py` para o leitor.", "",
-         f"- Seções na BWeb: {fmt(len(r[r._merge != 'right_only']))}. RDVs lidos: {fmt(ok.rdv_total.notna().sum())}. "
+         f"- Seções na BWeb: {fmt(len(r[r._merge != 'right_only']))}. RDVs lidos sem erro: {fmt(lido.sum())}; "
+         f"com erro de leitura: {fmt((~lido & r.rdv_total.notna()).sum())}. "
          f"**RDV idêntico à BWeb (Lula, Flávio, brancos e nulos): {fmt(igual.sum())}**.",
          f"- Seções da BWeb sem arquivo RDV no pacote: {len(sem_rdv)}.",
          "", "## Totais", "", pd.Series(tot).to_frame("votos").to_markdown(), "", "## Por UF", "", por_uf.to_markdown(), ""]
@@ -94,9 +98,12 @@ def main(ufs):
     eh_cedula = pd.Series([(u, str(m), str(z), str(s_)) in chave_ced for u, m, z, s_ in
                            zip(ok.SG_UF, ok.CD_MUNICIPIO, ok.NR_ZONA, ok.NR_SECAO)], index=ok.index)
     dif = ok[~igual]
+    # As frases abaixo afirmam isto; se deixar de valer, o script para em vez de escrever algo falso.
+    assert eh_cedula[~igual].all() and (ok.erro.fillna("")[~igual] != "").all()
+    assert dif.bweb_comparecimento.sum() == sum(tot[f"{k} (BWeb)"] - tot[f"{k} (RDV)"] for k in ("Lula", "Flávio", "brancos", "nulos"))
     L.insert(5, f"- **Seções com urna eletrônica: {fmt(igual[~eh_cedula].sum())} de {fmt((~eh_cedula).sum())} idênticas.** As "
              f"{fmt(eh_cedula[~igual].sum())} que não batem são todas seções do exterior apuradas em **cédula** (Sistema de Apuração): "
-             "o arquivo delas não segue o formato do RDV da urna e o leitor não o interpreta. Os votos dessas seções somam "
+             "o leitor não consegue interpretar o arquivo delas (erro de leitura). Os votos dessas seções somam "
              f"{fmt(dif[eh_cedula[~igual]].bweb_comparecimento.sum())}, exatamente a diferença entre os totais abaixo.")
     if len(dif):
         L += ["## Seções com diferença", "", dif.head(50).to_markdown(index=False), ""]

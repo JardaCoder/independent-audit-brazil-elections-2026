@@ -37,7 +37,7 @@ Taxa = eleitores liberados manualmente ÷ comparecimento. "% Lula" = Lula ÷ (Lu
 | DF      | 84.114               | 4.84                | 4.5                 | -0.34             | 45.7              | 4.2                     | 1                       |
 | RR      | 12.646               | 3.84                | 4.1                 | 0.26              | 27.5              | 3.9                     | 0                       |
 
-- A taxa vai de 4.10% (RR) a 9.00% (PI). Correlação, entre estados, da taxa com a % de Lula: 0.38.
+- A taxa vai de 4.10% (RR) a 9.00% (PI). Correlação, entre estados, da taxa com a % de Lula: 0.38 (IC 95%: -0.00 a 0.66; só 27 estados, sem ponderar pelo tamanho, e é uma comparação entre regiões, não entre eleitores).
 - Do 1º para o 2º turno a taxa nacional mudou +0.07 p.p.; a maior variação estadual foi 0.57 p.p. A liberação não "apareceu" no 2º turno.
 
 ## 2. Municípios com as maiores taxas (com pelo menos 5.000 votantes)

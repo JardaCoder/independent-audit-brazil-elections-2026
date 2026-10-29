@@ -75,11 +75,15 @@ def g1_duas_eleicoes(d26, d22):
         g = d.assign(f=faixa4(d.ENC_LOCAL)).groupby("f").agg(s=("NR_SECAO", "size"), l=("V_13", "sum"), a=("V_22", "sum")).reindex(ROT4)
         p = g.l / (g.l + g.a) * 100
         x = np.arange(4)
-        ax.bar(x, p, color=[LULA if v >= 50 else ADV for v in p], width=0.6)
+        cores = [LULA if v >= 50 else ADV for v in p]
+        pequeno = g.s < 1000  # grupos minúsculos: barra vazada, para não pesar como os grupos de milhares de seções
+        ax.bar(x, p, color=[c if not pq else "none" for c, pq in zip(cores, pequeno)], edgecolor=cores,
+               hatch=["//" if pq else "" for pq in pequeno], width=0.6)
         ax.axhline(50, color=TEXTO2, lw=1, ls="--")
-        for i, (v, sal) in enumerate(zip(p, g.l - g.a)):
+        for i, (v, sal, n, pq) in enumerate(zip(p, g.l - g.a, g.s, pequeno)):
             ax.text(i, v + 1.2, f"{br(v)}%", ha="center", color=TEXTO, weight="bold")
-            ax.text(i, v + 6, f"{'Lula' if sal > 0 else adv} +{mil(abs(sal))}", ha="center", color=TEXTO2, fontsize=8.5)
+            ax.text(i, v + 6, f"só {br(n, 0)} seções" if pq else f"{'Lula' if sal > 0 else adv} +{mil(abs(sal))}",
+                    ha="center", color=TEXTO2, fontsize=8.5)
         ax.set_xticks(x, [f"{r}\n({br(s, 0)} seções)" for r, s in zip(ROT4, g.s)], fontsize=8.8)
         ax.set_ylim(0, 75)
         ax.set_title(f"{ano}: % de Lula por horário de fechamento")
@@ -99,7 +103,7 @@ def g2_decomposicao(d, t1):
     barras = []
     for nome, fe in [("país todo\n(sem controle)", None), ("dentro do\nmesmo estado", x.SG_UF),
                      ("dentro do\nmesmo município", mun)]:
-        b, se = coef_cluster(centrar(x.p, fe), centrar(x.g, fe), mun, peso=x.v)
+        b, se = coef_cluster(centrar(x.p, fe, x.v), centrar(x.g, fe, x.v), mun, peso=x.v)
         barras.append((nome, b, se))
     j = x[CHAVE + ["g"]].merge(t1[CHAVE + ["V_13", "V_22"]], on=CHAVE)
     pg = j[j.g == 1].V_13.sum() / (j[j.g == 1].V_13.sum() + j[j.g == 1].V_22.sum()) * 100

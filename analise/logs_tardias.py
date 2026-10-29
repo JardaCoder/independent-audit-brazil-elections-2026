@@ -20,7 +20,7 @@ from concurrent.futures import ThreadPoolExecutor
 import pandas as pd
 
 from carregar import FUSO, RAIZ, carregar, fuso
-from estatistica import fmt
+from estatistica import fmt, md
 from logs_urna import linhas_log
 
 URL = "https://cdn.tse.jus.br/estatistica/sead/eleicoes/eleicoes2026/arqurnatot/bu_imgbu_logjez_rdv_vscmr_2026_2t_{}.zip"
@@ -207,7 +207,7 @@ def relatorio(res):
                                 apos_18h00=("votos_apos_18h00", "sum"), apos_18h30=("votos_apos_18h30", "sum"))
     t["% dos votos após 17h"] = (t.apos_17h00 / t.votos_no_log * 100).round(2)
     t["% dos votos após 17h15"] = (t.apos_17h15 / t.votos_no_log * 100).round(2)
-    L += ["## Quantos votos depois das 17h", "", t.astype({c: "int64" for c in t.columns if not c.startswith("%")}).to_markdown(), ""]
+    L += ["## Quantos votos depois das 17h", "", md(t.astype({c: "int64" for c in t.columns if not c.startswith("%")})), ""]
     tard = ok[ok.grupo == "fechou 19h ou depois"]
     L.append(f"- Log = comparecimento do BU: {fmt((ok.votos_log == ok.QT_COMPARECIMENTO).sum())} de {fmt(len(ok))} seções.")
     L.append(f"- Seções tardias **sem nenhum voto** depois das 17h15: {fmt((tard.votos_apos_17h15 == 0).sum())} de {fmt(len(tard))}.")

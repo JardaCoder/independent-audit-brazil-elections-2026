@@ -4,15 +4,17 @@ As urnas não têm internet. O relógio delas é acertado à mão durante a prep
 
 ## 1 e 2. Abertura e chegada ao TSE
 
-| grupo                            | hora de abertura mais comum (relógio da urna)   | menor intervalo entre fechar (urna) e chegar ao TSE (Brasília), em horas   | primeiro BU recebido pelo TSE (Brasília)   |
-|:---------------------------------|:------------------------------------------------|:---------------------------------------------------------------------------|:-------------------------------------------|
-| AC (UTC−5)                       | 06:00 (100.0% das seções)                       | 2.06                                                                       | 17:05:10                                   |
-| AM, MT, MS, RO, RR (UTC−4)       | 07:00 (98.1% das seções)                        | 1.04                                                                       | 17:05:10                                   |
-| demais estados (UTC−3, Brasília) | 08:00 (100.0% das seções)                       | -0.01                                                                      | 17:05:10                                   |
+| grupo                       | hora de abertura mais comum (relógio da urna)   | menor intervalo entre fechar (urna) e chegar ao TSE (Brasília), em horas   | primeiro BU recebido pelo TSE (Brasília)   |
+|:----------------------------|:------------------------------------------------|:---------------------------------------------------------------------------|:-------------------------------------------|
+| AC e oeste do AM (UTC−5)    | 06:00 (100.0% das seções)                       | 2.06                                                                       | 17:05:10                                   |
+| AM, MT, MS, RO, RR (UTC−4)  | 07:00 (100.0% das seções)                       | 1.04                                                                       | 17:05:10                                   |
+| Fernando de Noronha (UTC−2) | 09:00 (100.0% das seções)                       | 0.69                                                                       | 19:03:46                                   |
+| demais (UTC−3, Brasília)    | 08:00 (100.0% das seções)                       | -0.01                                                                      | 17:05:10                                   |
 
 - BUs recebidos pelo TSE antes das 17h00 de Brasília: **0**.
 - Se as urnas do Acre estivessem no horário de Brasília, teriam aberto 2 horas antes do permitido e fechado às 15h de Brasília, e seus boletins chegariam ao TSE entre 15h e 17h. Nenhum chegou antes das 17h.
 - O menor intervalo entre "fechou" e "chegou" é o fuso de cada grupo (cerca de 2h, 1h e 0h).
+- Os testes 2 e 3 são compatíveis com o horário local, mas sozinhos não o provam: o TSE só recebe boletins depois das 17h de Brasília, e o log mostra que a hora é digitada, não em qual fuso. A prova é a abertura.
 
 ## 3. O relógio é acertado à mão
 

@@ -71,8 +71,8 @@ Resíduo = % real de Lula − % prevista, em pontos percentuais (p.p.). A tabela
 | fechou até 17:00:59 (relógio local)        | 150.771  | -0.16 (0.03)       | -0.16 (0.03)                  | -0.05 (0.01)           | -0.03 (0.01)                  | -0.12 (0.03)      | -0.03 (0.01)                 |
 | liberação manual ≥ 20% da seção (2º turno) | 4.154    | -0.58 (0.05)       | -0.58 (0.05)                  | -0.45 (0.05)           | -0.27 (0.04)                  | -0.42 (0.05)      | -0.19 (0.04)                 |
 
-- Seções tardias: desvio a favor de Lula distinguível de zero em 0 das 6 formas. No pior caso (limite superior de 95% da especificação mais desfavorável, +0.52 p.p.), o efeito sobre a margem seria de no máximo **18.771 votos** (2 × 0.52% × 1.793.914 válidos).
-- Efeito no resíduo de +10 p.p. de **nível da liberação manual no 2º turno**: linear, dentro do município: -0.320 p.p. (EP 0.029); logit, dentro do município: -0.281 p.p. (EP 0.026).
+- Seções tardias: desvio a favor de Lula distinguível de zero em 0 das 6 formas. No pior caso (limite superior de 95% da especificação mais desfavorável, +0.59 p.p.), o efeito sobre a margem seria de no máximo **21.156 votos** (2 × 0.59% × 1.793.914 válidos).
+- Efeito no resíduo de +10 p.p. de **nível da liberação manual no 2º turno**: linear, dentro do município: -0.320 p.p. (EP 0.029); logit, dentro do município: -0.282 p.p. (EP 0.026).
 - Efeito no resíduo de +10 p.p. de **variação da liberação manual do 1º para o 2º turno**: linear, dentro do município: -0.020 p.p. (EP 0.014); logit, dentro do município: -0.022 p.p. (EP 0.014).
 - Se a liberação manual fosse usada para pôr votos em Lula, mais liberação deveria vir com resíduo positivo, sobretudo onde ela **aumentou** do 1º para o 2º turno. Não é o que aparece.
 
@@ -80,26 +80,26 @@ Resíduo = % real de Lula − % prevista, em pontos percentuais (p.p.). A tabela
 
 | grupo                                      | Lula 1º turno (grupo)   | Lula 2º turno (grupo)   | variação grupo   | Lula 1º (demais, mesmos municípios)   | Lula 2º (demais)   | variação demais   |
 |:-------------------------------------------|:------------------------|:------------------------|:-----------------|:--------------------------------------|:-------------------|:------------------|
-| fechou às 19h ou depois (Brasília)         | 51.93                   | 55.18                   | 3.25             | 51.4                                  | 54.6               | 3.2               |
-| fechou até 17:00:59 (relógio local)        | 44.8                    | 47.61                   | 2.8              | 50.73                                 | 53.51              | 2.77              |
-| liberação manual ≥ 20% da seção (2º turno) | 56.73                   | 58.22                   | 1.49             | 50.33                                 | 53.24              | 2.91              |
+| fechou às 19h ou depois (Brasília)         | 51.93                   | 55.18                   | 3.25             | 54.03                                 | 57.27              | 3.24              |
+| fechou até 17:00:59 (relógio local)        | 46.65                   | 49.37                   | 2.72             | 46.58                                 | 49.55              | 2.98              |
+| liberação manual ≥ 20% da seção (2º turno) | 56.73                   | 58.22                   | 1.49             | 54.73                                 | 56.99              | 2.26              |
 
-Lula entre Lula e Flávio (somando os votos do grupo). Se a variação do grupo é igual à das demais seções dos mesmos municípios, o grupo não teve nada de especial no 2º turno: já votava diferente antes.
+Lula entre Lula e Flávio (somando os votos do grupo). As demais seções são reponderadas para que cada município pese o mesmo que pesa no grupo; municípios sem seções fora do grupo ficam de fora. Se a variação do grupo é igual à das demais, o grupo não teve nada de especial no 2º turno: já votava diferente antes.
 
 ## 7. Seções muito fora do padrão
 
 | critério                                      | k   | seções   | a favor de Lula   | a favor de Flávio   | efeito bruto a favor de Lula (votos)   | efeito líquido (votos)   |
 |:----------------------------------------------|:----|:---------|:------------------|:--------------------|:---------------------------------------|:-------------------------|
 | resíduo > k desvios                           | 2   | 22.983   | 12.330            | 10.653              | 265.876                                | 52.685                   |
-| resíduo padronizado pelo tamanho da seção > k | 2   | 1.893    | 1.105             | 788                 | 33.327                                 | 13.030                   |
+| resíduo padronizado pelo tamanho da seção > k | 2   | 1.836    | 1.071             | 765                 | 32.947                                 | 13.211                   |
 | resíduo > k desvios                           | 3   | 2.962    | 1.710             | 1.252               | 42.692                                 | 15.655                   |
-| resíduo padronizado pelo tamanho da seção > k | 3   | 149      | 74                | 75                  | 2.573                                  | 500                      |
+| resíduo padronizado pelo tamanho da seção > k | 3   | 123      | 51                | 72                  | 2.214                                  | 257                      |
 | resíduo > k desvios                           | 4   | 573      | 341               | 232                 | 8.044                                  | 3.233                    |
-| resíduo padronizado pelo tamanho da seção > k | 4   | 43       | 16                | 27                  | 747                                    | -121                     |
+| resíduo padronizado pelo tamanho da seção > k | 4   | 36       | 11                | 25                  | 616                                    | -218                     |
 | resíduo > k desvios                           | 5   | 185      | 108               | 77                  | 2.482                                  | 862                      |
-| resíduo padronizado pelo tamanho da seção > k | 5   | 19       | 5                 | 14                  | 392                                    | -105                     |
+| resíduo padronizado pelo tamanho da seção > k | 5   | 19       | 5                 | 14                  | 392                                    | -122                     |
 
-Efeito = quanto a margem mudaria se todo o desvio dessas seções fosse removido (2 × resíduo × válidos). "Bruto" soma só os desvios a favor de Lula, sem descontar os a favor de Flávio.
+Efeito = quanto a margem mudaria se todo o desvio dessas seções fosse removido (2 × resíduo × válidos). "Bruto" soma só os desvios a favor de Lula, sem descontar os a favor de Flávio. É uma lista descritiva, não um teste: metade dos casos extremos cairia a favor de Lula por acaso, e a distribuição tem caudas mais pesadas que a normal (esperado numa normal: 22714 acima de 2, 1348 acima de 3, 32 acima de 4, 0 acima de 5 desvios).
 - Lista (critério 4 desvios): `secoes_fora_do_padrao_1t_2t.csv`.
 - No modelo linear nacional, há um aglomerado de seções com Lula muito abaixo do previsto: 8 são do exterior (principalmente Accra, Boston, Caracas, Kuala Lumpur), com abstenção média de 65% no 1º turno. O modelo linear trata parte da abstenção como voto futuro, o que não vale no exterior. É limitação do modelo, e o desvio é contra Lula.
 

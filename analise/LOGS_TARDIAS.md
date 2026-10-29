@@ -6,10 +6,10 @@ Seções analisadas: 7.852 (0 com erro de leitura ou sem log).
 
 ## Quantos votos depois das 17h
 
-| grupo                        |   secoes |   comparecimento_BU |     votos_no_log |   apos_17h00 |   apos_17h15 |   apos_17h30 |   apos_18h00 |   apos_18h30 |   % dos votos após 17h |   % dos votos após 17h15 |
-|:-----------------------------|---------:|--------------------:|-----------------:|-------------:|-------------:|-------------:|-------------:|-------------:|-----------------------:|-------------------------:|
-| fechou 19h ou depois         |     6352 |         1.86126e+06 |      1.86126e+06 |         4492 |         3329 |         2907 |         1860 |          671 |                   0.24 |                     0.18 |
-| vizinha que fechou até 17h15 |     1500 |    432813           | 432813           |          155 |            0 |            0 |            0 |            0 |                   0.04 |                     0    |
+| grupo                        | secoes   | comparecimento_BU   | votos_no_log   | apos_17h00   | apos_17h15   | apos_17h30   | apos_18h00   | apos_18h30   | % dos votos após 17h   | % dos votos após 17h15   |
+|:-----------------------------|:---------|:--------------------|:---------------|:-------------|:-------------|:-------------|:-------------|:-------------|:-----------------------|:-------------------------|
+| fechou 19h ou depois         | 6.352    | 1.861.259           | 1.861.259      | 4.492        | 3.329        | 2.907        | 1.860        | 671          | 0.24                   | 0.18                     |
+| vizinha que fechou até 17h15 | 1.500    | 432.813             | 432.813        | 155          | 0            | 0            | 0            | 0            | 0.04                   | 0.0                      |
 
 - Log = comparecimento do BU: 7.852 de 7.852 seções.
 - Seções tardias **sem nenhum voto** depois das 17h15: 3.885 de 6.352.

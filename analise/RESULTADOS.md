@@ -41,8 +41,8 @@ Com o horário como gravado pela urna (local) e estas faixas, os números que ci
 
 | comparação                           | diferença de % Lula (grupo − resto)   |
 |:-------------------------------------|:--------------------------------------|
-| sem controle                         | -5.91 p.p. (EP 0.56)                  |
-| comparando dentro do mesmo estado    | -1.37 p.p. (EP 0.44)                  |
+| sem controle                         | -5.92 p.p. (EP 0.54)                  |
+| comparando dentro do mesmo estado    | -1.38 p.p. (EP 0.42)                  |
 | comparando dentro do mesmo município | -0.20 p.p. (EP 0.06)                  |
 
 - **As mesmas seções já votavam assim no 1º turno**: lá, o grupo deu 44.80% a Lula contra 50.76% no resto (-5.95 p.p.), praticamente a mesma diferença do 2º turno.
@@ -109,9 +109,9 @@ A % de Lula sobe nas faixas de liberação alta, mas essas faixas têm poucas se
 
 | comparação          | inclinação (EP)   | % Lula entre liberados (estimativa)   | margem sem os liberados (estimativa)   | % Lula entre liberados (limite de 95%)   | margem sem os liberados (limite de 95%)   |
 |:--------------------|:------------------|:--------------------------------------|:---------------------------------------|:-----------------------------------------|:------------------------------------------|
-| nacional            | 0.289 (0.080)     | 78.7                                  | -373.626                               | 93.3                                     | -2.802.136                                |
-| dentro do estado    | 0.171 (0.055)     | 67.7                                  | 1.470.770                              | 77.8                                     | -223.374                                  |
-| dentro do município | 0.024 (0.039)     | 54.0                                  | 3.755.951                              | 61.2                                     | 2.552.818                                 |
+| nacional            | 0.286 (0.076)     | 78.5                                  | -326.444                               | 92.4                                     | -2.659.063                                |
+| dentro do estado    | 0.167 (0.050)     | 67.3                                  | 1.532.055                              | 76.4                                     | 11.683                                    |
+| dentro do município | 0.023 (0.039)     | 53.9                                  | 3.779.554                              | 61.1                                     | 2.578.302                                 |
 
 - **Pior caso aritmético** (todo liberado votou em Lula sempre que possível e é retirado): margem de -4.189.464. Esse cenário exige que, em cada seção, os liberados tenham votado em Lula em bloco, o que contradiz os testes abaixo.
 - Por que as linhas dão resultados tão diferentes: liberação manual e voto em Lula são ambos mais altos em certas regiões (Nordeste, interior). Comparar o país todo (ou o estado todo) mistura essas regiões e atribui à liberação um efeito que é da geografia: é a *falácia ecológica*. A comparação mais justa é entre seções da **mesma cidade**: aí a inclinação cai a quase zero, e mesmo no limite de 95% Lula mantém pelo menos 2,5 milhões de margem.
@@ -150,13 +150,14 @@ A % de Lula sobe nas faixas de liberação alta, mas essas faixas têm poucas se
 
 **2º dígito** (Benford esperado: média 4,187)
 
-| série                                                                        | média do 2º dígito   | qui-quadrado vs Benford   |
-|:-----------------------------------------------------------------------------|:---------------------|:--------------------------|
-| Lula (real)                                                                  | 3.858                | 6.731                     |
-| Flávio (real)                                                                | 3.971                | 6.461                     |
-| Lula (simulação honesta: sorteio binomial com o tamanho e a % de cada seção) | 3.865                | 6.490                     |
+| série                                                                                                      | média do 2º dígito   | qui-quadrado vs Benford   |
+|:-----------------------------------------------------------------------------------------------------------|:---------------------|:--------------------------|
+| Lula (real)                                                                                                | 3.858                | 6731                      |
+| Flávio (real)                                                                                              | 3.971                | 6461                      |
+| Lula (20 eleições honestas simuladas: sorteio binomial com o tamanho e a % de cada seção; média e faixa)   | 3.869 (3.865–3.873)  | 6369 (6158–6521)          |
+| Flávio (20 eleições honestas simuladas: sorteio binomial com o tamanho e a % de cada seção; média e faixa) | 3.974 (3.965–3.980)  | 5916 (5641–6090)          |
 
-- O 2º dígito real "falha" em Benford, mas **a simulação de uma eleição honesta falha do mesmo jeito**: o que se observa é o esperado para contagens desse tamanho, não sinal de manipulação.
+- O 2º dígito real "falha" em Benford, e as eleições honestas simuladas falham do mesmo jeito: contagens desse tamanho não seguem Benford. Lula: média real fora da faixa das simulações; Flávio: média real dentro da faixa das simulações. Diferenças de centésimos no dígito médio estão abaixo do que esse teste consegue interpretar.
 
 **Último dígito** (teste de Beber & Scacco: em contagens honestas, cada dígito final aparece ~10% das vezes)
 

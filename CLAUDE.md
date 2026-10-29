@@ -5,7 +5,7 @@ Auditoria independente, com dados públicos do TSE, da eleição presidencial de
 2º turno. **Idioma do projeto: português (BR).** Os textos (README, relatório, saídas .md) são escritos para
 leigos entenderem.
 
-**Regra editorial (pedido do usuário):** README em pt-BR (`README.md`) e inglês (`README.en.md`), mantidos juntos;
+**Regra editorial (pedido do usuário):** README.md tem pt-BR e inglês em blocos <details>; manter os dois em sincronia;
 leitura rápida, entendível por leigo. os textos públicos (README, relatório, saídas .md, gráficos) não dizem que
 o trabalho foi feito a partir de um relatório específico de rede social, não mencionam revisões/revisores e não
 podem ter cara de texto gerado por IA (pouco negrito, sem frases de efeito, sem fórmulas "não é X, é Y", prosa
@@ -13,8 +13,9 @@ em vez de listas quando couber). As suspeitas aparecem como "suspeitas que circu
 
 ## Estado atual (concluído)
 
-- Tudo publicado na branch **`main`** (o usuário pediu "joga tudo na main"). A branch de trabalho
-  `ccr-92bb87e8-nv2127` aponta para o mesmo commit. Para publicar: commit e `git push origin HEAD:main`.
+- Repositório **público**: https://github.com/JardaCoder/independent-audit-brazil-elections-2026 (renomeado de
+  `elections-brazil`), branch padrão `main`. Para publicar: commit e `git push origin HEAD:main`. `gh` com a conta
+  JardaCoder.
 - **Veredito:** nenhuma evidência de fraude. Resultado oficial íntegro. Nenhum achado material.
 - Documentos principais:
   - `README.md`: explicação para leigos, glossário, origem dos dados, problemas, 12 verificações com gráficos.
@@ -34,7 +35,7 @@ em vez de listas quando couber). As suspeitas aparecem como "suspeitas que circu
 | Recontagem RDV nacional | 499.178/499.178 urnas eletrônicas idênticas à BWeb; 27 seções ZZ em cédula (Sistema de Apuração) sem RDV, 831 votos |
 | Liberação manual ("sem biometria") | 8.632.488 no 2º turno (6,73%); campo `QT_ELEI_BIOM_SEM_HABILITACAO` = linha "Habilitação biográfica" do BU |
 | Seções que fecharam ≥19h Brasília | 6.352 (1.993 no minuto 19:00; 1.131 locais); só 4.492 de 1.861.259 votos após 17h (logs) |
-| Limite estatístico das seções das 19h | 18.771 votos (pior especificação e ponderação, IC 95%) |
+| Limite estatístico das seções das 19h | 21.156 votos (pior entre especificações, ponderação e EP por município/UF, IC 95%) |
 | Urnas fora das listas sem explicação | 17 seções, 4.563 votos, saldo +42 Lula |
 | Modelo 1º→2º turno (com lula_1) | R² 0,985 nacional; 0,932 dentro do município |
 | Biometria (logs de 10.809 urnas distintas) | liberações no log = BU em 100%; nas seções das 19h, 245 liberações manuais depois das 17h; taxa por UF 4,1% (RR) a 9,0% (PI) |
@@ -123,11 +124,11 @@ e atualize README e `docs/RELATORIO_DE_AUDITORIA.md` se algum número citado mud
 
 ## Próximos passos possíveis (não feitos)
 
-0. Melhorias de método apontadas e não aplicadas (nenhuma muda a conclusão): EP por
-   jackknife/wild bootstrap em `limite_tardias` (poucos municípios com seção tardia); pesar por
-   município a comparação "grupo × demais" (3,21 × 3,24 em vez de 3,25 × 3,20); `z_bin` usar a previsão do mesmo
-   modelo do resíduo; `centrar()` com média ponderada quando há peso (efeito desprezível); fixar versões
-   (requirements.txt) — numpy/pandas diferentes mudam a 15ª casa e a simulação de Benford.
+0. Pendências pequenas (nenhuma muda a conclusão): jackknife/wild bootstrap em `limite_tardias` (hoje usa o pior entre
+   EP por município e por UF); sensibilidade ±1h das categorias 5/7 de `correspondencia.py`; frase fixa de
+   `totalizacao.py` sobre as seções sem votantes (só vale enquanto a diferença for só de seções/aptos do ZZ);
+   robustez do leitor `recontagem_rdv.py` (tipo de voto desconhecido vira "Nulo"; heurística `c[4] > 200`).
+   Versões em `requirements.txt` (numpy/pandas diferentes mudam a 15ª casa e a simulação de Benford).
 
 1. **Verificar assinaturas digitais** (`*-vota.vsc`) com as chaves públicas do TSE — principal limitação aberta.
 2. Ler logs e BU impresso de todas as UFs (hoje: AC, RR, AP inteiros + 6.352 seções das 19h + 1.500 controles),

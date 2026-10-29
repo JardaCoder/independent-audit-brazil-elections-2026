@@ -23,11 +23,12 @@ def md(df, index=True):
     return df.to_markdown(index=index, disable_numparse=True)
 
 
-def centrar(x, grupos):
-    """Subtrai a média do grupo (equivale a um efeito fixo). x: Series ou DataFrame."""
-    if grupos is None:
-        return x - x.mean()
-    return x - x.groupby(grupos).transform("mean")
+def centrar(x, grupos, peso=None):
+    """Subtrai a média do grupo (equivale a um efeito fixo), ponderada por `peso` se houver. x: Series ou DataFrame."""
+    w = pd.Series(1.0 if peso is None else np.asarray(peso, float), index=x.index)
+    g = np.zeros(len(x)) if grupos is None else np.asarray(grupos)
+    soma = lambda v: v.groupby(g).transform("sum")  # noqa: E731
+    return x - soma(x.mul(w, axis=0)).div(soma(w), axis=0)
 
 
 def coef_cluster(y, x, cluster, peso=None):
@@ -96,8 +97,8 @@ def ajustar(m, tipo="linear", grupos=None, peso=False):
         X = lgt.values
         y = np.log((m.V_13_2 + 0.5) / (m.V_22_2 + 0.5)).values
     if grupos is not None:
-        Xc = centrar(pd.DataFrame(X, index=m.index), grupos).values
-        yc = centrar(pd.Series(y, index=m.index), grupos).values
+        Xc = centrar(pd.DataFrame(X, index=m.index), grupos, w).values
+        yc = centrar(pd.Series(y, index=m.index), grupos, w).values
     else:
         Xc, yc = X, y
     sw = np.sqrt(w)
@@ -105,7 +106,7 @@ def ajustar(m, tipo="linear", grupos=None, peso=False):
     ajuste = y - (yc - Xc @ coef)  # previsão no nível original (média do grupo + parte explicada)
     prev = ajuste if tipo == "linear" else 1 / (1 + np.exp(-ajuste))
     res = m.lula_2.values - prev
-    base = centrar(m.lula_2, grupos).values
+    base = centrar(m.lula_2, grupos, w).values
     r2 = 1 - (res ** 2 * w).sum() / (base ** 2 * w).sum()
     return pd.Series(prev * 100, index=m.index), pd.Series(res * 100, index=m.index), r2
 
@@ -133,16 +134,18 @@ def especificacoes(m):
     }
 
 
-def desvio_grupo(m, resid, nome_spec, mask, peso=None):
-    """Diferença média do resíduo entre o grupo e as demais seções, com EP agrupado por município."""
+def desvio_grupo(m, resid, nome_spec, mask, peso=None, cluster=None):
+    """Diferença média do resíduo entre o grupo e as demais seções, com EP agrupado (por município, salvo aviso)."""
     fe = m.mun if "município" in nome_spec else (m.SG_UF if "UF" in nome_spec else None)
-    return coef_cluster(centrar(resid, fe), centrar(mask.astype(float), fe), m.mun, peso=peso)
+    return coef_cluster(centrar(resid, fe, peso), centrar(mask.astype(float), fe, peso),
+                        m.mun if cluster is None else cluster, peso=peso)
 
 
 def limite_tardias(m, residuos):
     """Maior efeito plausível das seções que fecharam às 19h+ sobre a margem: limite superior de 95% da
-    especificação mais desfavorável (média simples ou ponderada por válidos) × válidos do grupo × 2."""
+    especificação mais desfavorável × válidos do grupo × 2. Testa média simples e ponderada por válidos, e EP
+    agrupado por município e por UF: as seções tardias se concentram em poucos municípios, e o EP por UF é mais largo."""
     mask = (m.ENC_BRASILIA_2 - m.ENC_BRASILIA_2.dt.normalize()).dt.total_seconds() >= 19 * 3600
-    lim = max(b + 1.96 * se for b, se in (desvio_grupo(m, r, n, mask, p) for n, r in residuos.items()
-                                          for p in (None, m.validos_2)))
+    lim = max(b + 1.96 * se for b, se in (desvio_grupo(m, r, n, mask, p, c) for n, r in residuos.items()
+                                          for p in (None, m.validos_2) for c in (m.mun, m.SG_UF)))
     return lim, int(lim / 100 * m.loc[mask, "validos_2"].sum() * 2)

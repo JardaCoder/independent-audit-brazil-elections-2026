@@ -6,6 +6,7 @@ se afastou do padrão no 2º turno. O teste só enxerga desvios DIFERENCIAIS ent
 import os
 
 import numpy as np
+from math import erfc, sqrt
 import pandas as pd
 
 from carregar import RAIZ, carregar, faixa_horario
@@ -14,6 +15,10 @@ from estatistica import (NULO_TECNICO_1T, ajustar, centrar, coef_cluster, desvio
 
 SAIDA = os.path.join(RAIZ, "analise", "PRIMEIRO_TURNO.md")
 L = []
+
+
+def norm_sf(k):
+    return erfc(k / sqrt(2)) / 2  # P(Z > k), normal padrão
 
 
 def out(s=""):
@@ -158,17 +163,26 @@ def main():
     def p(x, t):
         return x[f"V_13_{t}"].sum() / (x[f"V_13_{t}"] + x[f"V_22_{t}"]).sum() * 100
 
+    def p_reponderado(a, b, t):
+        """% de Lula nas demais seções, com cada município pesando o mesmo que pesa no grupo (válidos do grupo)."""
+        w = a.groupby("mun").validos_2.sum()
+        pm = b.groupby("mun").apply(lambda x: p(x, t))
+        return np.average(pm.loc[w.index], weights=w)
+
     linhas = []
     for gnome, mask in grupos_teste(m).items():
         a, b = m[mask], m[~mask & m.mun.isin(m.loc[mask, "mun"])]
+        a = a[a.mun.isin(b.mun)]  # municípios em que todas as seções são do grupo não têm com quem comparar
         linhas.append({"grupo": gnome, "Lula 1º turno (grupo)": round(p(a, 1), 2), "Lula 2º turno (grupo)": round(p(a, 2), 2),
                        "variação grupo": round(p(a, 2) - p(a, 1), 2),
-                       "Lula 1º (demais, mesmos municípios)": round(p(b, 1), 2), "Lula 2º (demais)": round(p(b, 2), 2),
-                       "variação demais": round(p(b, 2) - p(b, 1), 2)})
+                       "Lula 1º (demais, mesmos municípios)": round(p_reponderado(a, b, 1), 2),
+                       "Lula 2º (demais)": round(p_reponderado(a, b, 2), 2),
+                       "variação demais": round(p_reponderado(a, b, 2) - p_reponderado(a, b, 1), 2)})
     out(md(pd.DataFrame(linhas), index=False))
     out()
-    out("Lula entre Lula e Flávio (somando os votos do grupo). Se a variação do grupo é igual à das demais seções dos "
-        "mesmos municípios, o grupo não teve nada de especial no 2º turno: já votava diferente antes.")
+    out("Lula entre Lula e Flávio (somando os votos do grupo). As demais seções são reponderadas para que cada município "
+        "pese o mesmo que pesa no grupo; municípios sem seções fora do grupo ficam de fora. Se a variação do grupo é "
+        "igual à das demais, o grupo não teve nada de especial no 2º turno: já votava diferente antes.")
     out()
 
     # ---------------- 7. seções fora do padrão
@@ -176,7 +190,8 @@ def main():
     out()
     r = resid["linear, dentro do município"]
     sd = r.std()
-    z_bin = (r / 100) / np.sqrt((m.prev / 100 * (1 - m.prev / 100)).clip(lower=0.01) / m.validos_2)
+    prev = (m.lula_2 - r / 100).clip(0, 1)  # previsão do mesmo modelo do resíduo
+    z_bin = (r / 100) / np.sqrt((prev * (1 - prev)).clip(lower=0.01) / m.validos_2)
     linhas = []
     for k in (2, 3, 4, 5):
         for nome, sel in [("resíduo > k desvios", r.abs() > k * sd), ("resíduo padronizado pelo tamanho da seção > k", z_bin.abs() > k)]:
@@ -187,8 +202,11 @@ def main():
                            "efeito líquido (votos)": int(efeito.sum())})
     out(md(pd.DataFrame(linhas), index=False))
     out()
+    esperado = {k: int(round(len(r) * 2 * norm_sf(k))) for k in (2, 3, 4, 5)}
     out("Efeito = quanto a margem mudaria se todo o desvio dessas seções fosse removido (2 × resíduo × válidos). "
-        "\"Bruto\" soma só os desvios a favor de Lula, sem descontar os a favor de Flávio.")
+        "\"Bruto\" soma só os desvios a favor de Lula, sem descontar os a favor de Flávio. É uma lista descritiva, não "
+        "um teste: metade dos casos extremos cairia a favor de Lula por acaso, e a distribuição tem caudas mais pesadas "
+        f"que a normal (esperado numa normal: {', '.join(f'{esperado[k]} acima de {k}' for k in esperado)} desvios).")
     fora = m[r.abs() > 4 * sd].assign(residuo=r, residuo_nacional=resid["linear, nacional"])
     fora[["SG_UF", "CD_MUNICIPIO", "NM_MUNICIPIO", "NR_ZONA", "NR_SECAO", "QT_COMPARECIMENTO_2", "V_13_2", "V_22_2",
           "residuo", "residuo_nacional"]].sort_values("residuo").to_csv(
