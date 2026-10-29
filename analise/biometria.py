@@ -21,7 +21,7 @@ import numpy as np
 import pandas as pd
 
 from carregar import RAIZ, carregar, fuso
-from estatistica import fmt, md
+from estatistica import CHAVE, fmt, junta_turnos, locais, md
 from logs_tardias import URL, ArquivoRemoto, ler_membro, selecionar
 from logs_urna import linhas_log
 
@@ -221,16 +221,21 @@ def parte_logs(res):
     out()
     t = ok.groupby("grupo").agg(secoes=("votos_log", "size"), votos=("votos_log", "sum"), manuais=("n_manual", "sum"),
                                 votos_apos_17h=("apos17_votos", "sum"), manuais_apos_17h=("apos17_manual", "sum"),
+                                sem_biometria_apos_17h=("apos17_sem_biometria", "sum"),
                                 biometricas_apos_17h=("apos17_biometrica", "sum"))
     t["% manual (dia todo)"] = (t.manuais / t.votos * 100).round(2)
     t["% manual entre os votos após 17h"] = (t.manuais_apos_17h / t.votos_apos_17h.replace(0, np.nan) * 100).round(2)
-    out(md(t.astype({c: "int64" for c in ["secoes", "votos", "manuais", "votos_apos_17h", "manuais_apos_17h", "biometricas_apos_17h"]})))
+    out(md(t.astype({c: "int64" for c in ["secoes", "votos", "manuais", "votos_apos_17h", "manuais_apos_17h",
+                                                    "sem_biometria_apos_17h", "biometricas_apos_17h"]})))
     out()
     tard = ok[ok.grupo == "fechou 19h ou depois"]
     ap = int(tard.apos17_manual.sum())
     out(f"- Nas seções que ficaram abertas até as 19h, **{fmt(ap)} eleitores** foram liberados manualmente depois das 17h, "
         f"em {fmt((tard.apos17_manual > 0).sum())} das {fmt(len(tard))} seções. Desses, "
         f"{fmt(tard.apos17_manual_mesario_identificado.sum())} com o mesário identificado pela digital.")
+    sb = int(tard.apos17_sem_biometria.sum())
+    out(f"- Outros {fmt(sb)} votaram depois das 17h sem digital no cadastro (ano de nascimento). Somados, "
+        f"{fmt(ap + sb)} votos, {(ap + sb) / 4430191 * 100:.3f}% da margem.")
     out(f"- Mesmo que todos esses {fmt(ap)} votos fossem ilegítimos e de Lula, o efeito sobre a margem de 4.430.191 seria "
         f"{ap / 4430191 * 100:.3f}%.")
     out(f"- Maior número de liberações manuais feitas por um único mesário numa seção: {fmt(ok.max_manual_um_mesario.max())} "
@@ -282,6 +287,64 @@ def parte_logs(res):
     return ok, ph
 
 
+# ---------------------------------------------------------------- parte 4: seções com muita liberação e resultado sem os liberados
+def parte_secoes():
+    m = junta_turnos()
+    m = m[m.SG_UF != "ZZ"].copy()
+    loc = locais()
+    for c in ["CD_MUNICIPIO", "NR_ZONA", "NR_SECAO"]:
+        loc[c] = loc[c].astype(int)
+    m = m.merge(loc, on=CHAVE, how="left")
+    m["local"] = m.mun + "-" + m.NR_ZONA.astype(str) + "-" + m.NR_LOCAL_VOTACAO.astype(str)
+    m["taxa"] = m.QT_BIOM_SEM_HAB_2 / m.QT_COMPARECIMENTO_2
+    m["v1"] = m.V_13_1 + m.V_22_1
+    cid = m.groupby("mun").V_13_2.transform("sum") / m.groupby("mun").validos_2.transform("sum")
+    # Vizinhas = as outras seções do mesmo local de votação.
+    s = m.groupby("local")[["V_13_2", "validos_2", "V_13_1", "v1"]].transform("sum")
+    viz2, viz1 = (s.V_13_2 - m.V_13_2) / (s.validos_2 - m.validos_2), (s.V_13_1 - m.V_13_1) / (s.v1 - m.v1)
+    linhas = []
+    for corte in (0.5, 0.7, 0.9):
+        g = m[m.taxa >= corte]
+        tem = (m.taxa >= corte) & (s.validos_2 > m.validos_2)
+        w = m.validos_2[tem]
+        linhas.append({"taxa de liberação na seção": f"≥ {corte:.0%}", "seções": len(g),
+                       "liberados": int(g.QT_BIOM_SEM_HAB_2.sum()),
+                       "% Lula 2º turno": round(g.V_13_2.sum() / g.validos_2.sum() * 100, 1),
+                       "% Lula 1º turno (mesmas seções)": round(g.V_13_1.sum() / g.v1.sum() * 100, 1),
+                       "% Lula nas cidades delas": round(np.average(cid[g.index], weights=g.validos_2) * 100, 1),
+                       "seções com vizinhas": int(tem.sum()),
+                       "diferença para as vizinhas, 2º turno (p.p.)": round(
+                           (m.V_13_2[tem].sum() / w.sum() - np.average(viz2[tem], weights=w)) * 100, 1),
+                       "diferença para as vizinhas, 1º turno (p.p.)": round(
+                           (m.V_13_1[tem].sum() / m.v1[tem].sum() - np.average(viz1[tem], weights=w)) * 100, 1)})
+    out("## 4. Seções com muita liberação manual")
+    out()
+    out("Se a liberação manual tivesse sido usada para pôr votos em Lula, as seções com taxa muito alta deveriam votar "
+        "mais nele do que no 1º turno e mais do que as seções vizinhas (as outras do mesmo local de votação, com eleitores "
+        "parecidos). Diferença = % Lula na seção − % Lula nas vizinhas, ponderada pelo tamanho da seção.")
+    out()
+    out(md(pd.DataFrame(linhas), index=False))
+    out()
+    # Os votos de cada candidato saem na proporção da seção; o exterior entra inteiro (lá não há biometria).
+    d = carregar(turno=2)
+    f = (d.QT_BIOM_SEM_HAB / d.QT_COMPARECIMENTO).where(d.SG_UF != "ZZ", 0).fillna(0)
+    l, fl = (d.V_13 * (1 - f)).sum(), (d.V_22 * (1 - f)).sum()
+    pior = int((d.V_13 - np.minimum(d.V_13, d.QT_BIOM_SEM_HAB)).sum() - d.V_22.sum())
+    melhor = int(d.V_13.sum() - (d.V_22 - np.minimum(d.V_22, d.QT_BIOM_SEM_HAB)).sum())
+    out("## 5. O resultado sem os liberados")
+    out()
+    def br(x, casas=1):
+        return f"{x:.{casas}f}".replace(".", ",")
+
+    out(f"Retirando os {fmt(d.QT_BIOM_SEM_HAB.sum())} liberados e supondo que votaram como o resto da sua seção: Lula "
+        f"{br(l / 1e6)} milhões ({br(l / (l + fl) * 100)}%), Flávio {br(fl / 1e6)} milhões ({br(fl / (l + fl) * 100)}%), "
+        f"margem de {br((l - fl) / 1e6, 2)} milhões. Os extremos, sem nenhum teste por trás: se todos os liberados tivessem "
+        f"votado em Lula, Flávio venceria por {br(-pior / 1e6, 2)} milhões; se todos em Flávio, Lula venceria por "
+        f"{br(melhor / 1e6, 2)} milhões. Os dados são por seção: nem os logs (o registro dos votos é embaralhado e não tem "
+        "hora) permitem saber em quem cada eleitor liberado votou.")
+    out()
+
+
 def main():
     out("# Liberação manual de eleitores (\"sem biometria\") — análise dedicada")
     out()
@@ -295,6 +358,7 @@ def main():
     else:
         res = ler_logs()
     parte_logs(res)
+    parte_secoes()
     open(SAIDA, "w", encoding="utf-8").write("\n".join(L) + "\n")
     print("\n".join(L))
 

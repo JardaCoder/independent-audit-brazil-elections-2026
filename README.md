@@ -267,7 +267,8 @@ se esses eleitores tivessem votado em bloco num candidato. Testei isso de quatro
 Também li o log de 10.809 urnas, eleitor a eleitor: as seções das 19h, 1.500 vizinhas e uma amostra aleatória de
 3.000 seções. Em 100% delas as liberações no log batem com o boletim. A taxa é maior de manhã e cai ao longo do dia,
 e nas seções abertas até as 19h só 245 eleitores foram liberados depois das 17h (0,006% da margem, mesmo que todos
-fossem de Lula). Liberações usadas para encher urnas no fim do dia deixariam o padrão oposto.
+fossem de Lula). Outros 332 votaram depois das 17h sem digital no cadastro. Liberações usadas para encher urnas no fim
+do dia deixariam o padrão oposto.
 
 | Grupo | Votos | % manual no dia | Votos depois das 17h | Liberações manuais depois das 17h |
 |---|---|---|---|---|
@@ -278,6 +279,54 @@ fossem de Lula). Liberações usadas para encher urnas no fim do dia deixariam o
 ![Liberação manual por hora](docs/graficos/10_liberacao_manual_por_hora_logs.png)
 
 Em 16 seções um único mesário liberou 50 ou mais eleitores (máximo de 165, no Rio); vale conferir esses casos nas atas.
+
+Olhei também as seções com liberação muito alta. São poucas (31 seções com 90% ou mais) e votam como as vizinhas do
+mesmo local de votação, nos dois turnos:
+
+| Liberação na seção | Seções | % Lula 2º turno | % Lula 1º turno | Diferença para as vizinhas (2º / 1º turno) |
+|---|---|---|---|---|
+| 50% ou mais | 97 | 61,2% | 58,8% | −0,1 / −0,1 ponto |
+| 70% ou mais | 71 | 64,2% | 61,6% | −0,1 / −0,4 ponto |
+| 90% ou mais | 31 | 62,1% | 59,8% | +0,3 / +0,3 ponto |
+
+Se os 8,6 milhões fossem retirados e tivessem votado como o resto da sua seção, Lula teria 51,7% e venceria por 4,0
+milhões. Os extremos vão de Flávio vencer por 4,19 milhões (todos os liberados em Lula) a Lula vencer por 12,98 milhões
+(todos em Flávio). Nem os logs dizem em quem cada liberado votou: o registro dos votos é embaralhado e não tem hora.
+
+<details><summary>Taxa de liberação por estado</summary>
+
+| Estado | Liberados (2º turno) | Taxa 1º turno | Taxa 2º turno | % Lula |
+|---|---|---|---|---|
+| PI | 201.641 | 8,65% | 9,0% | 75,9% |
+| RS | 582.380 | 8,23% | 8,45% | 42,2% |
+| RN | 180.838 | 7,91% | 8,1% | 65,7% |
+| SC | 357.632 | 7,56% | 7,51% | 30,6% |
+| BA | 702.255 | 7,29% | 7,45% | 71,3% |
+| RJ | 750.301 | 7,05% | 7,45% | 46,9% |
+| PB | 199.353 | 6,97% | 7,27% | 67,5% |
+| MS | 115.545 | 7,82% | 7,25% | 40,4% |
+| CE | 429.294 | 6,88% | 7,13% | 68,9% |
+| PR | 493.321 | 7,48% | 6,99% | 37,4% |
+| SE | 102.204 | 6,76% | 6,97% | 69,5% |
+| AL | 135.874 | 6,53% | 6,96% | 60,8% |
+| MG | 887.910 | 6,69% | 6,81% | 50,4% |
+| GO | 268.656 | 6,8% | 6,64% | 40,3% |
+| MT | 137.579 | 6,72% | 6,6% | 33,9% |
+| PE | 399.764 | 6,25% | 6,53% | 69,2% |
+| MA | 259.852 | 5,99% | 6,3% | 69,5% |
+| ES | 151.401 | 6,43% | 6,28% | 43,6% |
+| RO | 61.938 | 6,24% | 6,27% | 30,4% |
+| SP | 1.632.098 | 6,02% | 5,96% | 46,2% |
+| PA | 277.373 | 5,4% | 5,56% | 55,0% |
+| AM | 118.955 | 5,39% | 5,43% | 54,0% |
+| AC | 22.654 | 4,99% | 4,99% | 33,4% |
+| TO | 47.225 | 5,28% | 4,95% | 48,6% |
+| AP | 19.685 | 4,4% | 4,58% | 52,9% |
+| DF | 84.114 | 4,84% | 4,5% | 45,7% |
+| RR | 12.646 | 3,84% | 4,1% | 27,5% |
+| Brasil | 8.632.488 | 6,68% | 6,75% | 51,8% |
+
+</details>
 
 Veredito: sem sinal de que a liberação tenha favorecido Lula. Todas as contas de "margem sem os liberados" supõem que
 todos os 8,6 milhões seriam votos ilegítimos, e nada nos dados indica isso: cada liberação tem a digital do mesário no
@@ -764,8 +813,56 @@ Logs of 10,809 machines read voter by voter confirm the reports in 100% of them;
 and fall during the day.
 
 Logs read voter by voter also show that only 245 voters were released this way after 5 pm in the stations open until
-7 pm (0.006% of the margin even if all were for Lula). In 16 stations a single poll worker released 50 or more voters;
-those are worth checking in the station minutes.
+7 pm (0.006% of the margin even if all were for Lula), plus 332 who voted after 5 pm with no fingerprint on file. In 16
+stations a single poll worker released 50 or more voters; those are worth checking in the station minutes.
+
+Stations with very high release rates are few (31 at 90% or more) and vote like their neighbors at the same polling
+place, in both rounds:
+
+| Release rate in the station | Stations | % Lula runoff | % Lula 1st round | Gap to neighbors (runoff / 1st round) |
+|---|---|---|---|---|
+| 50% or more | 97 | 61.2% | 58.8% | −0.1 / −0.1 point |
+| 70% or more | 71 | 64.2% | 61.6% | −0.1 / −0.4 point |
+| 90% or more | 31 | 62.1% | 59.8% | +0.3 / +0.3 point |
+
+If the 8.6 million were removed and had voted like the rest of their station, Lula would get 51.7% and win by 4.0
+million. The extremes range from Flávio winning by 4.19 million (all released voters for Lula) to Lula winning by 12.98
+million (all for Flávio). Not even the logs say how each released voter voted: the vote record is shuffled and has no time.
+
+<details><summary>Release rate by state</summary>
+
+| State | Released (runoff) | Rate 1st round | Rate runoff | % Lula |
+|---|---|---|---|---|
+| PI | 201,641 | 8.65% | 9.0% | 75.9% |
+| RS | 582,380 | 8.23% | 8.45% | 42.2% |
+| RN | 180,838 | 7.91% | 8.1% | 65.7% |
+| SC | 357,632 | 7.56% | 7.51% | 30.6% |
+| BA | 702,255 | 7.29% | 7.45% | 71.3% |
+| RJ | 750,301 | 7.05% | 7.45% | 46.9% |
+| PB | 199,353 | 6.97% | 7.27% | 67.5% |
+| MS | 115,545 | 7.82% | 7.25% | 40.4% |
+| CE | 429,294 | 6.88% | 7.13% | 68.9% |
+| PR | 493,321 | 7.48% | 6.99% | 37.4% |
+| SE | 102,204 | 6.76% | 6.97% | 69.5% |
+| AL | 135,874 | 6.53% | 6.96% | 60.8% |
+| MG | 887,910 | 6.69% | 6.81% | 50.4% |
+| GO | 268,656 | 6.8% | 6.64% | 40.3% |
+| MT | 137,579 | 6.72% | 6.6% | 33.9% |
+| PE | 399,764 | 6.25% | 6.53% | 69.2% |
+| MA | 259,852 | 5.99% | 6.3% | 69.5% |
+| ES | 151,401 | 6.43% | 6.28% | 43.6% |
+| RO | 61,938 | 6.24% | 6.27% | 30.4% |
+| SP | 1,632,098 | 6.02% | 5.96% | 46.2% |
+| PA | 277,373 | 5.4% | 5.56% | 55.0% |
+| AM | 118,955 | 5.39% | 5.43% | 54.0% |
+| AC | 22,654 | 4.99% | 4.99% | 33.4% |
+| TO | 47,225 | 5.28% | 4.95% | 48.6% |
+| AP | 19,685 | 4.4% | 4.58% | 52.9% |
+| DF | 84,114 | 4.84% | 4.5% | 45.7% |
+| RR | 12,646 | 3.84% | 4.1% | 27.5% |
+| Brazil | 8,632,488 | 6.68% | 6.75% | 51.8% |
+
+</details>
 
 Verdict: no sign the releases favored Lula. Every "margin without released voters" figure assumes all 8.6 million were
 illegitimate votes, and nothing in the data suggests that: each release has the poll worker's fingerprint in the log,

@@ -76,13 +76,14 @@ Cada log registra, para cada eleitor, como ele foi liberado e a hora do voto. Ti
 
 - Logs lidos: 10.852 de 10.852 (10.809 urnas distintas; 43 seções da amostra aleatória também estão em outro grupo). Conferência: liberações manuais no log = número do BU em 10.852 seções; votos no log = comparecimento em 10.852.
 
-| grupo                        | secoes   | votos     | manuais   | votos_apos_17h   | manuais_apos_17h   | biometricas_apos_17h   | % manual (dia todo)   | % manual entre os votos após 17h   |
-|:-----------------------------|:---------|:----------|:----------|:-----------------|:-------------------|:-----------------------|:----------------------|:-----------------------------------|
-| amostra aleatória do Brasil  | 3.000    | 771.027   | 52.742    | 193              | 20                 | 155                    | 6.84                  | 10.36                              |
-| fechou 19h ou depois         | 6.352    | 1.861.259 | 118.270   | 4.492            | 245                | 3.915                  | 6.35                  | 5.45                               |
-| vizinha que fechou até 17h15 | 1.500    | 435.553   | 28.999    | 172              | 17                 | 143                    | 6.66                  | 9.88                               |
+| grupo                        | secoes   | votos     | manuais   | votos_apos_17h   | manuais_apos_17h   | sem_biometria_apos_17h   | biometricas_apos_17h   | % manual (dia todo)   | % manual entre os votos após 17h   |
+|:-----------------------------|:---------|:----------|:----------|:-----------------|:-------------------|:-------------------------|:-----------------------|:----------------------|:-----------------------------------|
+| amostra aleatória do Brasil  | 3.000    | 771.027   | 52.742    | 193              | 20                 | 18                       | 155                    | 6.84                  | 10.36                              |
+| fechou 19h ou depois         | 6.352    | 1.861.259 | 118.270   | 4.492            | 245                | 332                      | 3.915                  | 6.35                  | 5.45                               |
+| vizinha que fechou até 17h15 | 1.500    | 435.553   | 28.999    | 172              | 17                 | 12                       | 143                    | 6.66                  | 9.88                               |
 
 - Nas seções que ficaram abertas até as 19h, **245 eleitores** foram liberados manualmente depois das 17h, em 220 das 6.352 seções. Desses, 164 com o mesário identificado pela digital.
+- Outros 332 votaram depois das 17h sem digital no cadastro (ano de nascimento). Somados, 577 votos, 0.013% da margem.
 - Mesmo que todos esses 245 votos fossem ilegítimos e de Lula, o efeito sobre a margem de 4.430.191 seria 0.006%.
 - Maior número de liberações manuais feitas por um único mesário numa seção: 165 (mediana entre as seções com alguma liberação: 9).
 
@@ -146,4 +147,18 @@ Cada log registra, para cada eleitor, como ele foi liberado e a hora do voto. Ti
 | vizinha que fechou até 17h15 | 15h               | 30.407  | 1.767     | 5.81       |
 | vizinha que fechou até 17h15 | 16h               | 20.362  | 1.192     | 5.85       |
 | vizinha que fechou até 17h15 | 17h               | 172     | 17        | 9.88       |
+
+## 4. Seções com muita liberação manual
+
+Se a liberação manual tivesse sido usada para pôr votos em Lula, as seções com taxa muito alta deveriam votar mais nele do que no 1º turno e mais do que as seções vizinhas (as outras do mesmo local de votação, com eleitores parecidos). Diferença = % Lula na seção − % Lula nas vizinhas, ponderada pelo tamanho da seção.
+
+| taxa de liberação na seção   | seções   | liberados   | % Lula 2º turno   | % Lula 1º turno (mesmas seções)   | % Lula nas cidades delas   | seções com vizinhas   | diferença para as vizinhas, 2º turno (p.p.)   | diferença para as vizinhas, 1º turno (p.p.)   |
+|:-----------------------------|:---------|:------------|:------------------|:----------------------------------|:---------------------------|:----------------------|:----------------------------------------------|:----------------------------------------------|
+| ≥ 50%                        | 97       | 18.452      | 61.2              | 58.8                              | 61.2                       | 92                    | -0.1                                          | -0.1                                          |
+| ≥ 70%                        | 71       | 14.738      | 64.2              | 61.6                              | 63.6                       | 67                    | -0.1                                          | -0.4                                          |
+| ≥ 90%                        | 31       | 6.632       | 62.1              | 59.8                              | 62.4                       | 29                    | 0.3                                           | 0.3                                           |
+
+## 5. O resultado sem os liberados
+
+Retirando os 8.632.488 liberados e supondo que votaram como o resto da sua seção: Lula 59,9 milhões (51,7%), Flávio 55,8 milhões (48,3%), margem de 4,03 milhões. Os extremos, sem nenhum teste por trás: se todos os liberados tivessem votado em Lula, Flávio venceria por 4,19 milhões; se todos em Flávio, Lula venceria por 12,98 milhões. Os dados são por seção: nem os logs (o registro dos votos é embaralhado e não tem hora) permitem saber em quem cada eleitor liberado votou.
 
