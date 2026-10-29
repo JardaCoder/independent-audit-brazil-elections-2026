@@ -114,6 +114,7 @@ Detalhes de cada arquivo, tamanhos e locais no repositório: README, seção 4.
 | P11 | Liberação manual ("sem biometria") | As liberações favoreceram um candidato? | Inclinação ponderada com efeitos fixos (país, estado, município) e margem de erro; pior caso aritmético; teste contra o 1º turno (nível e variação) | `verificar_relatorio.py`, `primeiro_turno.py` |
 | P12 | 1º × 2º turno | Algum grupo de seções destoa do próprio 1º turno? | Modelo de previsão por seção (6 especificações: linear e logit; nacional, estadual e municipal; com e sem peso), resíduo por grupo com erro-padrão agrupado por município, seções extremas | `primeiro_turno.py` |
 | P13 | Testes de dígitos | Há sinal de números inventados? | Benford 1º e 2º dígitos comparados a uma eleição honesta simulada; uniformidade do último dígito | `verificar_relatorio.py` |
+| P15 | Liberação manual em detalhe | Onde, quando e por quem as liberações aconteceram? | Taxa por estado e município nos dois turnos; leitura eleitor a eleitor dos logs de 10.852 urnas (seções das 19h, vizinhas e amostra aleatória de 3.000), com hora e mesário de cada liberação | `biometria.py` |
 | P14 | Publicação dos dados | Os dados ficaram "trancados"? | Datas do servidor, do catálogo e dos próprios arquivos | `SERVIDOR.csv`, `CATALOGO.csv` |
 
 ### 2.5 Critérios de avaliação
@@ -168,6 +169,7 @@ permitiu ler o RDV de todas as urnas e o log das urnas de interesse sem baixar m
 | P11 | Dentro do município, os liberados votam quase como os demais (54% Lula); mais liberação vem com **menos** Lula do que o 1º turno previa; o aumento da liberação entre turnos não tem efeito | `analise/RESULTADOS.md` §5, `PRIMEIRO_TURNO.md` §5 |
 | P12 | O 1º turno explica 91,6% das diferenças entre seções da mesma cidade. Nenhum grupo com desvio positivo, significativo e robusto. Limite máximo para as seções das 19h: 24.498 votos | `analise/PRIMEIRO_TURNO.md` |
 | P13 | Os dígitos dos votos reais são indistinguíveis dos de uma eleição honesta simulada; último dígito uniforme | `analise/RESULTADOS.md` §7 |
+| P15 | Taxa entre 4,1% (RR) e 9,0% (PI), alta também em estados pró-Flávio (RS 8,45%); estável entre turnos (+0,07 p.p.). Logs de 10.852 urnas: liberações = BU em 100%; mais liberações de manhã, queda ao longo do dia; nas seções das 19h só 245 liberações depois das 17h. 16 seções com ≥ 50 liberações por um mesário, sem favorecimento (Lula abaixo da zona em 11) | `analise/BIOMETRIA.md` |
 | P14 | Arquivos no servidor em 26/10 (~1 dia após a eleição); listados no catálogo em 27/10; ausentes do catálogo na consulta de 29/10, embora ainda no servidor e idênticos | README 6.12 |
 
 ---
@@ -187,6 +189,8 @@ afeta o resultado), **informativo**.
 | A6 | Em 29% das liberações manuais (AC, RR, AP), a digital do mesário foi capturada mas não associada a um nome | Informativo | Liberações não favorecem candidato (P11) |
 | A7 | 8 BUs registram emissão até 52 s depois do recebimento pelo TSE (relógio da urna adiantado) | Informativo | Nenhum |
 
+| A8 | 16 seções (de 10.852 com log lido) em que um mesário liberou 50 ou mais eleitores manualmente; em 2, padrão de leitor biométrico com defeito pela manhã | Informativo | Sem favorecimento: Lula abaixo da zona em 11 das 16 |
+
 **Nenhum achado é material.**
 
 ---
@@ -196,8 +200,8 @@ afeta o resultado), **informativo**.
 1. **Assinaturas digitais não verificadas.** Os arquivos das urnas são assinados digitalmente; esta auditoria não
    validou as assinaturas com as chaves públicas do TSE. Todas as conferências de P4–P6 comparam arquivos do
    mesmo pacote entre si e com a planilha; provam coerência total, mas não, sozinhas, a autenticidade do pacote.
-2. **Logs e BU impresso:** lidos para AC, RR e AP (5.703 urnas) e para as 6.352 seções fechadas às 19h (mais 1.500
-   de controle), não para todas as urnas.
+2. **Logs e BU impresso:** lidos para AC, RR e AP (5.703 urnas); logs também para as 6.352 seções fechadas às 19h,
+   1.500 vizinhas de controle e uma amostra aleatória de 3.000 seções do Brasil; não para todas as urnas.
 3. **Software da urna fora do escopo.** Dados de votação não provam que o software é íntegro; isso cabe aos testes
    públicos de segurança e à fiscalização. O que os dados mostram é que BU, RDV, log e resultado oficial contam
    a mesma história.
@@ -239,6 +243,10 @@ Com base nos procedimentos descritos e dentro do escopo e das limitações acima
 6. **Nenhum achado é material.** No pior caso calculável, a maior suspeita (anular todas as seções que fecharam às
    19h) corresponde a 4,2% da margem; com base nos logs das urnas, os votos efetivamente dados no horário
    estendido correspondem a 0,1%.
+
+7. **A liberação manual de eleitores não mostra uso irregular.** A taxa é estável entre os turnos, alta também em
+   estados onde Flávio venceu, maior de manhã e decrescente ao longo do dia; nas seções que ficaram abertas até as
+   19h, só 245 eleitores foram liberados manualmente depois das 17h.
 
 **Parecer:** os dados públicos do TSE **não apresentam evidência de fraude ou de alteração do resultado** da eleição
 presidencial de 2026. O resultado proclamado (Lula 64.256.232 votos, 51,79%; Flávio Bolsonaro 59.826.041 votos,

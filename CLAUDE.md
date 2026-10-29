@@ -12,7 +12,7 @@ saídas .md) são escritos para leigos entenderem.
 - **Veredito:** nenhuma evidência de fraude. Resultado oficial íntegro. Nenhum achado material.
 - Documentos principais:
   - `README.md`: explicação para leigos, glossário, origem dos dados, problemas, 12 verificações com gráficos.
-  - `docs/RELATORIO_DE_AUDITORIA.md`: relatório formal (escopo, metodologia P1–P14, achados A1–A7, limitações,
+  - `docs/RELATORIO_DE_AUDITORIA.md`: relatório formal (escopo, metodologia P1–P15, achados A1–A8, limitações,
     parecer, recomendações, anexo com parecer por alegação).
   - `analise/*.md`: saída de cada script (gerada; não editar à mão — rode o script).
 - O trabalho passou por 5 revisões independentes (subagentes): recontagem, estatística, código dos logs,
@@ -34,6 +34,7 @@ saídas .md) são escritos para leigos entenderem.
 | Limite estatístico das seções das 19h | 24.498 votos (pior especificação, IC 95%) |
 | Urnas fora das listas sem explicação | 17 seções, 4.563 votos, saldo +42 Lula |
 | Modelo 1º→2º turno | R² 0,979 nacional; 0,916 dentro do município |
+| Biometria (logs de 10.852 urnas) | liberações no log = BU em 100%; nas seções das 19h, 245 liberações manuais depois das 17h; taxa por UF 4,1% (RR) a 9,0% (PI) |
 
 ## Estrutura
 
@@ -70,6 +71,7 @@ python3 totalizacao.py; python3 consistencia.py; python3 fuso.py
 python3 recontagem_rdv.py AC RR AP; python3 imagem_bu.py AC RR AP; python3 logs_urna.py AC RR AP
 python3 correspondencia.py; python3 verificar_relatorio.py; python3 primeiro_turno.py; python3 graficos.py
 python3 logs_tardias.py            # usa cache; --refazer lê do servidor do TSE (~20 min)
+python3 biometria.py               # usa cache dados/derivados/biometria_logs_2t_2026.csv.gz; --refazer ~30 min
 python3 recontagem_rdv_nacional.py # usa parciais em dados/derivados/recontagem_rdv/ se existirem; sem eles ~2 h
 ```
 
@@ -111,7 +113,8 @@ e atualize README e `docs/RELATORIO_DE_AUDITORIA.md` se algum número citado mud
   de urnas de UFs grandes.
 - Python 3.13, pandas 3.0.5, matplotlib 3.11. Paleta dos gráficos: azul `#2a78d6` = Lula, laranja `#eb6834` =
   adversário, cinza `#8a8984` = referência (validada com o skill dataviz).
-- Commits terminam com as linhas de co-autoria indicadas pelo ambiente. Não citar modelo em commits.
+- **Commits sem a linha `Co-Authored-By`** (pedido do usuário; o histórico foi reescrito para removê-la). Manter só
+  `Claude-Session`, se o ambiente pedir. Não citar modelo em commits.
 
 ## Próximos passos possíveis (não feitos)
 

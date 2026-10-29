@@ -223,6 +223,39 @@ def parte_logs(res):
     out(f"- Maior número de liberações manuais feitas por um único mesário numa seção: {fmt(ok.max_manual_um_mesario.max())} "
         f"(mediana entre as seções com alguma liberação: {ok[ok.n_manual > 0].max_manual_um_mesario.median():.0f}).")
     out()
+    # Casos extremos: muitas liberações pelo mesmo mesário
+    d2 = carregar(turno=2)
+    ext = ok[ok.max_manual_um_mesario >= 50].sort_values("max_manual_um_mesario", ascending=False)
+    linhas_ext = []
+    for _, x in ext.iterrows():
+        zona = d2[(d2.SG_UF == x.SG_UF) & (d2.CD_MUNICIPIO.astype(str) == str(x.CD_MUNICIPIO)) & (d2.NR_ZONA.astype(str) == str(x.NR_ZONA))]
+        cont = Counter()
+        for item in str(x.por_hora).split(";"):
+            if item.count(":") == 2:
+                h, tp, n = item.split(":")
+                cont[(int(h), tp)] += int(n)
+        manha = sum(cont[(h, "manual")] for h in range(8, 13)), sum(cont[(h, t)] for h in range(8, 13) for t in TIPOS)
+        tarde = sum(cont[(h, "manual")] for h in range(13, 20)), sum(cont[(h, t)] for h in range(13, 20) for t in TIPOS)
+        linhas_ext.append({"UF": x.SG_UF, "município": str(x.NM_MUNICIPIO).title(), "zona": x.NR_ZONA, "seção": x.NR_SECAO,
+                           "votos": int(x.votos_log), "liberações manuais": int(x.n_manual),
+                           "pelo mesmo mesário": int(x.max_manual_um_mesario),
+                           "% manual 8h–12h": round(manha[0] / manha[1] * 100) if manha[1] else 0,
+                           "% manual 13h em diante": round(tarde[0] / tarde[1] * 100) if tarde[1] else 0,
+                           "% Lula na seção": round(x.V_13 / (x.V_13 + x.V_22) * 100, 1),
+                           "% Lula na zona": round(zona.V_13.sum() / (zona.V_13.sum() + zona.V_22.sum()) * 100, 1)})
+    out("### Casos extremos: um mesário com 50 ou mais liberações na mesma seção")
+    out()
+    te = pd.DataFrame(linhas_ext)
+    manha = int(((te["% manual 8h–12h"] >= 50) & (te["% manual 13h em diante"] < 30)).sum())
+    abaixo = int((te["% Lula na seção"] < te["% Lula na zona"]).sum())
+    acima = int((te["% Lula na seção"] > te["% Lula na zona"] + 2).sum())
+    out(f"{fmt(len(ext))} das {fmt(len(ok))} seções lidas. Em {manha} delas quase todos os eleitores foram liberados "
+        "manualmente de manhã e a digital voltou a funcionar à tarde (leitor biométrico com defeito, depois consertado ou "
+        "trocado). Nas demais, a taxa é alta o dia inteiro, sem pico em nenhum horário. Em "
+        f"{abaixo} das {len(te)} a % de Lula na seção ficou **abaixo** da % na zona eleitoral; em {acima}, mais de 2 p.p. acima.")
+    out()
+    out(md(te, index=False))
+    out()
     # Por hora
     linhas = []
     for g, x in ok.groupby("grupo"):

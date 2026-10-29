@@ -391,6 +391,40 @@ para pôr votos em Lula, apareceria o contrário.
 Nordeste (7,2%) e no resto do país (6,6%). É característica da seção (idade do eleitorado, digitais
 gastas, leitor biométrico), não algo que surgiu no 2º turno.
 
+#### Análise dedicada: por estado, por hora e por mesário
+
+Detalhe completo em [`BIOMETRIA.md`](analise/BIOMETRIA.md) (script `analise/biometria.py`).
+
+**Por estado** (todas as seções): a taxa vai de 4,1% (RR) a 9,0% (PI) e quase não mudou entre os turnos
+(Brasil: 6,66% → 6,73%; maior variação estadual: 0,57 p.p.). Ela é alta tanto onde Lula venceu (PI 9,0%,
+RN 8,1%, BA 7,5%) quanto onde Flávio venceu com folga (**RS 8,45%**, SC 7,5%, RJ 7,5%).
+
+![Liberação manual por estado](docs/graficos/09_biometria_por_estado.png)
+
+**Pelos logs, eleitor a eleitor e com a hora de cada voto.** Li o log de 10.852 urnas: as 6.352 seções que
+fecharam às 19h, 1.500 vizinhas do mesmo local e uma **amostra aleatória de 3.000 seções do Brasil**. Em
+100% delas, o número de liberações manuais no log é igual ao do boletim.
+
+| Grupo | Votos | % manual no dia | Votos depois das 17h | Liberações manuais depois das 17h |
+|---|---|---|---|---|
+| Amostra aleatória do Brasil | 771.027 | 6,84% | 193 | 20 |
+| Seções que fecharam às 19h | 1.861.259 | 6,35% | 4.492 | **245** (5,45% desses votos) |
+| Vizinhas que fecharam até 17h15 | 435.553 | 6,66% | 172 | 17 |
+
+- **Depois das 17h, nas seções abertas até as 19h, só 245 eleitores foram liberados manualmente**, em 220 das
+  6.352 seções (164 com o mesário identificado pela digital). Mesmo se todos fossem ilegítimos e de Lula:
+  0,006% da margem.
+- A taxa de liberação manual é **maior de manhã e cai ao longo do dia** em todos os grupos, e não sobe no
+  horário estendido. Liberações usadas para "encher" urnas no fim do dia deixariam o padrão oposto.
+
+![Liberação manual por hora](docs/graficos/10_liberacao_manual_por_hora_logs.png)
+
+**Casos extremos:** em 16 das 10.852 seções lidas, um único mesário liberou 50 ou mais eleitores (o máximo foi
+165, numa seção do Rio de Janeiro). Em 2 delas o log mostra quase todos liberados manualmente de manhã e a
+digital voltando a funcionar à tarde (leitor biométrico com defeito, depois consertado ou trocado). Em 11 das
+16, Lula teve **menos** votos na seção do que na zona eleitoral dela. Esses são os casos que vale conferir nas
+atas, mas não mostram favorecimento a um candidato.
+
 ### 6.9 Seções quase unânimes
 
 | Eleição | 100% Lula | 100% adversário | >90% Lula | >90% adversário |
@@ -477,7 +511,8 @@ Todos os valores abaixo são calculados pelo código (`analise/graficos.py`, gr�
 
 - **Assinaturas digitais** das urnas (`*.vsc`) não foram verificadas criptograficamente. Elas provariam
   que os arquivos foram gerados por urnas oficiais. É o próximo passo técnico.
-- **Logs e BU impresso** foram lidos para AC, RR, AP e para todas as seções das 19h; não para todas as urnas.
+- **Logs e BU impresso** foram lidos para AC, RR, AP; logs também para todas as seções das 19h, 1.500 vizinhas e uma
+  amostra aleatória de 3.000 seções do Brasil; não para todas as urnas.
 - **Nenhuma análise de dados prova que o software da urna é honesto.** Isso cabe aos testes públicos de
   segurança e à fiscalização. O que os dados mostram é que BU, RDV, logs e resultado oficial contam a
   mesma história.
@@ -509,6 +544,7 @@ python3 logs_urna.py AC RR AP           # 6.4  log da urna × BU
 python3 correspondencia.py              # 6.5  urnas usadas × previstas
 python3 verificar_relatorio.py          # 6.6–6.10 réplica e testes do relatório
 python3 primeiro_turno.py               # 6.11 1º × 2º turno
+python3 biometria.py                    # 6.8  liberação manual (usa cache; --refazer lê logs do servidor, ~30 min)
 python3 graficos.py                     # gráficos em docs/graficos/
 
 # Leem direto do servidor do TSE (download parcial; demoram):
@@ -535,6 +571,7 @@ analise/
   RECONTAGEM_RDV.md                recontagem voto a voto AC/RR/AP (6.4)
   RECONTAGEM_RDV_NACIONAL.md       recontagem voto a voto, Brasil (6.4)
   IMAGEM_BU.md, LOGS.md            BU impresso e logs × planilha (6.4)
+  BIOMETRIA.md                     liberação manual: por estado, município, hora e mesário (6.8)
   CORRESPONDENCIA.md               urnas usadas × previstas (6.5)
   LOGS_TARDIAS.md                  votos depois das 17h nas seções das 19h (6.7)
   secoes_para_documentar.csv       seções com urna/carga fora da lista
