@@ -22,7 +22,10 @@ def _ler_uf(zip_path):
     with zipfile.ZipFile(zip_path) as zf:
         nome = next(n for n in zf.namelist() if n.endswith(".csv"))
         with zf.open(nome) as f:
-            df = pd.read_csv(f, sep=";", encoding="latin1", usecols=COLS, dtype=str)
+            # Em 2022 o campo de eleitores não habilitados por biometria chamava-se QT_ELEITORES_BIOMETRIA_NH
+            df = pd.read_csv(f, sep=";", encoding="latin1", dtype=str,
+                             usecols=lambda c: c in COLS or c == "QT_ELEITORES_BIOMETRIA_NH")
+    df = df.rename(columns={"QT_ELEITORES_BIOMETRIA_NH": "QT_ELEI_BIOM_SEM_HABILITACAO"})
     df = df[df["CD_CARGO_PERGUNTA"] == "1"]  # Presidente
     for c in ["QT_APTOS", "QT_COMPARECIMENTO", "QT_VOTOS", "NR_VOTAVEL"]:
         df[c] = pd.to_numeric(df[c], errors="coerce")
@@ -45,15 +48,17 @@ def _ler_uf(zip_path):
         outros.reset_index(), on=chave, how="left").fillna({c: 0 for c in list(votos.columns) + list(outros.columns)})
 
 
-def carregar(usar_cache=True):
-    if usar_cache and os.path.exists(CACHE):
-        df = pd.read_csv(CACHE, dtype={"CD_MUNICIPIO": str, "NR_ZONA": str, "NR_SECAO": str})
+def carregar(usar_cache=True, ano=2026):
+    pasta = os.path.join(RAIZ, "dados", "tse", str(ano), "boletim_urna", "2turno")
+    cache = CACHE.replace("2026", str(ano))
+    if usar_cache and os.path.exists(cache):
+        df = pd.read_csv(cache, dtype={"CD_MUNICIPIO": str, "NR_ZONA": str, "NR_SECAO": str})
     else:
-        partes = [_ler_uf(z) for z in sorted(glob.glob(os.path.join(PASTA_BU, "bweb_2t_*.zip")))]
+        partes = [_ler_uf(z) for z in sorted(glob.glob(os.path.join(pasta, "bweb_2t_*.zip")))]
         df = pd.concat(partes, ignore_index=True)
-        os.makedirs(os.path.dirname(CACHE), exist_ok=True)
-        df.to_csv(CACHE, index=False, compression="gzip")
-    df["ENC_LOCAL"] = pd.to_datetime(df["DT_ENCERRAMENTO"], errors="coerce")
+        os.makedirs(os.path.dirname(cache), exist_ok=True)
+        df.to_csv(cache, index=False, compression="gzip")
+    df["ENC_LOCAL"] = pd.to_datetime(df["DT_ENCERRAMENTO"], errors="coerce", format="mixed", dayfirst=True)
     df["ENC_BRASILIA"] = df["ENC_LOCAL"] + pd.to_timedelta(df["SG_UF"].map(FUSO).fillna(0), unit="h")
     return df
 

@@ -7,7 +7,7 @@ import numpy as np
 import pandas as pd
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from carregar import carregar  # noqa: E402
+from carregar import FUSO, carregar  # noqa: E402
 
 SAIDA = os.path.join(os.path.dirname(os.path.abspath(__file__)), "RESULTADOS.md")
 NE = {"BA", "PE", "CE", "MA", "PB", "PI", "RN", "AL", "SE"}
@@ -65,6 +65,34 @@ def main():
         f"({bio / d.QT_COMPARECIMENTO.sum() * 100:.2f}% do comparecimento)")
     out()
 
+    out("## Réplica exata das tabelas do relatório (Cap. 1 e 2)")
+    out()
+    out("O relatório usa o relógio local da urna e as faixas até 17:00:59, 17:01–17:15:59, "
+        "17:16–18:59:59 e 19:00–19:59:59. Com esse corte, todos os números dele se reproduzem:")
+    out()
+    H = lambda h, m=0: h * 3600 + m * 60  # noqa: E731
+    faixas = [0, H(17, 1), H(17, 16), H(19), H(20), 86400]
+    rot = ["até 17:00:59", "17:01–17:15", "17:16–18:59", "19:00–19:59", "20h ou depois"]
+    for ano in (2026, 2022):
+        x = d if ano == 2026 else carregar(ano=2022)
+        seg = (x.ENC_LOCAL - x.ENC_LOCAL.dt.normalize()).dt.total_seconds()
+        t = x.assign(faixa=pd.cut(seg, faixas, right=False, labels=rot)).groupby("faixa", observed=False).agg(
+            secoes=("NR_SECAO", "size"), comparecimento=("QT_COMPARECIMENTO", "sum"),
+            lula=("V_13", "sum"), adversario=("V_22", "sum"),
+            pct_estados_oeste=("SG_UF", lambda u: round(u.isin(set(FUSO)).mean() * 100, 1)))
+        t["% Lula"] = (t.lula / (t.lula + t.adversario) * 100).round(2)
+        t["saldo Lula"] = t.lula - t.adversario
+        t = t.astype({c: "int64" for c in ["comparecimento", "lula", "adversario", "saldo Lula"]})
+        out(f"### {ano} ({'Lula × Flávio Bolsonaro' if ano == 2026 else 'Lula × Jair Bolsonaro, grupo de controle'})")
+        out()
+        out(md(t))
+        out()
+    out("O mesmo corte aplicado a 2022 mostra o mesmo padrão de \"duas eleições\": o candidato 22 vence "
+        "nas urnas que fecham até 17:00:59 e Lula vence nas que fecham depois. A explicação é a composição "
+        "dos grupos, não o horário. O primeiro grupo concentra as urnas dos estados a oeste (relógio local "
+        "15h/16h, onde o candidato 22 é forte) e as seções menores, sem fila. A faixa 17:01–17:15 não é "
+        "prorrogação: é o fechamento normal de quem ainda estava na fila às 17h, e reúne 68% das seções do país.")
+    out()
     out("## Cap. 1 e 2 — horário de encerramento")
     out()
     out("`DT_ENCERRAMENTO` é gravado no **relógio local da urna**. AC, AM, MT, MS, RO e RR "
@@ -142,9 +170,18 @@ def main():
     out(f"- Tirando todos os eleitores sem biometria, supondo que votaram como o resto da "
         f"própria seção, Lula ainda venceria por **{fmt((lula - lb) - (flavio - fb))}** votos.")
     out("- Comparar 8,6 milhões com a margem de 4,4 milhões só faria sentido se esses votos "
-        "fossem todos de um candidato. Os dados mostram que não são. Esses eleitores votaram "
-        "presencialmente, com documento e na frente da mesa; o que falhou foi a leitura "
-        "da digital.")
+        "fossem todos de um candidato. Os dados mostram que não são.")
+    out("- O campo da BWeb corresponde à linha \"Habilitação biográfica\" do BU impresso: o eleitor "
+        "tinha biometria cadastrada e a digital falhou 4 vezes. Pelos logs das urnas (LOGS.md), nesse caso "
+        "a urna pede um dado pessoal do eleitor, recusa se ele não confere e depois exige a digital do "
+        "mesário. Não é a \"simples digitação do ano de nascimento\" descrita no relatório. Digitar o ano "
+        "de nascimento sozinho é o caminho de outro grupo, o dos eleitores sem biometria cadastrada, que o "
+        "BU conta em outra linha.")
+    d22 = carregar(ano=2022)
+    out(f"- Em 2022 o campo mais próximo (QT_ELEITORES_BIOMETRIA_NH, \"não habilitados por biometria\"; nome e talvez definição diferentes) somou {fmt(d22.QT_BIOM_SEM_HAB.sum())} "
+        f"eleitores, {d22.QT_BIOM_SEM_HAB.sum() / (d22.V_13.sum() - d22.V_22.sum()):.1f} vezes a margem "
+        f"daquele ano ({fmt(d22.V_13.sum() - d22.V_22.sum())}). A razão \"quase o dobro da margem\" de "
+        "2026 é menor que a de 2022.")
     out()
 
     out("## Cap. 4 — seções quase unânimes")

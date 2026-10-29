@@ -11,6 +11,32 @@ Fonte: Boletins de Urna (BWeb) do 2º turno, `dados/tse/2026/boletim_urna/2turno
 - Margem: 4.430.191
 - Eleitores liberados sem biometria (QT_ELEI_BIOM_SEM_HABILITACAO): 8.632.488 (6.73% do comparecimento)
 
+## Réplica exata das tabelas do relatório (Cap. 1 e 2)
+
+O relatório usa o relógio local da urna e as faixas até 17:00:59, 17:01–17:15:59, 17:16–18:59:59 e 19:00–19:59:59. Com esse corte, todos os números dele se reproduzem:
+
+### 2026 (Lula × Flávio Bolsonaro)
+
+| faixa         | secoes   | comparecimento   | lula       | adversario   | pct_estados_oeste   | % Lula   | saldo Lula   |
+|:--------------|:---------|:-----------------|:-----------|:-------------|:--------------------|:---------|:-------------|
+| até 17:00:59  | 150.771  | 37.630.420       | 17.369.159 | 19.116.798   | 21.2                | 47.61    | -1.747.639   |
+| 17:01–17:15   | 339.593  | 88.071.750       | 45.525.188 | 39.627.772   | 0.0                 | 53.46    | 5.897.416    |
+| 17:16–18:59   | 2.472    | 674.799          | 372.470    | 279.102      | 0.4                 | 57.16    | 93.368       |
+| 19:00–19:59   | 6.333    | 1.856.306        | 987.956    | 801.108      | 0.0                 | 55.22    | 186.848      |
+| 20h ou depois | 9        | 1.968            | 1.014      | 908          | 0.0                 | 52.76    | 106          |
+
+### 2022 (Lula × Jair Bolsonaro, grupo de controle)
+
+| faixa         | secoes   | comparecimento   | lula       | adversario   | pct_estados_oeste   | % Lula   | saldo Lula   |
+|:--------------|:---------|:-----------------|:-----------|:-------------|:--------------------|:---------|:-------------|
+| até 17:00:59  | 195.818  | 49.926.557       | 23.374.900 | 24.414.955   | 15.1                | 48.91    | -1.040.055   |
+| 17:01–17:15   | 274.561  | 73.883.315       | 36.731.439 | 33.607.908   | 0.0                 | 52.22    | 3.123.531    |
+| 17:16–18:59   | 1.585    | 434.753          | 235.306    | 179.999      | 0.1                 | 56.66    | 55.307       |
+| 19:00–19:59   | 15       | 2.908            | 1.762      | 1.003        | 0.0                 | 63.73    | 759          |
+| 20h ou depois | 5        | 1.023            | 597        | 407          | 0.0                 | 59.46    | 190          |
+
+O mesmo corte aplicado a 2022 mostra o mesmo padrão de "duas eleições": o candidato 22 vence nas urnas que fecham até 17:00:59 e Lula vence nas que fecham depois. A explicação é a composição dos grupos, não o horário. O primeiro grupo concentra as urnas dos estados a oeste (relógio local 15h/16h, onde o candidato 22 é forte) e as seções menores, sem fila. A faixa 17:01–17:15 não é prorrogação: é o fechamento normal de quem ainda estava na fila às 17h, e reúne 68% das seções do país.
+
 ## Cap. 1 e 2 — horário de encerramento
 
 `DT_ENCERRAMENTO` é gravado no **relógio local da urna**. AC, AM, MT, MS, RO e RR estão 1 ou 2 horas atrás de Brasília. Por isso as urnas desses estados aparecem "fechando antes das 17h", mas na verdade fecharam às 17h de Brasília.
@@ -79,7 +105,9 @@ Em SP, 1.481 das 1.571 seções tardias ficam na capital (SÃO PAULO). Ou seja, 
 
 - Taxa sem biometria: Nordeste 7.19%, resto do país 6.55%. A taxa é parecida em todo o país, inclusive onde Flávio venceu.
 - Tirando todos os eleitores sem biometria, supondo que votaram como o resto da própria seção, Lula ainda venceria por **4.017.767** votos.
-- Comparar 8,6 milhões com a margem de 4,4 milhões só faria sentido se esses votos fossem todos de um candidato. Os dados mostram que não são. Esses eleitores votaram presencialmente, com documento e na frente da mesa; o que falhou foi a leitura da digital.
+- Comparar 8,6 milhões com a margem de 4,4 milhões só faria sentido se esses votos fossem todos de um candidato. Os dados mostram que não são.
+- O campo da BWeb corresponde à linha "Habilitação biográfica" do BU impresso: o eleitor tinha biometria cadastrada e a digital falhou 4 vezes. Pelos logs das urnas (LOGS.md), nesse caso a urna pede um dado pessoal do eleitor, recusa se ele não confere e depois exige a digital do mesário. Não é a "simples digitação do ano de nascimento" descrita no relatório. Digitar o ano de nascimento sozinho é o caminho de outro grupo, o dos eleitores sem biometria cadastrada, que o BU conta em outra linha.
+- Em 2022 o campo mais próximo (QT_ELEITORES_BIOMETRIA_NH, "não habilitados por biometria"; nome e talvez definição diferentes) somou 10.011.346 eleitores, 4.7 vezes a margem daquele ano (2.139.645). A razão "quase o dobro da margem" de 2026 é menor que a de 2022.
 
 ## Cap. 4 — seções quase unânimes
 

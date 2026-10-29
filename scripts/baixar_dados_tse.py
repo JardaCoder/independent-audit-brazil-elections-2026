@@ -6,6 +6,7 @@ o arquivo é conferido.
     python3 scripts/baixar_dados_tse.py                 # lista os conjuntos
     python3 scripts/baixar_dados_tse.py bu_2t           # BUs do 2º turno (~150 MB, já versionado)
     python3 scripts/baixar_dados_tse.py bu_1t votacao_secao
+    python3 scripts/baixar_dados_tse.py arquivos_urna_2t AC RR AP   # BU/RDV/log assinados de cada urna (grande!)
 """
 import hashlib
 import json
@@ -29,8 +30,9 @@ CONJUNTOS = {
     "comparecimento": ("comparecimento-e-abstencao-2026", "comparecimento_abstencao", "perfil_comparecimento"),
     "eleitorado": ("eleitorado-2026", "eleitorado", ""),
     "mesarios": ("mesarias-mesarios-e-funcoes-especiais-2026", "mesarios", ""),
-    "correspondencias_2t": ("resultados-2026-correspondencias-esperadas-e-efetivadas-2-turno",
-                            "correspondencias/2turno", ""),
+    "correspondencias_esperadas_2t": ("resultados-2026-correspondencias-esperadas-e-efetivadas-2-turno",
+                                      "correspondencias/2turno", "CESP_2t_"),
+    "bu_2t_2022": ("resultados-2022-boletim-de-urna", "../2022/boletim_urna/2turno", "bweb_2t_"),
     "logs_gedai_2t": ("resultados-2026-logs-do-sistema-de-preparacao-das-urnas-eletronicas-gedai-2-turno",
                       "logs_gedai/2turno", ""),
 }
@@ -57,10 +59,26 @@ def sha512(caminho):
     return h.hexdigest()
 
 
+URNA_2T = "https://cdn.tse.jus.br/estatistica/sead/eleicoes/eleicoes2026/arqurnatot/bu_imgbu_logjez_rdv_vscmr_2026_2t_{}.zip"
+
+
+def arquivos_urna_2t(ufs):
+    """O catálogo ainda não lista o 2º turno destes pacotes; a URL segue o padrão do 1º turno."""
+    destino = os.path.join(RAIZ, "arquivos_urna", "2turno")
+    os.makedirs(destino, exist_ok=True)
+    for uf in ufs:
+        url = URNA_2T.format(uf.upper())
+        print("baixando", url)
+        baixar(url, os.path.join(destino, url.rsplit("/", 1)[-1]))
+
+
 def main(nomes):
+    if nomes and nomes[0] == "arquivos_urna_2t":
+        return arquivos_urna_2t(nomes[1:])
     if not nomes:
         for k, (pac, pasta, _) in CONJUNTOS.items():
-            print(f"{k:22} -> dados/tse/2026/{pasta}  ({pac})")
+            print(f"{k:30} -> dados/tse/2026/{pasta}  ({pac})")
+        print(f"{'arquivos_urna_2t <UF> ...':30} -> dados/tse/2026/arquivos_urna/2turno  (BU, RDV, log e assinatura de cada urna)")
         return
     for nome in nomes:
         pacote, pasta, filtro = CONJUNTOS[nome]

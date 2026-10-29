@@ -3,30 +3,33 @@
 Dados oficiais do TSE das eleições de 2026 e uma checagem, número por número, do
 "Relatório Pericial Independente" que circulou nas redes depois do 2º turno.
 
+## Auditoria independente
+
+O relatório completo está em **[`analise/AUDITORIA.md`](analise/AUDITORIA.md)**. Ele cobre integridade dos arquivos, consistência de
+cada BU, BU × log original das urnas (AC, RR, AP), urnas usadas × urnas publicadas antes da eleição,
+réplica exata do relatório e controle com 2022.
+
 ## Estrutura
 
 ```
-dados/tse/2026/boletim_urna/2turno/   BUs (BWeb) do 2º turno, 27 UFs + exterior (ZZ), com .sha512 do TSE
-dados/tse/2026/<outros>/              baixados sob demanda (não versionados, são vários GB)
-dados/derivados/                      cache gerado pela análise (não versionado)
-scripts/baixar_dados_tse.py           baixa qualquer conjunto do Portal de Dados Abertos e confere o SHA-512
-analise/carregar.py                   monta a tabela por seção (Presidente, 2º turno)
-analise/verificar_relatorio.py        refaz cada conta do relatório
-analise/RESULTADOS.md                 saída da verificação
+dados/tse/2026/boletim_urna/2turno/    BUs (BWeb) do 2º turno, 27 UFs + exterior, com .sha512 do TSE
+dados/tse/2026/correspondencias/2turno/ urna e carga esperadas por seção, publicadas em 24/10/2026
+dados/tse/2022/boletim_urna/2turno/    BUs do 2º turno de 2022 (grupo de controle)
+dados/tse/2026/<outros>/               baixados sob demanda, não versionados (vários GB)
+scripts/baixar_dados_tse.py            baixa qualquer conjunto e confere o SHA-512
+analise/                               scripts e resultados (AUDITORIA.md é o ponto de entrada)
 ```
 
 ```bash
-python3 scripts/baixar_dados_tse.py              # lista os conjuntos disponíveis
-python3 scripts/baixar_dados_tse.py bu_1t        # ex.: BUs do 1º turno (~5 GB)
+python3 scripts/baixar_dados_tse.py                        # lista os conjuntos
+python3 scripts/baixar_dados_tse.py arquivos_urna_2t AC    # BU/log/RDV assinados de cada urna
 pip install pandas tabulate
 python3 analise/verificar_relatorio.py
 ```
 
-Os 28 arquivos do 2º turno conferem com os hashes SHA-512 publicados pelo TSE.
-
 ## Resumo da verificação
 
-Os **números brutos** do relatório conferem com os arquivos oficiais: 499.205 seções,
+Todos os números do relatório **se reproduzem exatamente** quando se usa o relógio local da urna. Os números brutos também conferem com os arquivos oficiais: 499.205 seções,
 128.236.074 votos, margem de 4.430.191 votos e 8.632.488 eleitores liberados sem
 biometria. As **conclusões** tiradas desses números não se sustentam:
 
