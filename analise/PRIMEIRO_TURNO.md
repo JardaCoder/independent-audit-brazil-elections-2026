@@ -71,7 +71,7 @@ Resíduo = % real de Lula − % prevista, em pontos percentuais (p.p.). A tabela
 | fechou até 17:00:59 (relógio local)        | 150.771  | -0.16 (0.03)       | -0.16 (0.03)                  | -0.05 (0.01)           | -0.03 (0.01)                  | -0.12 (0.03)      | -0.03 (0.01)                 |
 | liberação manual ≥ 20% da seção (2º turno) | 4.154    | -0.58 (0.05)       | -0.58 (0.05)                  | -0.45 (0.05)           | -0.27 (0.04)                  | -0.42 (0.05)      | -0.19 (0.04)                 |
 
-- Seções tardias: desvio a favor de Lula distinguível de zero em 0 das 6 formas. No pior caso (limite superior de 95% da especificação mais desfavorável, +0.59 p.p.), o efeito sobre a margem seria de no máximo **21.156 votos** (2 × 0.59% × 1.793.914 válidos).
+- Seções tardias: desvio a favor de Lula distinguível de zero em 0 das 6 formas. No pior caso (limite superior de 95% da combinação mais desfavorável entre as 6 formas, média simples ou ponderada e erro-padrão agrupado por município, por UF ou jackknife por município: +0.65 p.p.), o efeito sobre a margem seria de no máximo **23.360 votos** (2 × 0.65% × 1.793.914 válidos).
 - Efeito no resíduo de +10 p.p. de **nível da liberação manual no 2º turno**: linear, dentro do município: -0.320 p.p. (EP 0.029); logit, dentro do município: -0.282 p.p. (EP 0.026).
 - Efeito no resíduo de +10 p.p. de **variação da liberação manual do 1º para o 2º turno**: linear, dentro do município: -0.020 p.p. (EP 0.014); logit, dentro do município: -0.022 p.p. (EP 0.014).
 - Se a liberação manual fosse usada para pôr votos em Lula, mais liberação deveria vir com resíduo positivo, sobretudo onde ela **aumentou** do 1º para o 2º turno. Não é o que aparece.

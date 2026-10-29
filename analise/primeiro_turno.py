@@ -145,7 +145,8 @@ def main():
     sig = [n for n, r in resid.items() if (lambda b, se: b - 1.96 * se > 0)(*desvio_grupo(m, r, n, mask))]
     out(f"- Seções tardias: desvio a favor de Lula distinguível de zero em {len(sig)} das {len(resid)} formas"
         f"{' (' + ', '.join(sig) + ')' if sig else ''}. "
-        f"No pior caso (limite superior de 95% da especificação mais desfavorável, {lim:+.2f} p.p.), o efeito sobre a "
+        f"No pior caso (limite superior de 95% da combinação mais desfavorável entre as 6 formas, média simples ou "
+        f"ponderada e erro-padrão agrupado por município, por UF ou jackknife por município: {lim:+.2f} p.p.), o efeito sobre a "
         f"margem seria de no máximo **{fmt(votos)} votos** (2 × {lim:.2f}% × {fmt(m.loc[mask, 'validos_2'].sum())} válidos).")
     for nome, var in [("nível da liberação manual no 2º turno", m.bio_2), ("variação da liberação manual do 1º para o 2º turno", m.bio_2 - m.bio_1)]:
         cols = []

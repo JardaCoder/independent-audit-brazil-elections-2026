@@ -134,18 +134,41 @@ def especificacoes(m):
     }
 
 
-def desvio_grupo(m, resid, nome_spec, mask, peso=None, cluster=None):
+def jackknife_fe(y, x, grupos, cluster, peso=None):
+    """Mesma regressão de coef_cluster com efeito fixo `grupos`, mas EP jackknife exato: refaz a centragem e a conta
+    sem um cluster por vez. Exige cluster dentro do grupo (município dentro de UF; tudo dentro do país)."""
+    w = np.ones(len(y)) if peso is None else np.asarray(peso, float)
+    y, x = np.asarray(y, float), np.asarray(x, float)
+    d = pd.DataFrame({"w": w, "x": w * x, "y": w * y, "xy": w * x * y, "xx": w * x * x,
+                      "g": 0 if grupos is None else np.asarray(grupos), "c": np.asarray(cluster)})
+    G = d.groupby("g")[["w", "x", "y", "xy", "xx"]].sum()
+    C = d.groupby(["g", "c"])[["w", "x", "y", "xy", "xx"]].sum()
+    num = lambda s: s.xy - s.x * s.y / s.w  # noqa: E731  soma de x·y já centrados no grupo
+    den = lambda s: s.xx - s.x ** 2 / s.w  # noqa: E731
+    Gc = G.loc[C.index.get_level_values("g")].set_axis(C.index)
+    resto = Gc - C
+    vazio = resto.w <= 0
+    n_sem = num(G).sum() - num(Gc) + num(resto).where(~vazio, 0)
+    d_sem = den(G).sum() - den(Gc) + den(resto).where(~vazio, 0)
+    b_sem = n_sem / d_sem
+    return num(G).sum() / den(G).sum(), np.sqrt((len(C) - 1) / len(C) * ((b_sem - b_sem.mean()) ** 2).sum())
+
+
+def desvio_grupo(m, resid, nome_spec, mask, peso=None, cluster=None, jackknife=False):
     """Diferença média do resíduo entre o grupo e as demais seções, com EP agrupado (por município, salvo aviso)."""
     fe = m.mun if "município" in nome_spec else (m.SG_UF if "UF" in nome_spec else None)
+    if jackknife:
+        return jackknife_fe(resid, mask.astype(float), fe, m.mun, peso)
     return coef_cluster(centrar(resid, fe, peso), centrar(mask.astype(float), fe, peso),
                         m.mun if cluster is None else cluster, peso=peso)
 
 
 def limite_tardias(m, residuos):
     """Maior efeito plausível das seções que fecharam às 19h+ sobre a margem: limite superior de 95% da
-    especificação mais desfavorável × válidos do grupo × 2. Testa média simples e ponderada por válidos, e EP
-    agrupado por município e por UF: as seções tardias se concentram em poucos municípios, e o EP por UF é mais largo."""
+    especificação mais desfavorável × válidos do grupo × 2. Testa média simples e ponderada por válidos, e três EPs:
+    agrupado por município, por UF e jackknife por município (as seções tardias se concentram em poucos municípios)."""
     mask = (m.ENC_BRASILIA_2 - m.ENC_BRASILIA_2.dt.normalize()).dt.total_seconds() >= 19 * 3600
-    lim = max(b + 1.96 * se for b, se in (desvio_grupo(m, r, n, mask, p, c) for n, r in residuos.items()
-                                          for p in (None, m.validos_2) for c in (m.mun, m.SG_UF)))
+    eps = [(m.mun, False), (m.SG_UF, False), (m.mun, True)]
+    lim = max(b + 1.96 * se for b, se in (desvio_grupo(m, r, n, mask, p, c, jk) for n, r in residuos.items()
+                                          for p in (None, m.validos_2) for c, jk in eps))
     return lim, int(lim / 100 * m.loc[mask, "validos_2"].sum() * 2)

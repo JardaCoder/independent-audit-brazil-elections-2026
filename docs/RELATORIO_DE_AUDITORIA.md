@@ -79,7 +79,7 @@ recalculado (ver [Anexo B](#anexo-b--como-reproduzir)).
 | F4 | Arquivos transmitidos para totalização | Por urna: BU digital (`bu.dat`), imagem do BU impresso, RDV (registro de cada voto), log, assinatura | Recontagem e confronto com a planilha |
 | F5 | Relatório Resultado da Totalização (PDF) | Resultado oficial assinado, Brasil e cada UF, dois turnos | Confronto com a soma dos BUs |
 
-Detalhes de cada arquivo, tamanhos e locais no repositório: README, seção 4.
+Detalhes de cada arquivo, tamanhos e locais no repositório: README, apêndice B.
 
 ### 2.3 Preparação e controle de integridade
 
@@ -89,8 +89,8 @@ Detalhes de cada arquivo, tamanhos e locais no repositório: README, seção 4.
 2. **Extração do cargo de Presidente.** As linhas de Presidente foram copiadas byte a byte dos arquivos
    oficiais (`scripts/extrair_presidente.py`), com manifesto ligando cada arquivo extraído ao original e ao hash
    do TSE.
-3. **Normalização do horário.** A urna grava o horário local (comprovado em `analise/FUSO.md` por três testes
-   independentes). Os horários foram convertidos para Brasília por município: Acre e 11 municípios do oeste
+3. **Normalização do horário.** A urna grava o horário local (comprovado em `analise/FUSO.md` pela hora de
+   abertura; os outros dois testes são compatíveis). Os horários foram convertidos para Brasília por município: Acre e 11 municípios do oeste
    do Amazonas em UTC−5; demais municípios de AM, MT, MS, RO e RR em UTC−4; Fernando de Noronha em UTC−2;
    exterior excluído das análises de horário.
 4. **Tabela por seção.** Uma linha por seção (499.205 no 2º turno, 499.206 no 1º), com votos de cada candidato,
@@ -125,11 +125,13 @@ Detalhes de cada arquivo, tamanhos e locais no repositório: README, seção 4.
   agrupado por município) e robusto às diferentes especificações do modelo.
 - **Materialidade:** um achado é material se, no pior caso compatível com os testes feitos, puder explicar 10% ou
   mais da margem de 4.430.191 votos (443 mil). Cenários aritméticos que os testes contradizem são mostrados, mas não
-  entram nessa conta. Estes critérios foram definidos durante a análise.
+  entram nessa conta. Os cenários de liberação manual supõem que todos os liberados seriam votos ilegítimos;
+  nenhum teste indica isso (digital do mesário no log, taxa estável entre turnos, log = BU em 100% das seções lidas), por
+  isso não entram como achado. Estes critérios foram definidos durante a análise.
 - **O que mudaria a conclusão:** uma UF cuja soma de boletins não bata com o oficial; um RDV diferente do boletim; um
   log com voto fora do horário ou liberações diferentes do boletim; um grupo de seções que se desvie a favor de um
   candidato em todas as especificações, inclusive dentro do município; boletins de papel diferentes dos arquivos;
-  assinaturas inválidas. Os quatro primeiros não apareceram; os dois últimos não foram testados.
+  assinaturas inválidas. Os quatro primeiros não apareceram (o terceiro, nos logs lidos); os dois últimos não foram testados.
 
 ### 2.6 Ferramentas
 
@@ -143,21 +145,21 @@ permitiu ler o RDV de todas as urnas e o log das urnas de interesse evitando bai
 
 | # | Resultado | Detalhe |
 |---|---|---|
-| P1 | 112/112 arquivos com hash oficial conferem | README 6.1 |
+| P1 | 112/112 arquivos com hash oficial conferem | README, H1 |
 | P2 | Votos, brancos, nulos e comparecimento idênticos ao oficial em 29/29 regiões, nos dois turnos. Diferenças só em seções e aptos: 1–2 seções do exterior sem nenhum votante. Os 5.246 votos do nº 28 no 1º turno são exatamente os "nulos técnicos" oficiais | `analise/TOTALIZACAO.md` |
-| P3 | 0 violações nas regras de contagem. Exceções de horário explicadas: 29 seções apuradas em cédula, 5 urnas substituídas antes da abertura, 8 BUs com relógio até 52 s adiantado | `analise/CONSISTENCIA.md` |
+| P3 | 0 violações nas regras de contagem. Exceções de horário explicadas: 27 seções com votos apuradas em cédula (29 com as 2 sem votantes), 8 BUs com relógio até 52 s adiantado; 5 urnas substituídas antes da abertura foram carregadas no dia | `analise/CONSISTENCIA.md` |
 | P4 | 499.178 de 499.178 seções com urna eletrônica: RDV idêntico à planilha (Lula, Flávio, brancos, nulos). As 27 restantes são seções do exterior apuradas em cédula, cujo arquivo não segue o formato do RDV da urna; seus 831 votos são a diferença exata | `analise/RECONTAGEM_RDV_NACIONAL.md` |
 | P5 | AC, RR, AP: BU digital, código de carga e imagem do BU iguais à planilha em 5.703/5.703 | `analise/RECONTAGEM_RDV.md`, `IMAGEM_BU.md` |
 | P6 | AC, RR, AP: votos, habilitações biométricas, manuais e sem biometria no log iguais ao BU em 5.703/5.703; nenhum voto após o fechamento | `analise/LOGS.md` |
-| P7 | 99,4% das seções com urna e carga exatamente previstas; trocas por contingência registradas. 17 seções (4.563 votos, saldo +42 Lula) sem explicação nos dados | `analise/CORRESPONDENCIA.md` |
+| P7 | 99,4% das seções com urna e carga exatamente previstas; a maior parte das trocas usou urna de contingência da lista. 17 seções (4.563 votos, saldo +42 Lula) sem explicação nos dados (entre 14 e 18 com erro de 1h no relógio) | `analise/CORRESPONDENCIA.md` |
 | P8 | Os números que circularam se reproduzem com o critério usado neles (relógio local) | `analise/RESULTADOS.md` §1 |
 | P9 | A diferença do grupo "até 17h" cai de −5,9 para −0,2 p.p. dentro do mesmo município, aparece em 2022 e já existia no 1º turno (−5,95 p.p.) | `analise/RESULTADOS.md` §2 |
 | P10 | 6.352 seções fecharam às 19h (pico real, só no 2º turno). Só 4.492 de 1.861.259 votos (0,24%) foram dados após as 17h. Mesmo comparecimento e voto que as seções do mesmo local que fecharam às 17h (diferenças de −0,06 e +0,03 p.p.) | `analise/LOGS_TARDIAS.md`, `RESULTADOS.md` §4 |
 | P11 | Dentro do município, os liberados votam quase como os demais (54% Lula); mais liberação vem com menos Lula do que o 1º turno previa; o aumento da liberação entre turnos não tem efeito | `analise/RESULTADOS.md` §5, `PRIMEIRO_TURNO.md` §5 |
-| P12 | O 1º turno explica 93,2% das diferenças entre seções da mesma cidade (98,5% no país). Nenhum grupo desvia a favor de Lula de forma significativa; nas seções das 19h o desvio fica entre −0,12 e +0,18 p.p., sem nenhuma forma distinguível de zero. O grupo de liberação ≥ 20% fica abaixo do previsto para Lula em todas as formas (−0,19 a −0,58 p.p., 3 a 10 mil votos a favor de Flávio). Limite superior de 95% para as seções das 19h, na forma mais desfavorável (EP por município ou por UF, média simples ou ponderada): 21.156 votos | `analise/PRIMEIRO_TURNO.md` |
-| P13 | Os dígitos dos votos reais são indistinguíveis dos de uma eleição honesta simulada; último dígito uniforme | `analise/RESULTADOS.md` §7 |
+| P12 | O 1º turno explica 93,2% das diferenças entre seções da mesma cidade (98,5% no país). Nenhum grupo desvia a favor de Lula de forma significativa; nas seções das 19h o desvio fica entre −0,12 e +0,18 p.p., sem nenhuma forma distinguível de zero. O grupo de liberação ≥ 20% fica abaixo do previsto para Lula em todas as formas (−0,19 a −0,58 p.p., 3 a 10 mil votos a favor de Flávio). Limite superior de 95% para as seções das 19h, na forma mais desfavorável (EP por município, por UF ou jackknife; média simples ou ponderada): 23.360 votos | `analise/PRIMEIRO_TURNO.md` |
+| P13 | Os dígitos se comportam como os de eleições honestas simuladas; a média do 2º dígito de Lula fica um centésimo abaixo da faixa de 20 simulações, diferença pequena demais para esse teste interpretar; último dígito uniforme | `analise/RESULTADOS.md` §7 |
 | P15 | Taxa entre 4,1% (RR) e 9,0% (PI), alta também em estados pró-Flávio (RS 8,45%); estável entre turnos (+0,07 p.p.). Logs de 10.809 urnas: liberações = BU em 100%; mais liberações de manhã, queda ao longo do dia; nas seções das 19h só 245 liberações depois das 17h. 16 seções com ≥ 50 liberações por um mesário, sem favorecimento (Lula abaixo da zona em 11) | `analise/BIOMETRIA.md` |
-| P14 | Arquivos no servidor em 26/10 (~1 dia após a eleição); listados no catálogo em 27/10; ausentes do catálogo na consulta de 29/10, embora ainda no servidor e idênticos | README 6.12 |
+| P14 | Arquivos no servidor em 26/10 (~1 dia após a eleição); listados no catálogo em 27/10; ausentes do catálogo na consulta de 29/10, embora ainda no servidor e idênticos | README, H10 |
 
 ---
 
@@ -194,7 +196,7 @@ afeta o resultado), **informativo**.
    a mesma história.
 4. **Inferência ecológica.** Os testes sobre liberação manual usam dados agregados por seção; não é possível saber
    como cada eleitor liberado votou. Por isso foram usados vários testes, inclusive contra o 1º turno.
-5. **Modelo 1º → 2º turno** detecta desvios **entre grupos** de seções; uma manipulação uniforme em todo o país
+5. **Modelo 1º → 2º turno** detecta desvios entre grupos de seções; uma manipulação uniforme em todo o país
    seria absorvida por ele. Se ocorresse depois da urna, apareceria em P2 e P4; se ocorresse dentro da urna, RDV,
    boletim e log sairiam coerentes entre si, e só a auditoria do software poderia detectá-la.
 6. **Hash do mesmo servidor e ausência de conferência externa.** Os `.sha512` oficiais vêm do mesmo servidor dos
@@ -204,8 +206,8 @@ afeta o resultado), **informativo**.
    dos dados públicos de votação.
 8. **Incerteza dos limites estatísticos.** Os limites das seções das 19h usam erro-padrão agrupado por município,
    e 75% dessas seções estão em 5 municípios, o que pode subestimar a incerteza. Como verificação grosseira,
-   dobrar o limite leva a cerca de 42 mil votos (1,0% da margem). O limite usado já considera também o EP agrupado
-   por UF, mais largo.
+   dobrar o limite leva a cerca de 47 mil votos (1,1% da margem). O limite usado já considera o EP agrupado por UF
+   e o jackknife por município, mais largos.
 
 ---
 
@@ -281,7 +283,7 @@ Para quem analisa dados eleitorais:
 | Mais de 2 milhões votaram em seções fechadas após as 19h | Não: pelo relógio local, 2,30 mi são aptos; votaram 1,86 mi | Não se sustenta. Só 4.492 votos após as 17h; votação igual às seções vizinhas e ao 1º turno; no RJ, Flávio venceu nessas seções |
 | 8.632.488 liberados sem biometria, quase o dobro da margem | Sim | Não se sustenta. Liberação é estável por seção, não favorece candidato e vem com menos Lula do que o previsto |
 | 106 seções com 100% Lula contra 4 de Flávio | Sim | Não se sustenta como indício. Reflete voto regional; padrão semelhante em 2022 (143 × 4) |
-| Teste de Benford indica manipulação | — | Não se sustenta. Comportamento idêntico ao de uma eleição honesta simulada |
+| Teste de Benford indica manipulação | — | Não se sustenta. Os dígitos se comportam como os de eleições honestas simuladas (Lula um centésimo abaixo da faixa no 2º dígito); teste fraco |
 | Dados trancados por 72 horas | Parcialmente | Procede em parte quanto à acessibilidade (catálogo só em 27/10); não procede quanto a alteração (resultado assinado em 25/10 bate com os arquivos) |
 | Afirmações políticas e jurídicas | — | Fora do escopo (não constam dos dados) |
 

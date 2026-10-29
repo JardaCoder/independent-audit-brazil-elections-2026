@@ -35,7 +35,7 @@ em vez de listas quando couber). As suspeitas aparecem como "suspeitas que circu
 | Recontagem RDV nacional | 499.178/499.178 urnas eletrônicas idênticas à BWeb; 27 seções ZZ em cédula (Sistema de Apuração) sem RDV, 831 votos |
 | Liberação manual ("sem biometria") | 8.632.488 no 2º turno (6,73%); campo `QT_ELEI_BIOM_SEM_HABILITACAO` = linha "Habilitação biográfica" do BU |
 | Seções que fecharam ≥19h Brasília | 6.352 (1.993 no minuto 19:00; 1.131 locais); só 4.492 de 1.861.259 votos após 17h (logs) |
-| Limite estatístico das seções das 19h | 21.156 votos (pior entre especificações, ponderação e EP por município/UF, IC 95%) |
+| Limite estatístico das seções das 19h | 23.360 votos (pior entre especificações, ponderação e EP município/UF/jackknife, IC 95%) |
 | Urnas fora das listas sem explicação | 17 seções, 4.563 votos, saldo +42 Lula |
 | Modelo 1º→2º turno (com lula_1) | R² 0,985 nacional; 0,932 dentro do município |
 | Biometria (logs de 10.809 urnas distintas) | liberações no log = BU em 100%; nas seções das 19h, 245 liberações manuais depois das 17h; taxa por UF 4,1% (RR) a 9,0% (PI) |
@@ -100,7 +100,8 @@ e atualize README e `docs/RELATORIO_DE_AUDITORIA.md` se algum número citado mud
 - `*-log.jez` é **zip** (o leia-me diz 7z). Urnas de contingência trazem o log anterior num `.jez` aninhado.
   Ler cada `logd.dat` em ordem e classificar habilitação pela sessão do eleitor (o "tipo" pode vir depois de
   "Eleitor foi habilitado" no mesmo segundo). Filtrar o dia (`25/10/2026`).
-- RDV/bu.dat são ASN.1/DER; leitor mínimo em `recontagem_rdv.py` (sem especificação oficial).
+- RDV/bu.dat são ASN.1/DER; leitor mínimo em `recontagem_rdv.py` (sem especificação oficial). Tipo de voto 6, nas 3 UFs lidas
+  localmente, só aparece no AC (51 votos) e a BWeb conta como nulo; qualquer outro tipo desconhecido fica à parte e quebra a conferência.
 - Pacotes de arquivos das urnas têm 2–25 GB por UF: ler remotamente com HTTP Range (`logs_tardias.ArquivoRemoto`,
   `ler_membro`). Os pacotes do 2º turno não estão no catálogo; URL padrão
   `https://cdn.tse.jus.br/estatistica/sead/eleicoes/eleicoes2026/arqurnatot/bu_imgbu_logjez_rdv_vscmr_2026_2t_<UF>.zip`.
@@ -117,18 +118,12 @@ e atualize README e `docs/RELATORIO_DE_AUDITORIA.md` se algum número citado mud
 - Container remoto; HTTPS via proxy já configurado (curl e urllib funcionam com cdn.tse.jus.br e
   dadosabertos.tse.jus.br). Disco limitado (~18 GB livres no fim da sessão anterior): não baixar pacotes inteiros
   de urnas de UFs grandes.
-- Python 3.13, pandas 3.0.5, matplotlib 3.11. Paleta dos gráficos: azul `#2a78d6` = Lula, laranja `#eb6834` =
+- Python 3.12; versões em `requirements.txt`. Paleta dos gráficos: vermelho `#d1302b` = Lula, azul `#2a78d6` =
   adversário, cinza `#8a8984` = referência (validada com o skill dataviz).
-- **Commits sem a linha `Co-Authored-By`** (pedido do usuário; o histórico foi reescrito para removê-la). Manter só
-  `Claude-Session`, se o ambiente pedir. Não citar modelo em commits.
+- **Commits em nome do usuário** (JardelSchaeferNortis <jardel.schaefer@nortistech.com.br>), sem `Co-Authored-By` nem
+  `Claude-Session`, sem citar modelo (pedido do usuário; o histórico inteiro foi reescrito assim).
 
 ## Próximos passos possíveis (não feitos)
-
-0. Pendências pequenas (nenhuma muda a conclusão): jackknife/wild bootstrap em `limite_tardias` (hoje usa o pior entre
-   EP por município e por UF); sensibilidade ±1h das categorias 5/7 de `correspondencia.py`; frase fixa de
-   `totalizacao.py` sobre as seções sem votantes (só vale enquanto a diferença for só de seções/aptos do ZZ);
-   robustez do leitor `recontagem_rdv.py` (tipo de voto desconhecido vira "Nulo"; heurística `c[4] > 200`).
-   Versões em `requirements.txt` (numpy/pandas diferentes mudam a 15ª casa e a simulação de Benford).
 
 1. **Verificar assinaturas digitais** (`*-vota.vsc`) com as chaves públicas do TSE — principal limitação aberta.
 2. Ler logs e BU impresso de todas as UFs (hoje: AC, RR, AP inteiros + 6.352 seções das 19h + 1.500 controles),

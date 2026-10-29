@@ -72,7 +72,7 @@ Cada hipótese abaixo é uma forma de o resultado estar errado ou ter sido alter
 |---|---|---|
 | H1 | O resultado oficial não é a soma dos boletins de urna. | Refutada |
 | H2 | Os boletins não correspondem ao que as urnas gravaram. | Refutada |
-| H3 | Foram usadas urnas diferentes das previstas. | Refutada em 99,4% das seções; 17 seções sem explicação nos dados |
+| H3 | Foram usadas urnas diferentes das previstas. | Refutada: 99,4% exatamente as previstas e quase todo o resto com explicação; 17 seções sem explicação nos dados |
 | H4 | Houve "duas eleições": Flávio venceu até as 17h e a virada veio depois. | Refutada |
 | H5 | As seções que ficaram abertas até as 19h receberam votos a mais. | Refutada; o fechamento às 19h aconteceu |
 | H6 | Os 8,6 milhões de eleitores liberados sem digital decidiram a eleição. | Sem sinal disso |
@@ -87,7 +87,7 @@ Eu concluiria que houve alteração se aparecesse qualquer um destes sinais: uma
 com o resultado oficial; um registro digital do voto diferente do boletim da mesma urna; um log com voto fora do
 horário ou com liberações diferentes do boletim; um grupo de seções que se desviasse a favor de um candidato, em
 relação ao próprio 1º turno, em todas as formas do modelo, inclusive comparando seções da mesma cidade; boletins de
-papel diferentes dos arquivos; assinaturas digitais inválidas. Nenhum dos quatro primeiros apareceu. Os dois
+papel diferentes dos arquivos; assinaturas digitais inválidas. Nenhum dos quatro primeiros apareceu (o terceiro, nos logs lidos). Os dois
 últimos não foram testados.
 
 ---
@@ -96,8 +96,8 @@ papel diferentes dos arquivos; assinaturas digitais inválidas. Nenhum dos quatr
 
 ### H1. O resultado oficial é a soma dos boletins?
 
-Antes de tudo, conferi os arquivos: o SHA-512 de cada arquivo baixado bate com o `.sha512` publicado pelo TSE em 112
-de 112. Isso prova que o download está íntegro, mas o hash vem do mesmo servidor dos dados.
+Antes de tudo, conferi a "impressão digital" (hash SHA-512) de cada arquivo baixado: bate com a publicada pelo TSE
+em 112 de 112. Isso prova que o download está íntegro, mas o hash vem do mesmo servidor dos dados.
 
 Depois, `analise/totalizacao.py` soma seções, aptos, comparecimento, brancos, nulos e votos de cada candidato em
 todos os boletins, por UF e no Brasil, e compara com o PDF oficial do TSE. Votos, brancos, nulos e comparecimento
@@ -140,8 +140,9 @@ Em AC, RR e AP (5.703 urnas) li o pacote inteiro: o boletim digital (`bu.dat`), 
 boletim (`imgbu.dat`, o texto que a urna manda imprimir, que vem no mesmo pacote) e o log de cada urna. Tudo bate
 com a planilha em 5.703 de 5.703, e nenhum voto foi registrado depois do fechamento.
 
-O RDV é gravado pela mesma urna que gera o boletim, então isso mostra que nada mudou entre a urna e a totalização.
-Não mostra que o software da urna é honesto (seção 3).
+O RDV é gravado pela mesma urna que gera o boletim, então os arquivos publicados de cada urna contam a mesma história
+que a totalização. Como as assinaturas digitais não foram conferidas, isso ainda não prova que são os mesmos arquivos
+que saíram da urna, nem que o software é honesto (seção 3).
 
 Veredito: refutada. Detalhes em [`RECONTAGEM_RDV_NACIONAL.md`](analise/RECONTAGEM_RDV_NACIONAL.md),
 [`RECONTAGEM_RDV.md`](analise/RECONTAGEM_RDV.md), [`LOGS.md`](analise/LOGS.md) e
@@ -168,10 +169,10 @@ Na véspera, o TSE gera uma lista de qual urna e qual software ("carga") vai em 
 A maior parte das trocas usou urna de contingência que estava na lista. As categorias 2, 4, 5, 6 e 9 têm
 explicação provável nos próprios dados, mas precisam de confirmação nas atas. As categorias 7 e 10 somam 17 seções e
 4.563 votos sem nenhuma explicação, com saldo de +42 para Lula. A divisão entre as categorias 5 e 7 depende da hora
-de carga comparada com a hora em que a lista foi gerada, então um erro de relógio pode mover algumas seções de uma
-para a outra.
+de carga comparada com a hora em que a lista foi gerada: com um erro de 1 hora no relógio, as seções sem explicação
+seriam entre 14 e 18.
 
-Veredito: refutada em 99,4% das seções. As 17 restantes não mudam nada (4.563 votos) e se esclarecem com as atas
+Veredito: refutada. As 17 seções sem explicação não mudam o resultado (4.563 votos) e podem ser esclarecidas pelas atas
 (lista em [`secoes_para_documentar.csv`](analise/secoes_para_documentar.csv)).
 
 ### H4. Houve "duas eleições", antes e depois das 17h?
@@ -206,7 +207,7 @@ Veredito: refutada.
 Aqui há um fato real. No 2º turno, 6.352 seções (em horário de Brasília) fecharam às 19h ou pouco depois, 1.993
 delas no minuto 19:00 exato. Um pico num minuto só indica um horário-limite marcado; fila daria fechamentos
 espalhados. Elas ficam em 1.131 locais de votação, sobretudo em capitais (Rio 1.978 seções, São Paulo 1.481,
-Salvador 730). Isso não aparece no 1º turno nem em 2022.
+Salvador 730). Um pico assim às 19h00 não aparece no 1º turno (237 seções nesse minuto) nem em 2022.
 
 ![Fechamentos minuto a minuto](docs/graficos/03_horario_fechamento_por_minuto.png)
 
@@ -220,7 +221,7 @@ Essas seções também votaram como as outras. Comparadas com seções do mesmo 
 diferença é de −0,06 p.p. na % de Lula e +0,03 p.p. no comparecimento (nos 313 locais em que todas as seções
 fecharam às 19h não há vizinha para comparar). Comparadas com o próprio 1º turno, Lula subiu 3,25 p.p. nelas e 3,24
 p.p. nas demais seções das mesmas cidades, e nenhuma das seis formas do modelo de H9 dá desvio a favor de Lula
-distinguível de zero. O limite superior de 95% na forma mais desfavorável é de 21.156 votos (0,5% da margem).
+distinguível de zero. O limite superior de 95% na forma mais desfavorável é de 23.360 votos (0,5% da margem).
 
 Mesmo anulando todas essas seções, Lula venceria por 4.244.467 votos. No Rio, que tem mais seções tardias, Flávio
 venceu nelas (45,8% para Lula). A afirmação de que "mais de 2 milhões de eleitores" votaram nessas seções conta os
@@ -241,25 +242,25 @@ se esses eleitores tivessem votado em bloco num candidato. Testei isso de quatro
 2. Inclinação: quanto a % de Lula muda quando a taxa de liberação muda. Daí sai uma estimativa de como votaram os
    liberados:
 
-| Comparando… | % de Lula entre os liberados (estimativa) | Margem sem os liberados (limite de 95%) |
+| Comparando… | % de Lula entre os liberados (estimativa / limite de 95%) | Margem se os liberados fossem retirados (estimativa / limite de 95%) |
 |---|---|---|
-| o país todo | 78% | −2,66 mi |
-| dentro do estado | 67% | +0,01 mi |
-| dentro do município | 54% | +2,58 mi |
+| o país todo | 78% / 92% | −0,33 mi / −2,66 mi |
+| dentro do estado | 67% / 76% | +1,53 mi / +0,01 mi |
+| dentro do município | 54% / 61% | +3,78 mi / +2,58 mi |
 
    Liberação e voto em Lula são, os dois, maiores no Nordeste e no interior. Comparar o país todo atribui à
    liberação um efeito que é da geografia (a falácia ecológica). Entre seções da mesma cidade, os liberados votam
    quase como os demais. O exterior fica fora desta conta, porque lá não há biometria.
 
 3. Contra o 1º turno. Dado como a própria seção votou no 1º turno, mais liberação vem com menos Lula do que o
-   esperado (−0,32 p.p. a cada 10 p.p. de liberação, EP 0,03), e o aumento da liberação entre os turnos não tem
+   esperado (−0,32 p.p. a cada 10 p.p. de liberação, margem de erro ±0,06), e o aumento da liberação entre os turnos não tem
    efeito (−0,02 p.p., margem de erro ±0,03). Se a liberação tivesse sido usada para pôr votos em Lula, o sinal
    seria o contrário.
 
 4. Estabilidade. A taxa de cada seção se repete entre os turnos (correlação 0,82), vai de 4,1% (RR) a 9,0% (PI) e
    é alta tanto onde Lula venceu (PI 9,0%, RN 8,1%, BA 7,5%) quanto onde Flávio venceu com folga (RS 8,45%, SC
-   7,5%, RJ 7,5%). Parece uma característica da seção, provavelmente ligada à idade do eleitorado e ao estado dos
-   leitores biométricos.
+   7,5%, RJ 7,5%). Parece uma característica da seção, talvez ligada à idade do eleitorado e ao estado dos leitores
+   biométricos (hipótese não testada aqui).
 
 ![Liberação manual por estado](docs/graficos/09_biometria_por_estado.png)
 
@@ -278,9 +279,11 @@ fossem de Lula). Liberações usadas para encher urnas no fim do dia deixariam o
 
 Em 16 seções um único mesário liberou 50 ou mais eleitores (máximo de 165, no Rio); vale conferir esses casos nas atas.
 
-Veredito: sem sinal de que a liberação tenha favorecido Lula. O pior caso aritmético e a comparação do país todo
-inverteriam o resultado, mas exigem voto em bloco dos liberados ou ignoram a geografia, e os testes 3 e 4 não mostram
-sinal disso. Como os dados são por seção, não dá para
+Veredito: sem sinal de que a liberação tenha favorecido Lula. Todas as contas de "margem sem os liberados" supõem que
+todos os 8,6 milhões seriam votos ilegítimos, e nada nos dados indica isso: cada liberação tem a digital do mesário no
+log, a taxa é estável entre os turnos e o log bate com o boletim em 100% das seções lidas. O pior caso aritmético e a
+comparação do país todo inverteriam o resultado, mas exigem também voto em bloco ou ignoram a geografia, e os testes
+3 e 4 não mostram sinal disso. Como os dados são por seção, não dá para
 saber como cada eleitor votou.
 Detalhes em [`BIOMETRIA.md`](analise/BIOMETRIA.md).
 
@@ -303,7 +306,7 @@ Veredito: refutada. É voto regional.
 |---|---|
 | 1º dígito | Lula e Flávio "falham" do mesmo jeito (dígito 1 em ~61%). É o esperado: o voto de um candidato numa seção fica entre 100 e 199 em 61% dos casos. O teste não serve para votos por seção (Deckert, Myagkov & Ordeshook, 2011). |
 | 2º dígito | Média real de 3,858 (Lula) e 3,971 (Flávio). Em 20 eleições honestas simuladas com o mesmo tamanho de seção: 3,865 a 3,873 (Lula) e 3,965 a 3,980 (Flávio). Flávio fica dentro da faixa; Lula, um centésimo abaixo. |
-| Último dígito (Beber & Scacco) | Uniforme para os dois (qui-quadrado 5,0 e 12,4; limite 16,9). |
+| Último dígito (Beber & Scacco) | Uniforme para os dois, dentro do que o acaso produz (qui-quadrado 5,0 e 12,4, abaixo do limite de 16,9). |
 
 Veredito: sem sinal relevante. A diferença de um centésimo em Lula é pequena demais para um teste que já detecta pouca
 coisa; testes de dígitos são um complemento fraco aos testes de contagem.
@@ -346,7 +349,7 @@ Veredito: refutada. Detalhes em [`PRIMEIRO_TURNO.md`](analise/PRIMEIRO_TURNO.md)
 |---|---|
 | Resultado oficial assinado (totalização) | 25/10, 23h28 |
 | Planilha BWeb gerada | 26/10, 07h42 |
-| BWeb no servidor (`Last-Modified`) | 26/10, por volta das 09h00 de Brasília; o arquivo do exterior, às 16h49 |
+| BWeb no servidor (data informada pelo servidor) | 26/10, por volta das 09h00 de Brasília; o arquivo do exterior, às 16h49 |
 | Arquivos originais das urnas no servidor | 26/10, entre 15h26 e 17h01 de Brasília |
 | BWeb listada no catálogo do portal | 27/10, por volta das 19h no relógio do catálogo |
 
@@ -362,7 +365,7 @@ conferência de fora seria com os boletins de papel afixados nas seções, que n
 ## 3. Conclusão
 
 Os dados públicos do TSE não mostram sinal de que o resultado do 2º turno tenha sido fabricado ou alterado. O
-resultado oficial é a soma exata dos boletins, os boletins batem voto a voto com o que cada urna gravou, e nenhum
+resultado oficial é a soma exata dos boletins, os boletins batem voto a voto com os registros publicados de cada urna, e nenhum
 grupo de seções suspeito se afasta a favor de Lula do que o próprio 1º turno indicava. Quase todos os números das
 suspeitas se reproduzem; o erro está na leitura: relógio local tomado por Brasília, regiões misturadas, aptos contados
 como votantes e grandezas que não se comparam.
@@ -372,7 +375,7 @@ Quanto cada suspeita poderia pesar, no cenário considerado:
 | Suspeita | Votos | % da margem |
 |---|---|---|
 | Anular todas as seções que fecharam às 19h | 185.724 | 4,2% |
-| Seções das 19h: limite de 95% do desvio em relação ao 1º turno | 21.156 | 0,5% |
+| Seções das 19h: limite de 95% do desvio em relação ao 1º turno | 23.360 | 0,5% |
 | Seções muito fora do padrão 1º → 2º turno (só desvios a favor de Lula) | 8.044 | 0,2% |
 | Seções com urna sem explicação nos dados (todos os votos) | 4.563 | 0,1% |
 | Seções das 19h: todos os votos dados depois das 17h | 4.492 | 0,1% |
@@ -394,8 +397,8 @@ Continua em aberto, e não foi testado:
 - Nenhuma análise de dados prova que o software da urna é honesto. Isso cabe aos testes públicos de segurança e à
   fiscalização. O que os dados mostram é que boletim, RDV, logs e resultado oficial contam a mesma história.
 - Logs foram lidos para todas as urnas de AC, RR e AP, para as 6.352 seções das 19h, para dois sorteios de seções
-  vizinhas e para uma amostra aleatória de 3.000 seções (11.382 urnas distintas somando as duas leituras), não para todas. As leituras
-  remotas foram feitas por download parcial, sem hash do pacote inteiro, e conferidas contra a planilha.
+  vizinhas e para uma amostra aleatória de 3.000 seções (10.809 urnas na análise da liberação e 7.852 na das seções das 19h, com sobreposição),
+  não para todas. As leituras remotas foram feitas por download parcial, sem hash do pacote inteiro, e conferidas contra a planilha.
 - Por que cerca de 1.100 locais ficaram abertos até as 19h e o que explica as 17 urnas sem registro só os atos dos
   TREs e as atas dizem.
 - Afirmações políticas e jurídicas não estão nos dados de votação.
@@ -409,8 +412,8 @@ Lula e de Flávio. No país ela foi de 49,0% no 1º turno para 51,8% no 2º, uma
 
 ![Lula ganhou terreno sobre Flávio em todos os estados](docs/graficos/12_mapa_estados_disputa.png)
 
-Lula avançou em todos os 27 estados. O avanço foi maior no Sudeste e no Centro-Oeste (Rio +4,3 p.p., São Paulo +3,8,
-Goiás +3,7) e menor no Nordeste, onde ele já era muito forte no 1º turno e tinha menos espaço para crescer (Piauí
+Lula avançou em todos os 27 estados. O avanço foi maior no Rio (+4,3 p.p.), em São Paulo (+3,8) e em Goiás
+(+3,7), e menor no Nordeste, onde ele já era muito forte no 1º turno e tinha menos espaço para crescer (Piauí
 +1,2, Bahia +1,4).
 
 ![Onde Lula e Flávio ganharam terreno, por município](docs/graficos/11_mapa_municipios_disputa.png)
@@ -421,8 +424,8 @@ votações muito altas. O vermelho mais forte aparece em São Paulo, Goiás, Min
 mostra para onde foi cada eleitor.
 
 De onde veio essa virada? Do 1º para o 2º turno, Lula foi de 45,2% para 51,8% dos válidos (+6,6 p.p.) e Flávio de
-47,0% para 48,2% (+1,2). Os dois crescem quase por construção, porque no 1º turno havia outros candidatos: dos 7,8
-pontos que eles somavam, 6,6 foram para Lula e 1,2 para Flávio.
+47,0% para 48,2% (+1,2). Os dois crescem quase por construção, porque no 1º turno havia outros candidatos: eles somavam
+7,8 pontos, e Lula ganhou o equivalente a 6,6 e Flávio a 1,2.
 
 ![Crescimento de Lula e de Flávio do 1º para o 2º turno, por estado](docs/graficos/13_mapa_estados_validos.png)
 
@@ -493,6 +496,7 @@ listou (`CATALOGO.csv`), em `dados/tse/2026/boletim_urna/2turno/`.
 | 10 | Seções do exterior sem eleitores presentes não têm linhas de Presidente na BWeb (2 no 2º turno, 1 no 1º); no 2º turno aparecem só com cargo "-1". | Explica 499.205 seções com voto contra 499.207 em funcionamento no oficial. |
 | 11 | 29 seções do exterior não têm horário porque foram apuradas em cédula (Sistema de Apuração): 27 com votos e as 2 sem votantes do problema 10. | O relatório oficial confirma: "29 seções apuradas pelo SA". |
 | 12 | No 1º turno, o nº 28 teve 5.246 votos que não aparecem no resultado oficial. | São exatamente os 5.246 "votos nulos técnicos" do oficial (registro anulado). |
+| 13 | No RDV do Acre, 51 votos vêm com um código de tipo (6) que não é nominal, branco nem o nulo comum; não achei documentação pública sobre ele. | A planilha do TSE conta esses votos como nulos, e contando assim o RDV bate seção por seção. Qualquer outro código desconhecido quebraria a conferência. |
 
 ## Apêndice D. Como rodar tudo
 
@@ -652,7 +656,7 @@ I would conclude the result was altered if any of these showed up: a state whose
 official result; a machine's digital vote record different from its report; a log with votes outside voting hours
 or releases different from the report; a group of stations deviating toward one candidate, relative to its own 1st
 round, in every model form, including comparisons within the same city; paper reports different from the files;
-invalid digital signatures. None of the first four appeared. The last two were not tested.
+invalid digital signatures. None of the first four appeared (the third, in the logs read). The last two were not tested.
 
 ---
 
@@ -726,13 +730,16 @@ Verdict: rejected.
 
 There is a real fact here. In the runoff, 6,352 stations (Brasília time) closed at 7 pm or shortly after, 1,993 of
 them at exactly 7:00 pm, a sign of a set deadline rather than queues. They are in 1,131 polling places, mostly in
-state capitals (Rio, São Paulo, Salvador). This did not happen in the 1st round or in 2022.
+state capitals (Rio, São Paulo, Salvador). Such a spike at exactly 7:00 pm did not happen in the 1st round (237
+stations) or in 2022.
 
 But the extra hours had almost no votes. I read the log of every one of the 6,352 machines: only 4,492 of 1,861,259
 votes (0.24%) were cast after 5 pm. These stations also voted like the others: compared with stations in the same
 polling place that closed at 5 pm, the difference in Lula's share is −0.06 points, and relative to their own 1st
 round, no model form shows a deviation toward Lula distinguishable from chance. Even voiding all of them, Lula would
-win by 4,244,467 votes.
+win by 4,244,467 votes. In Rio, which has the most such stations, Flávio won them. The claim that "over 2 million voters"
+voted in these stations counts registered voters: by local time there were 2.30 million registered and 1.86 million
+who voted.
 
 ![Votes after 5 pm](docs/graficos/04_votos_depois_das_17h_nas_secoes_tardias.png)
 
@@ -756,7 +763,14 @@ these voters voted as a bloc. I tested that in four ways:
 Logs of 10,809 machines read voter by voter confirm the reports in 100% of them; releases are higher in the morning
 and fall during the day.
 
-Verdict: no sign the releases favored Lula. Since data is per station, how each individual voted cannot be known.
+Logs read voter by voter also show that only 245 voters were released this way after 5 pm in the stations open until
+7 pm (0.006% of the margin even if all were for Lula). In 16 stations a single poll worker released 50 or more voters;
+those are worth checking in the station minutes.
+
+Verdict: no sign the releases favored Lula. Every "margin without released voters" figure assumes all 8.6 million were
+illegitimate votes, and nothing in the data suggests that: each release has the poll worker's fingerprint in the log,
+the rate is stable between rounds and the log matches the report in 100% of the stations read. Since data is per
+station, how each individual voted cannot be known.
 
 ### H7. Do stations with 100% for Lula indicate fraud?
 
@@ -781,7 +795,9 @@ round to predict Lula's runoff share, in six different ways, and compares predic
 off by about 2 points per station on average and explains 93% of the differences between stations in the same city.
 
 No suspicious group deviates toward Lula. In the 7 pm stations the gap stays between −0.12 and +0.18 points, too small
-to distinguish from chance. The test cannot catch tampering identical in every station (that would show up in H1/H2 if
+to distinguish from chance; the worst-case 95% bound is 23,360 votes (0.5% of the margin). Stations with many
+fingerprint releases fall slightly below the prediction for Lula. 573 stations are far off the pattern, split between
+both sides; adding only the deviations toward Lula gives 8,044 votes. The test cannot catch tampering identical in every station (that would show up in H1/H2 if
 it happened after the machine; if inside the machine, only a software audit could catch it).
 
 Verdict: rejected.
@@ -809,7 +825,7 @@ How much each suspicion could weigh, in the scenario considered:
 | Suspicion | Votes | % of margin |
 |---|---|---|
 | Void every station that closed at 7 pm | 185,724 | 4.2% |
-| 7 pm stations: 95% upper bound of the deviation from the 1st round | 21,156 | 0.5% |
+| 7 pm stations: 95% upper bound of the deviation from the 1st round | 23,360 | 0.5% |
 | Stations far off the 1st→2nd round pattern (deviations toward Lula only) | 8,044 | 0.2% |
 | Stations with an unexplained machine (all their votes) | 4,563 | 0.1% |
 | 7 pm stations: every vote cast after 5 pm | 4,492 | 0.1% |
@@ -834,8 +850,7 @@ and Flávio. Nationwide it went from 49.0% in the 1st round to 51.8% in the runo
 
 ![Lula gained ground on Flávio in every state](docs/graficos/12_mapa_estados_disputa.png)
 
-Lula gained in all 27 states. The gain was largest in the Southeast and Center-West (Rio +4.3 points, São Paulo +3.8,
-Goiás +3.7) and smallest in the Northeast, where he was already very strong in the 1st round (Piauí +1.2, Bahia +1.4).
+Lula gained in all 27 states. The gain was largest in Rio (+4.3 points), São Paulo (+3.8) and Goiás (+3.7), and smallest in the Northeast, where he was already very strong in the 1st round (Piauí +1.2, Bahia +1.4).
 
 ![Where Lula and Flávio gained ground, by municipality](docs/graficos/11_mapa_municipios_disputa.png)
 
@@ -844,8 +859,8 @@ Flávio advanced (in blue), 123 are in the Northeast, mostly in Bahia (86) and P
 high shares.
 
 Where did the swing come from? Lula went from 45.2% to 51.8% of valid votes (+6.6 points) and Flávio from 47.0% to
-48.2% (+1.2). Both grow almost by construction, because the 1st round had other candidates: of the 7.8 points they
-held, 6.6 went to Lula and 1.2 to Flávio. In Goiás both grew more than elsewhere (Lula +9.3, Flávio +6.1), because
+48.2% (+1.2). Both grow almost by construction, because the 1st round had other candidates: those held 7.8 points, and
+Lula gained the equivalent of 6.6 and Flávio of 1.2. In Goiás both grew more than elsewhere (Lula +9.3, Flávio +6.1), because
 Ronaldo Caiado got 12.3% there in the 1st round.
 
 ![Growth of Lula and Flávio by state, in valid votes](docs/graficos/13_mapa_estados_validos.png)
@@ -856,6 +871,11 @@ Ronaldo Caiado got 12.3% there in the 1st round.
 
 | Term | Meaning |
 |---|---|
+| Lula's share | Unless noted, Lula ÷ (Lula + Flávio). |
+| Margin | Lula's votes − Flávio's votes: 4,430,191. |
+| Registered / turnout | Who could vote / who voted. |
+| Backup machine | A spare machine, prepared in advance, that replaces a faulty one. |
+| Local × Brasília time | Machines record local time. In Acre, 5 pm Brasília time shows as 3 pm. |
 | Station (seção) | A voting "table": one room, one machine, a few hundred voters. Brazil has about 499,000. |
 | Report (BU, boletim de urna) | The result each machine prints and records at closing, with each candidate's total. |
 | BWeb | The TSE spreadsheet with the contents of every report. |

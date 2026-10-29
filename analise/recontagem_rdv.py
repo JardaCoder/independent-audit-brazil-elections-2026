@@ -75,10 +75,9 @@ def votos_rdv(b):
                 tipo = b[vc[0][3]]  # 2 nominal, 3 branco, 4 nulo
                 if tipo == 2:
                     cont[b[vc[1][3]:vc[1][3] + vc[1][4]].decode() if len(vc) > 1 else ""] += 1
-                elif tipo == 3:
-                    cont["Branco"] += 1
-                else:
-                    cont["Nulo"] += 1  # inclui números inválidos digitados ("00", "10"...)
+                else:  # 4 inclui números inválidos ("00", "10"...); 6 só aparece no AC (51 votos) e a BWeb o conta como nulo.
+                    # Outro tipo fica à parte e quebra a conferência com a BWeb.
+                    cont[{3: "Branco", 4: "Nulo", 6: "Nulo"}.get(tipo, f"tipo {tipo}")] += 1
     return cont
 
 
@@ -86,7 +85,7 @@ def votos_bu(b):
     """Totais de Presidente gravados no bu.dat (dentro de um envelope: último OCTET STRING da raiz)."""
     env = filhos(b, tlv(b, 0))[-1]
     bu = b[env[3]:env[3] + env[4]]
-    resultados = [c for c in filhos(bu, tlv(bu, 0)) if c[0] == 0 and c[2] == 16 and c[4] > 200][0]
+    resultados = max((c for c in filhos(bu, tlv(bu, 0)) if c[0] == 0 and c[2] == 16), key=lambda c: c[4])  # o bloco maior
     cont = collections.Counter()
     for e in filhos(bu, resultados):
         for rv in filhos(bu, filhos(bu, e)[4]):
@@ -100,7 +99,7 @@ def votos_bu(b):
                     if tipo == 1:
                         cont[str(inteiro(bu, filhos(bu, vc[2])[1]))] += q
                     else:
-                        cont["Branco" if tipo == 2 else "Nulo"] += q
+                        cont[{2: "Branco", 3: "Nulo"}.get(tipo, f"tipo {tipo}")] += q
     return cont
 
 

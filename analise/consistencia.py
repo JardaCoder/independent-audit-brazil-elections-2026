@@ -56,8 +56,8 @@ def main():
             "seções sem horário de abertura/encerramento (apuradas em cédula)": sem_hora,
             "abertura < encerramento ≤ emissão do BU (seções com horário)": ~sem_hora & ~((s.abertura < s.encerramento) & (s.encerramento <= s.emissao)),
             "abertura no dia da eleição (seções com horário)": ~sem_hora & (s.abertura.dt.date.astype(str) != "2026-10-25"),
-            "BU recebido pelo TSE depois de emitido pela urna (Brasil, em horário de Brasília, sem folga)": atraso < 0,
-            "carga da urna antes do dia da eleição": s.carga >= pd.Timestamp("2026-10-25"),
+            "BU recebido pelo TSE ANTES de emitido pela urna (Brasil, em horário de Brasília, sem folga)": atraso < 0,
+            "carga da urna feita NO dia da eleição": s.carga >= pd.Timestamp("2026-10-25"),
         }
         k = "recebido antes de emitido: maior diferença (s)"
         checks[k] = max(checks.get(k, 0), int(-atraso.min()) if (atraso < 0).any() else 0)

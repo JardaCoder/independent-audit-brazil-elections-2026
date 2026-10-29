@@ -80,9 +80,12 @@ def main():
               f"- Votos nulos técnicos (votos dados a candidato cujo registro foi anulado depois): {of.loc['BR', 'nulos técnicos']:,}.".replace(",", ".")]
         if len(nao_bate):
             L += ["", "Diferenças (soma dos BUs − oficial):", "",
-                  nao_bate.loc[:, (nao_bate != 0).any()].to_markdown(), "",
-                  "- As diferenças de seções e aptos são seções do exterior em que **ninguém votou**: elas não aparecem na "
-                  "planilha de votos (BWeb), mas o TSE as conta como \"em funcionamento\". Votos e comparecimento batem."]
+                  nao_bate.loc[:, (nao_bate != 0).any()].to_markdown(), ""]
+            # A explicação só vale se a diferença for apenas de seções/aptos no exterior (e no total do Brasil).
+            if set(nao_bate.index) <= {"ZZ", "BR"} and set(nao_bate.columns[(nao_bate != 0).any()]) <= {"seções", "aptos"}:
+                L.append("- As diferenças de seções e aptos são seções do exterior em que **ninguém votou**: não têm linhas "
+                         "de Presidente na planilha de votos (BWeb), mas o TSE as conta como \"em funcionamento\". Votos e "
+                         "comparecimento batem.")
         # Os votos nominais que não aparecem no oficial viram "nulo técnico".
         for c in [c for c in bu.columns if c.startswith("V_") and c not in of.columns]:
             L.append(f"- O número {c[2:]} recebeu {bu.loc['BR', c]:,} votos nas urnas e não aparece entre os candidatos válidos "

@@ -57,22 +57,27 @@ def main():
         mesma_carga = m.carga_bu == m.carga_esp
         urna_cont = m.NR_URNA_EFETIVADA.isin(cont_urnas)
         carga_cont = m.carga_bu.isin(cont_cargas)
-        depois = carga_bsb > gerada
         mesmo_cartao = m.CD_FLASHCARD_URNA_EFETIVADA == m.CD_FLASHCARD_URNA_ESPERADA
-        # Primeira regra verdadeira vence: cada condição já exclui as linhas das anteriores.
-        regras = [
-            (listada & mesma_urna & mesma_carga, "1. urna e carga exatamente as previstas"),
-            (listada & mesma_urna, "2. urna prevista, carga diferente da lista"),
-            (listada & carga_cont, "3. urna de contingência da lista, com a carga da lista"),
-            (listada & urna_cont, "4. urna de contingência da lista, recarregada (carga fora da lista)"),
-            (listada & depois, "5. urna fora das listas, carregada DEPOIS que a lista foi gerada"),
-            (listada & mesmo_cartao, "6. urna fora das listas, mesmo cartão de carga da urna prevista"),
-            (listada, "7. urna fora das listas, sem explicação nos dados"),
-            (m.DT_ABERTURA.isna() & (m.SG_UF == "ZZ"), "8. seção fora da lista: exterior, apurada em cédula"),
-            (m.DT_ABERTURA.notna() & (urna_cont | carga_cont), "9. seção fora da lista, urna de contingência da lista"),
-            (m.DT_ABERTURA.notna(), "10. seção fora da lista, urna fora das listas"),
-        ]
-        m["categoria"] = np.select([c for c, _ in regras], [n for _, n in regras], default="11. outros")
+
+        def classificar(gerada):
+            # Primeira regra verdadeira vence: cada condição já exclui as linhas das anteriores.
+            regras = [
+                (listada & mesma_urna & mesma_carga, "1. urna e carga exatamente as previstas"),
+                (listada & mesma_urna, "2. urna prevista, carga diferente da lista"),
+                (listada & carga_cont, "3. urna de contingência da lista, com a carga da lista"),
+                (listada & urna_cont, "4. urna de contingência da lista, recarregada (carga fora da lista)"),
+                (listada & (carga_bsb > gerada), "5. urna fora das listas, carregada DEPOIS que a lista foi gerada"),
+                (listada & mesmo_cartao, "6. urna fora das listas, mesmo cartão de carga da urna prevista"),
+                (listada, "7. urna fora das listas, sem explicação nos dados"),
+                (m.DT_ABERTURA.isna() & (m.SG_UF == "ZZ"), "8. seção fora da lista: exterior, apurada em cédula"),
+                (m.DT_ABERTURA.notna() & (urna_cont | carga_cont), "9. seção fora da lista, urna de contingência da lista"),
+                (m.DT_ABERTURA.notna(), "10. seção fora da lista, urna fora das listas"),
+            ]
+            return np.select([c for c, _ in regras], [n for _, n in regras], default="11. outros")
+
+        m["categoria"] = classificar(gerada)
+        # Sensibilidade: um erro de 1h no relógio da carga ou da lista move seções entre as categorias 5 e 7.
+        m["cat_menos_1h"], m["cat_mais_1h"] = classificar(gerada - pd.Timedelta(hours=1)), classificar(gerada + pd.Timedelta(hours=1))
         m["lista_gerada_em"] = gerada
         m["carga_brasilia"] = carga_bsb
         partes.append(m)
@@ -88,6 +93,10 @@ def main():
                     "DT_CARGA_URNA_EFETIVADA", "carga_brasilia", "lista_gerada_em", "QT_COMPARECIMENTO", "V_13", "V_22"]
     doc[cols].sort_values(["categoria"] + CHAVE).to_csv(os.path.join(RAIZ, "analise", "secoes_para_documentar.csv"), index=False)
     sem_exp = t[num.isin([7, 10])]
+
+    def sem(cat):
+        return int(cat.str.split(".").str[0].astype(int).isin([7, 10]).sum())
+
     txt = ("# Urnas usadas × urnas previstas antes da eleição — 2º turno 2026\n\n"
            "Fonte: arquivos CESP do TSE, gerados em 24/10/2026 (véspera da eleição), com a urna e o código de carga previstos "
            "para cada seção e a lista de urnas de contingência (reservas). Cada seção entra em **uma** categoria.\n\n"
@@ -98,6 +107,8 @@ def main():
            "cartão de carga), mas pedem confirmação nas atas da seção.\n"
            f"- Categorias 7 e 10 (**{len(sem_exp)} seções**, {fmt_int(sem_exp.QT_COMPARECIMENTO.sum())} votos, saldo de Lula "
            f"{fmt_int(sem_exp.V_13.sum() - sem_exp.V_22.sum())}) não têm explicação nos dados.\n\n"
+           + "- Sensibilidade ao relógio: com a hora de geração da lista 1h antes, as seções sem explicação (7 e 10) seriam "
+           f"{sem(t.cat_menos_1h)}; 1h depois, {sem(t.cat_mais_1h)}.\n\n"
            "Lista completa das categorias 2, 4, 5, 6, 7, 9 e 10: `secoes_para_documentar.csv`.\n\n"
            "## Seções sem explicação nos dados (categorias 7 e 10)\n\n"
            + sem_exp[cols].astype(str).to_markdown(index=False, disable_numparse=True) + "\n")

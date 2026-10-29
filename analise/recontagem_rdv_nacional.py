@@ -88,7 +88,8 @@ def main(ufs):
          "Cada RDV foi baixado do pacote oficial do TSE (\"arquivos transmitidos para totalização\") por download parcial "
          "e os votos de Presidente foram contados um a um. Ver `recontagem_rdv.py` para o leitor.", "",
          f"- Seções na BWeb: {fmt(len(r[r._merge != 'right_only']))}. RDVs lidos sem erro: {fmt(lido.sum())}; "
-         f"com erro de leitura: {fmt((~lido & r.rdv_total.notna()).sum())}. "
+         f"com erro de leitura: {fmt((~lido & r.rdv_total.notna()).sum())} ({fmt((~lido & (r._merge == 'both')).sum())} "
+         f"seções em cédula e {fmt((~lido & (r._merge == 'right_only')).sum())} arquivos sem seção com votos na BWeb). "
          f"**RDV idêntico à BWeb (Lula, Flávio, brancos e nulos): {fmt(igual.sum())}**.",
          f"- Seções da BWeb sem arquivo RDV no pacote: {len(sem_rdv)}.",
          "", "## Totais", "", pd.Series(tot).to_frame("votos").to_markdown(), "", "## Por UF", "", por_uf.to_markdown(), ""]

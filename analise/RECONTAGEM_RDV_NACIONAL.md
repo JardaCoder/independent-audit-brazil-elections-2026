@@ -2,7 +2,7 @@
 
 Cada RDV foi baixado do pacote oficial do TSE ("arquivos transmitidos para totalização") por download parcial e os votos de Presidente foram contados um a um. Ver `recontagem_rdv.py` para o leitor.
 
-- Seções na BWeb: 499.205. RDVs lidos sem erro: 499.178; com erro de leitura: 29. **RDV idêntico à BWeb (Lula, Flávio, brancos e nulos): 499.178**.
+- Seções na BWeb: 499.205. RDVs lidos sem erro: 499.178; com erro de leitura: 29 (27 seções em cédula e 2 arquivos sem seção com votos na BWeb). **RDV idêntico à BWeb (Lula, Flávio, brancos e nulos): 499.178**.
 - **Seções com urna eletrônica: 499.178 de 499.178 idênticas.** As 27 que não batem são todas seções do exterior apuradas em **cédula** (Sistema de Apuração): o leitor não consegue interpretar o arquivo delas (erro de leitura). Os votos dessas seções somam 831, exatamente a diferença entre os totais abaixo.
 - Seções da BWeb sem arquivo RDV no pacote: 0.
 

@@ -21,6 +21,8 @@ Lista gerada em: 2026-10-24 12:31:34 (horário de Brasília). As datas de carga 
 - Categorias 2, 4, 5, 6 e 9 têm explicação provável nos próprios dados (recarga, troca feita depois da lista, mesmo cartão de carga), mas pedem confirmação nas atas da seção.
 - Categorias 7 e 10 (**17 seções**, 4.563 votos, saldo de Lula 42) não têm explicação nos dados.
 
+- Sensibilidade ao relógio: com a hora de geração da lista 1h antes, as seções sem explicação (7 e 10) seriam 14; 1h depois, 18.
+
 Lista completa das categorias 2, 4, 5, 6, 7, 9 e 10: `secoes_para_documentar.csv`.
 
 ## Seções sem explicação nos dados (categorias 7 e 10)
