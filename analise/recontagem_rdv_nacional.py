@@ -86,10 +86,20 @@ def main(ufs):
          "e os votos de Presidente foram contados um a um. Ver `recontagem_rdv.py` para o leitor.", "",
          f"- Seções na BWeb: {fmt(len(r[r._merge != 'right_only']))}. RDVs lidos: {fmt(ok.rdv_total.notna().sum())}. "
          f"**RDV idêntico à BWeb (Lula, Flávio, brancos e nulos): {fmt(igual.sum())}**.",
-         f"- Seções da BWeb sem RDV no pacote: {len(sem_rdv)} (as do exterior apuradas em cédula, sem urna eletrônica, "
-         f"e as sem votantes){': ' + ', '.join(sorted(set(sem_rdv.SG_UF))) if len(sem_rdv) else ''}.",
+         f"- Seções da BWeb sem arquivo RDV no pacote: {len(sem_rdv)}.",
          "", "## Totais", "", pd.Series(tot).to_frame("votos").to_markdown(), "", "## Por UF", "", por_uf.to_markdown(), ""]
+    from carregar import carregar
+    sec = carregar()
+    cedula = sec[sec.DT_ABERTURA.isna()][["SG_UF", "CD_MUNICIPIO", "NR_SECAO", "NR_ZONA"]].astype(str)
+    chave_ced = set(zip(cedula.SG_UF, cedula.CD_MUNICIPIO, cedula.NR_ZONA, cedula.NR_SECAO))
     dif = ok[~igual]
+    eh_cedula = [(u, str(m), str(z), str(s_)) in chave_ced for u, m, z, s_ in zip(dif.SG_UF, dif.CD_MUNICIPIO, dif.NR_ZONA, dif.NR_SECAO)]
+    eletronicas = ok[[(u, str(m), str(z), str(s_)) not in chave_ced for u, m, z, s_ in zip(ok.SG_UF, ok.CD_MUNICIPIO, ok.NR_ZONA, ok.NR_SECAO)]]
+    ig_el = igual.loc[eletronicas.index]
+    L.insert(5, f"- **Seções com urna eletrônica: {fmt(ig_el.sum())} de {fmt(len(eletronicas))} idênticas.** As "
+             f"{fmt(sum(eh_cedula))} que não batem são todas seções do exterior apuradas em **cédula** (Sistema de Apuração): "
+             "o arquivo delas não segue o formato do RDV da urna e o leitor não o interpreta. Os votos dessas seções somam "
+             f"{fmt(dif[eh_cedula].bweb_comparecimento.sum())}, exatamente a diferença entre os totais abaixo.")
     if len(dif):
         L += ["## Seções com diferença", "", dif.head(50).to_markdown(index=False), ""]
     open(SAIDA, "w", encoding="utf-8").write("\n".join(L) + "\n")

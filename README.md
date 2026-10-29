@@ -37,7 +37,7 @@ Em linguagem direta:
 | Pergunta | Resposta | Onde ver |
 |---|---|---|
 | O resultado oficial é a soma dos boletins de urna? | **Sim, exatamente**, em todas as UFs, nos dois turnos. | [6.2](#62-a-soma-dos-boletins-bate-com-o-resultado-oficial) |
-| Os boletins batem com o que a urna gravou? | **Sim.** Recontando voto a voto o registro digital de cada urna (RDV): {{RDV_RESUMO}} | [6.4](#64-recontagem-voto-a-voto-e-logs-das-urnas) |
+| Os boletins batem com o que a urna gravou? | **Sim.** Recontando voto a voto o registro digital de cada urna (RDV): **todas as 499.178 seções com urna eletrônica do país batem exatamente** com a planilha (Lula, Flávio, brancos e nulos). O próprio relatório oficial conta 499.178 seções apuradas em urna eletrônica. | [6.4](#64-recontagem-voto-a-voto-e-logs-das-urnas) |
 | As urnas usadas eram as previstas antes da eleição? | 99,4% exatamente as previstas. As trocas têm registro. Só **17 seções** (4.563 votos) não têm explicação nos dados. | [6.5](#65-as-urnas-usadas-eram-as-previstas) |
 | Houve "duas eleições", antes e depois das 17h? | **Não.** O padrão vem do fuso horário e da geografia, aparece em 2022 e já existia no 1º turno nas mesmas seções. | [6.6](#66-réplica-do-relatório-duas-eleições-antes-e-depois-das-17h) |
 | As urnas que ficaram abertas até 19h "fabricaram" votos? | **Não.** O fechamento às 19h é real (6.352 seções), mas os logs mostram que só **4.492 votos** (0,24%) foram dados depois das 17h nessas urnas. Elas votaram igual às vizinhas que fecharam às 17h. | [6.7](#67-as-seções-que-fecharam-às-19h) |
@@ -207,7 +207,15 @@ digitado. Escrevemos um leitor do formato da urna (ASN.1/DER), contamos os votos
 comparamos com a planilha. Para AC, RR e AP também conferimos o BU digital (`bu.dat`) e o código de
 carga gravado nele.
 
-{{RDV_TABELA}}
+| Recontagem pelo RDV | Resultado |
+|---|---|
+| Seções com urna eletrônica recontadas (Brasil + exterior) | **499.178** |
+| RDV idêntico à planilha (Lula, Flávio, brancos e nulos) | **499.178 de 499.178** |
+| Lula / Flávio somando os RDVs | 64.255.787 / 59.825.688 |
+| Diferença para o oficial | 445 / 353: exatamente os votos das 27 seções do exterior apuradas em **cédula**, que não têm RDV de urna |
+| AC, RR e AP: BU digital (`bu.dat`) e código de carga = planilha | 5.703 de 5.703 |
+
+Cada RDV foi lido direto do pacote oficial do TSE, baixando só aquele arquivo (download parcial).
 
 **Logs e BU impresso de AC, RR e AP** (`analise/logs_urna.py`, `analise/imagem_bu.py`; 5.703 urnas):
 
