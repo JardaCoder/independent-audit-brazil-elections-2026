@@ -1,0 +1,9 @@
+# Conjuntos grandes demais para o Git (>100 MB por arquivo / vários GB no total).
+# Baixe com: python3 scripts/baixar_dados_tse.py <conjunto>
+dados/tse/2026/*
+!dados/tse/2026/boletim_urna/
+dados/tse/2026/boletim_urna/*
+!dados/tse/2026/boletim_urna/2turno/
+dados/derivados/
+*.part
+__pycache__/
