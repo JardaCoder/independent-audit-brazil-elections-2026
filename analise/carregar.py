@@ -1,4 +1,7 @@
-"""Carrega os Boletins de Urna (BWeb) do 2º turno de 2026 numa tabela por seção."""
+"""Carrega os Boletins de Urna (BWeb) de Presidente numa tabela com uma linha por seção.
+
+Lê os arquivos em dados/tse/<ano>/presidente/<turno>turno/, que são as linhas de Presidente copiadas
+sem alteração dos .zip oficiais do TSE (ver scripts/extrair_presidente.py)."""
 import glob
 import os
 import zipfile
@@ -18,15 +21,17 @@ COLS = ["SG_UF", "CD_MUNICIPIO", "NM_MUNICIPIO", "NR_ZONA", "NR_SECAO", "CD_CARG
         "DT_ABERTURA", "DT_ENCERRAMENTO", "QT_ELEI_BIOM_SEM_HABILITACAO", "DT_BU_RECEBIDO"]
 
 
-def _ler_uf(zip_path):
-    with zipfile.ZipFile(zip_path) as zf:
-        nome = next(n for n in zf.namelist() if n.endswith(".csv"))
-        with zf.open(nome) as f:
-            # Em 2022 o campo de eleitores não habilitados por biometria chamava-se QT_ELEITORES_BIOMETRIA_NH.
-            # No 1º turno o arquivo traz todos os cargos; lemos em blocos e guardamos só Presidente.
-            blocos = pd.read_csv(f, sep=";", encoding="latin1", dtype=str, chunksize=2_000_000,
-                                 usecols=lambda c: c in COLS or c == "QT_ELEITORES_BIOMETRIA_NH")
-            df = pd.concat(b[b["CD_CARGO_PERGUNTA"] == "1"] for b in blocos)
+def _ler_uf(caminho):
+    # Em 2022 o campo de eleitores não habilitados por biometria chamava-se QT_ELEITORES_BIOMETRIA_NH.
+    usar = lambda c: c in COLS or c == "QT_ELEITORES_BIOMETRIA_NH"  # noqa: E731
+    if caminho.endswith(".csv.gz"):
+        df = pd.read_csv(caminho, sep=";", encoding="latin1", dtype=str, usecols=usar)
+    else:  # .zip oficial com todos os cargos
+        with zipfile.ZipFile(caminho) as zf:
+            nome = next(n for n in zf.namelist() if n.endswith(".csv"))
+            with zf.open(nome) as f:
+                blocos = pd.read_csv(f, sep=";", encoding="latin1", dtype=str, chunksize=2_000_000, usecols=usar)
+                df = pd.concat(b[b["CD_CARGO_PERGUNTA"] == "1"] for b in blocos)
     df = df.rename(columns={"QT_ELEITORES_BIOMETRIA_NH": "QT_ELEI_BIOM_SEM_HABILITACAO"})
     df = df[df["CD_CARGO_PERGUNTA"] == "1"]  # Presidente
     for c in ["QT_APTOS", "QT_COMPARECIMENTO", "QT_VOTOS", "NR_VOTAVEL"]:
@@ -51,13 +56,13 @@ def _ler_uf(zip_path):
 
 
 def carregar(usar_cache=True, ano=2026, turno=2):
-    pasta = os.path.join(RAIZ, "dados", "tse", str(ano), "boletim_urna", f"{turno}turno")
+    pasta = os.path.join(RAIZ, "dados", "tse", str(ano), "presidente", f"{turno}turno")
     cache = CACHE.replace("2026", str(ano)).replace("_2t_", f"_{turno}t_")
     if usar_cache and os.path.exists(cache):
         df = pd.read_csv(cache, dtype={"CD_MUNICIPIO": str, "NR_ZONA": str, "NR_SECAO": str})
         df[[c for c in df if c.startswith("V_")]] = df[[c for c in df if c.startswith("V_")]].fillna(0)
     else:
-        partes = [_ler_uf(z) for z in sorted(glob.glob(os.path.join(pasta, f"bweb_{turno}t_*.zip")))]
+        partes = [_ler_uf(z) for z in sorted(glob.glob(os.path.join(pasta, f"bweb_presidente_{turno}t_*.csv.gz")))]
         df = pd.concat(partes, ignore_index=True)
         df[[c for c in df if c.startswith("V_")]] = df[[c for c in df if c.startswith("V_")]].fillna(0).astype(int)
         os.makedirs(os.path.dirname(cache), exist_ok=True)

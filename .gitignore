@@ -5,6 +5,7 @@ dados/tse/2026/*
 !dados/tse/2026/correspondencias/
 !dados/tse/2026/arquivos_urna/
 !dados/tse/2026/totalizacao/
+!dados/tse/2026/presidente/
 dados/tse/2026/boletim_urna/*
 !dados/tse/2026/boletim_urna/2turno/
 # 1º turno: 4,8 GB (SP sozinho tem 1,4 GB). Versionamos só os hashes oficiais; a tabela por seção está em dados/derivados/
@@ -13,6 +14,7 @@ dados/tse/2026/boletim_urna/1turno/*.zip
 # Pacotes das urnas: versionados em partes de 90 MB; o .zip inteiro é remontado localmente
 dados/tse/2026/arquivos_urna/2turno/*.zip
 dados/tse/2022/*
+!dados/tse/2022/presidente/
 !dados/tse/2022/boletim_urna/
 dados/tse/2022/boletim_urna/*
 !dados/tse/2022/boletim_urna/2turno/
