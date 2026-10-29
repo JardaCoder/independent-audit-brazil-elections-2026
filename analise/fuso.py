@@ -49,17 +49,12 @@ def main():
          "- O menor intervalo entre \"fechou\" e \"chegou\" é o fuso de cada grupo (cerca de 2h, 1h e 0h).", ""]
     linhas = []
     for uf in ["AC", "RR", "AP"]:
-        z = zipfile.ZipFile(os.path.join(PASTA_URNA, f"bu_imgbu_logjez_rdv_vscmr_2026_2t_{uf}.zip"))
-        logs = sorted(n for n in z.namelist() if n.endswith("-log.jez"))
-        com, exemplo = 0, ""
-        for n in logs:
-            for ln in linhas_log(z.read(n)):
-                if "Data e hora que foi digitada pelo operador" in ln:
-                    com += 1
-                    if not exemplo:
-                        p = ln.split("\t")
-                        exemplo = f"{p[0]} → \"{p[4]}\""
-                    break
+        with zipfile.ZipFile(os.path.join(PASTA_URNA, f"bu_imgbu_logjez_rdv_vscmr_2026_2t_{uf}.zip")) as z:
+            logs = sorted(n for n in z.namelist() if n.endswith("-log.jez"))
+            digitadas = [next((ln for ln in linhas_log(z.read(n)) if "Data e hora que foi digitada pelo operador" in ln), None)
+                         for n in logs]
+        achadas = [ln.split("\t") for ln in digitadas if ln]
+        com, exemplo = len(achadas), (f"{achadas[0][0]} → \"{achadas[0][4]}\"" if achadas else "")
         linhas.append({"UF": uf, "urnas": len(logs), "com hora digitada pelo operador no log": com, "exemplo": exemplo})
     L += ["## 3. O relógio é acertado à mão", "",
           "No log de cada urna aparece o momento em que o operador digita a data e a hora, na preparação da urna, "

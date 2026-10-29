@@ -10,10 +10,10 @@ from collections import Counter
 
 import pandas as pd
 
+from carregar import FUSO
 from imagem_bu import PASTA_URNA, parse
 
 DIA = "25/10/2026"
-FUSO = {"AC": 2, "AM": 1, "MT": 1, "MS": 1, "RO": 1, "RR": 1}
 
 
 def linhas_log(jez):
@@ -32,13 +32,9 @@ def eventos_secao(log_jez):
     """Percorre o log do dia da eleição eleitor a eleitor e classifica cada habilitação."""
     # Cada logd.dat é lido na ordem original do arquivo; logs de urnas substituídas vêm em sequência (não se sobrepõem).
     linhas = linhas_log(log_jez)
-    r = Counter()
-    votos_hora = Counter()
-    manuais_hora = Counter()
-    mesarios = Counter()
-    erros = Counter()
+    r, votos_hora, manuais_hora, mesarios, erros = Counter(), Counter(), Counter(), Counter(), Counter()
     ultimo_voto = None
-    tipo, mesario, habilitado, recusou, votou = None, None, False, False, False
+    tipo, mesario, recusou, votou = None, None, False, False
     for ln in linhas:
         if not ln.startswith(DIA):
             continue
@@ -49,7 +45,7 @@ def eventos_secao(log_jez):
         if msg.startswith("Aguardando digitação do identificador do eleitor"):
             if recusou and not votou:
                 r["sessoes_recusadas_sem_voto"] += 1
-            tipo, mesario, habilitado, recusou, votou = None, None, False, False, False
+            tipo, mesario, recusou, votou = None, None, False, False
         elif msg.startswith("Tipo de habilitação do eleitor [biométrica]"):
             tipo = "biometrica"
         elif msg.startswith("Solicitação de dado pessoal do eleitor para habilitação manual"):
@@ -65,16 +61,13 @@ def eventos_secao(log_jez):
             mesario = "nao_associavel"
         elif msg.startswith("Não encontrou digital coletada em nenhum dos arquivos"):
             mesario = "nao_encontrada"
-        elif msg == "Eleitor foi habilitado":
-            habilitado = True
         elif msg.startswith("Eleitor foi suspenso e não confirmou nenhum voto"):
             r["habilitado_e_suspenso_sem_votar"] += 1
-            habilitado = False
         elif msg == "O voto do eleitor foi computado":
             # Classifica pela sessão inteira do eleitor: o "tipo" pode vir logo depois de "habilitado", no mesmo segundo.
-            habilitado = tipo or "outro"
-            r["hab_" + habilitado] += 1
-            if habilitado == "manual":
+            tipo = tipo or "outro"
+            r["hab_" + tipo] += 1
+            if tipo == "manual":
                 manuais_hora[hora[:2]] += 1
                 if mesario in ("nao_associavel", "nao_encontrada"):
                     r["manual_mesario_" + mesario] += 1
@@ -83,7 +76,7 @@ def eventos_secao(log_jez):
                     mesarios[mesario] += 1
                 else:
                     r["manual_sem_registro_de_mesario"] += 1
-            habilitado, tipo, votou = False, None, True
+            tipo, votou = None, True
             r["votos_log"] += 1
             votos_hora[hora[:2]] += 1
             ultimo_voto = hora

@@ -48,8 +48,7 @@ def ler_uf(uf):
             r["arquivo"] = n
             linhas.append(r)
     df = pd.DataFrame(linhas)
-    for c in ["aptos", "comparecimento", "hab_biometrica", "hab_biografica", "hab_sem_biometria", "faltosos",
-              "municipio", "zona", "secao"]:
+    for c in CAMPOS.keys() - {"fechamento"}:
         df[c] = pd.to_numeric(df[c])
     return df
 
@@ -83,10 +82,7 @@ def comparar(uf):
 
 
 if __name__ == "__main__":
-    out = []
-    for uf in sys.argv[1:] or ["AC"]:
-        r, _ = comparar(uf)
-        out.append(r)
+    out = [comparar(uf)[0] for uf in sys.argv[1:] or ["AC"]]
     txt = ("# BU impresso (imgbu.dat) × planilha BWeb — 2º turno 2026\n\n" + pd.DataFrame(out).set_index("UF").T.to_markdown() + "\n")
     open(os.path.join(RAIZ, "analise", "IMAGEM_BU.md"), "w", encoding="utf-8").write(txt)
     print(txt)

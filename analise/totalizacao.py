@@ -80,17 +80,14 @@ def main():
               f"- Votos nulos técnicos (votos dados a candidato cujo registro foi anulado depois): {of.loc['BR', 'nulos técnicos']:,}.".replace(",", ".")]
         if len(nao_bate):
             L += ["", "Diferenças (soma dos BUs − oficial):", "",
-                  nao_bate.loc[:, (nao_bate != 0).any()].to_markdown(), ""]
-        if len(nao_bate):
-            L.append("- As diferenças de seções e aptos são seções do exterior em que **ninguém votou**: elas não aparecem na "
-                     "planilha de votos (BWeb), mas o TSE as conta como \"em funcionamento\". Votos e comparecimento batem.")
-        if True:
-            # Os votos nominais que não aparecem no oficial viram "nulo técnico".
-            sem_oficial = [c for c in bu.columns if c.startswith("V_") and c not in of.columns and c not in ("V_NULO", "V_BRANCO")]
-            for c in sem_oficial:
-                L.append(f"- O número {c[2:]} recebeu {bu.loc['BR', c]:,} votos nas urnas e não aparece entre os candidatos válidos "
-                         f"do relatório oficial. O total bate com os nulos técnicos ({of.loc['BR', 'nulos técnicos']:,}): "
-                         f"{'SIM' if bu.loc['BR', c] == of.loc['BR', 'nulos técnicos'] else 'NÃO'}.".replace(",", "."))
+                  nao_bate.loc[:, (nao_bate != 0).any()].to_markdown(), "",
+                  "- As diferenças de seções e aptos são seções do exterior em que **ninguém votou**: elas não aparecem na "
+                  "planilha de votos (BWeb), mas o TSE as conta como \"em funcionamento\". Votos e comparecimento batem."]
+        # Os votos nominais que não aparecem no oficial viram "nulo técnico".
+        for c in [c for c in bu.columns if c.startswith("V_") and c not in of.columns]:
+            L.append(f"- O número {c[2:]} recebeu {bu.loc['BR', c]:,} votos nas urnas e não aparece entre os candidatos válidos "
+                     f"do relatório oficial. O total bate com os nulos técnicos ({of.loc['BR', 'nulos técnicos']:,}): "
+                     f"{'SIM' if bu.loc['BR', c] == of.loc['BR', 'nulos técnicos'] else 'NÃO'}.".replace(",", "."))
         L.append("")
     open(SAIDA, "w", encoding="utf-8").write("\n".join(L) + "\n")
     print("\n".join(L))

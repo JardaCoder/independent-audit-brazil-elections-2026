@@ -113,11 +113,10 @@ def main():
             m["prev"] = prev
     out(md(pd.DataFrame(r2s), index=False))
     out()
-    um = m.lula_1
-    r2_1 = 1 - ((m.lula_2 - (np.polyfit(um, m.lula_2, 1)[0] * um + np.polyfit(um, m.lula_2, 1)[1])) ** 2).sum() / ((m.lula_2 - m.lula_2.mean()) ** 2).sum()
-    out(f"- Só com a % de Lula entre Lula e Flávio no 1º turno (uma variável) o R² nacional já é {r2_1:.3f}. "
-        "O número que importa é o **dentro do município** (~0,92): mesmo comparando seções da mesma cidade, o 1º turno "
-        "explica mais de 90% das diferenças do 2º.")
+    r2_1 = np.corrcoef(m.lula_1, m.lula_2)[0, 1] ** 2  # R² da reta com uma variável
+    out(f"- Só com a % de Lula entre Lula e Flávio no 1º turno (uma variável) o R² nacional já é {r2_1:.3f}; o modelo "
+        "usa essa variável mais as fatias de cada candidato, brancos, nulos e abstenção. O número que importa é o "
+        "**dentro do município**: mostra quanto o 1º turno explica comparando só seções da mesma cidade.")
     out()
 
     # ---------------- 5. testes por grupo
@@ -127,22 +126,20 @@ def main():
         "entre o grupo e as demais seções, com o erro-padrão (EP) agrupado por município entre parênteses. Um valor "
         "positivo e grande indicaria Lula acima do esperado no grupo.")
     out()
-    tabela, limites = [], {}
+    tabela = []
     for gnome, mask in grupos_teste(m).items():
         lin = {"grupo": gnome, "seções": int(mask.sum())}
-        his = []
         for snome, r in resid.items():
             b, se = desvio_grupo(m, r, snome, mask)
             lin[snome] = f"{b:+.2f} ({se:.2f})"
-            his.append(b + 1.96 * se)
         tabela.append(lin)
-        limites[gnome] = (max(his), mask)
     out(md(pd.DataFrame(tabela), index=False))
     out()
-    gl = "fechou às 19h ou depois (Brasília)"
-    _, mask = limites[gl]
+    mask = grupos_teste(m)["fechou às 19h ou depois (Brasília)"]
     lim, votos = limite_tardias(m, resid)
-    out(f"- Seções tardias: o sinal muda conforme a especificação (positivo no nacional, negativo dentro do município). "
+    sig = [n for n, r in resid.items() if (lambda b, se: b - 1.96 * se > 0)(*desvio_grupo(m, r, n, mask))]
+    out(f"- Seções tardias: desvio a favor de Lula distinguível de zero em {len(sig)} das {len(resid)} formas"
+        f"{' (' + ', '.join(sig) + ')' if sig else ''}. "
         f"No pior caso (limite superior de 95% da especificação mais desfavorável, {lim:+.2f} p.p.), o efeito sobre a "
         f"margem seria de no máximo **{fmt(votos)} votos** (2 × {lim:.2f}% × {fmt(m.loc[mask, 'validos_2'].sum())} válidos).")
     for nome, var in [("nível da liberação manual no 2º turno", m.bio_2), ("variação da liberação manual do 1º para o 2º turno", m.bio_2 - m.bio_1)]:
@@ -158,11 +155,12 @@ def main():
     # ---------------- 6. diferença-em-diferenças
     out("## 6. Comparação simples: o grupo já votava diferente no 1º turno?")
     out()
+    def p(x, t):
+        return x[f"V_13_{t}"].sum() / (x[f"V_13_{t}"] + x[f"V_22_{t}"]).sum() * 100
+
     linhas = []
     for gnome, mask in grupos_teste(m).items():
-        mesmos_mun = m.mun.isin(m.loc[mask, "mun"])
-        a, b = m[mask], m[~mask & mesmos_mun]
-        p = lambda x, t: x[f"V_13_{t}"].sum() / (x[f"V_13_{t}"] + x[f"V_22_{t}"]).sum() * 100  # noqa: E731
+        a, b = m[mask], m[~mask & m.mun.isin(m.loc[mask, "mun"])]
         linhas.append({"grupo": gnome, "Lula 1º turno (grupo)": round(p(a, 1), 2), "Lula 2º turno (grupo)": round(p(a, 2), 2),
                        "variação grupo": round(p(a, 2) - p(a, 1), 2),
                        "Lula 1º (demais, mesmos municípios)": round(p(b, 1), 2), "Lula 2º (demais)": round(p(b, 2), 2),
@@ -216,12 +214,11 @@ def main():
     # ---------------- 9. por UF
     out("## 9. Do 1º para o 2º turno, por UF")
     out()
-    vt = [c for c in validos]
-    u1 = t1.groupby("SG_UF").agg(**{c: (c, "sum") for c in vt + ["QT_COMPARECIMENTO"]})
+    u1 = t1.groupby("SG_UF")[validos + ["QT_COMPARECIMENTO"]].sum()
     u2 = t2.groupby("SG_UF")[["V_13", "V_22", "QT_COMPARECIMENTO"]].sum()
     uf = pd.DataFrame({
-        "Lula 1º (% válidos)": (u1.V_13 / u1[vt].sum(axis=1) * 100).round(1),
-        "Flávio 1º (% válidos)": (u1.V_22 / u1[vt].sum(axis=1) * 100).round(1),
+        "Lula 1º (% válidos)": (u1.V_13 / u1[validos].sum(axis=1) * 100).round(1),
+        "Flávio 1º (% válidos)": (u1.V_22 / u1[validos].sum(axis=1) * 100).round(1),
         "Lula 2º (% válidos)": (u2.V_13 / (u2.V_13 + u2.V_22) * 100).round(1),
         "comparecimento 1º": u1.QT_COMPARECIMENTO.astype(int), "comparecimento 2º": u2.QT_COMPARECIMENTO.astype(int)})
     uf["previsto pelo modelo"] = (m.groupby("SG_UF").apply(lambda x: np.average(x.prev, weights=x.validos_2))).round(1)

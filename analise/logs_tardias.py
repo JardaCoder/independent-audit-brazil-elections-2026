@@ -19,14 +19,17 @@ from concurrent.futures import ThreadPoolExecutor
 
 import pandas as pd
 
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from carregar import FUSO, RAIZ, carregar, fuso  # noqa: E402
-from logs_urna import linhas_log  # noqa: E402
+from carregar import FUSO, RAIZ, carregar, fuso
+from estatistica import fmt
+from logs_urna import linhas_log
 
 URL = "https://cdn.tse.jus.br/estatistica/sead/eleicoes/eleicoes2026/arqurnatot/bu_imgbu_logjez_rdv_vscmr_2026_2t_{}.zip"
 SAIDA = os.path.join(RAIZ, "analise", "LOGS_TARDIAS.md")
 CACHE = os.path.join(RAIZ, "dados", "derivados", "logs_tardias_2t_2026.csv.gz")
 DIA = "25/10/2026"
+# Colunas "votos depois de" e o minuto do dia (Brasília) em que cada uma começa.
+CORTES = {"votos_apos_17h00": 1020, "votos_apos_17h15": 1035, "votos_apos_17h30": 1050, "votos_apos_18h00": 1080,
+          "votos_apos_18h30": 1110}
 
 
 def baixar_faixa(url, ini, fim, tentativas=5):
@@ -83,9 +86,9 @@ def ler_membro(url, info):
     n_nome, n_extra = struct.unpack("<HH", bruto[26:30])
     ini = 30 + n_nome + n_extra
     dados = bruto[ini:ini + info.compress_size]
-    if info.compress_type == zipfile.ZIP_STORED:
-        return dados
-    return zlib.decompressobj(-15).decompress(dados)
+    dados = dados if info.compress_type == zipfile.ZIP_STORED else zlib.decompressobj(-15).decompress(dados)
+    assert zlib.crc32(dados) == info.CRC, f"CRC não confere ({info.filename}): download truncado?"
+    return dados
 
 
 def analisar_log(jez, fuso):
@@ -103,11 +106,9 @@ def analisar_log(jez, fuso):
             votos[h * 60 + m] += 1
         elif p[4].startswith("Encerrar votação") or p[4].startswith("Procedimento de encerramento"):
             encerrou = encerrou or f"{h:02d}:{m:02d}"
-    depois = lambda t: sum(v for k, v in votos.items() if k >= t)  # noqa: E731
     ult = max(votos) if votos else None
-    return {"votos_log": sum(votos.values()), "votos_apos_17h00": depois(17 * 60), "votos_apos_17h15": depois(17 * 60 + 15),
-            "votos_apos_17h30": depois(17 * 60 + 30), "votos_apos_18h00": depois(18 * 60),
-            "votos_apos_18h30": depois(18 * 60 + 30),
+    return {"votos_log": sum(votos.values()),
+            **{col: sum(v for k, v in votos.items() if k >= t) for col, t in CORTES.items()},
             "ultimo_voto_brasilia": f"{ult // 60:02d}:{ult % 60:02d}" if ult is not None else None,
             "encerramento_log_brasilia": encerrou,
             "por_minuto": ";".join(f"{k}:{v}" for k, v in sorted(votos.items()) if k >= 17 * 60)}
@@ -162,16 +163,11 @@ def processar():
             return r
 
         with ThreadPoolExecutor(16) as ex:
-            for r in ex.map(um, g.itertuples()):
-                linhas.append(r)
+            linhas += ex.map(um, g.itertuples())
     res = sel.merge(pd.DataFrame(linhas), on="arquivo", how="left")
     os.makedirs(os.path.dirname(CACHE), exist_ok=True)
     res.drop(columns=["ENC_LOCAL", "ENC_BRASILIA"]).to_csv(CACHE, index=False, compression="gzip")
     return res
-
-
-def fmt(n):
-    return f"{n:,.0f}".replace(",", ".")
 
 
 def corrigir_fuso(res):
@@ -188,8 +184,7 @@ def corrigir_fuso(res):
     for i in res.index[novo != antigo]:
         desloc = int((novo[i] - antigo[i]) * 60)
         mins = {int(k) + desloc: int(v) for k, v in (kv.split(":") for kv in str(res.at[i, "por_minuto"]).split(";") if ":" in kv)}
-        for col, t in [("votos_apos_17h00", 1020), ("votos_apos_17h15", 1035), ("votos_apos_17h30", 1050),
-                       ("votos_apos_18h00", 1080), ("votos_apos_18h30", 1110)]:
+        for col, t in CORTES.items():
             res.at[i, col] = sum(v for k, v in mins.items() if k >= t)
         res.at[i, "por_minuto"] = ";".join(f"{k}:{v}" for k, v in sorted(mins.items()) if k >= 1020)
     res["fuso"] = novo
@@ -202,7 +197,7 @@ def relatorio(res):
          "Fonte: log de cada urna (`logd.dat`), lido direto do pacote oficial \"arquivos transmitidos para totalização\" "
          "do TSE por download parcial. O horário foi convertido para Brasília. Grupo de controle: amostra aleatória "
          "(semente 2026) de seções do **mesmo local de votação** que fecharam até 17h15.", ""]
-    ok = res[res.get("erro").isna()] if "erro" in res else res
+    ok = res[res.erro.isna()] if "erro" in res else res
     erros = len(res) - len(ok)
     L.append(f"Seções analisadas: {fmt(len(ok))} ({fmt(erros)} com erro de leitura ou sem log).")
     L.append("")

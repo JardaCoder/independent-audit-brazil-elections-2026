@@ -52,11 +52,8 @@ def baixar(url, destino):
 
 
 def sha512(caminho):
-    h = hashlib.sha512()
     with open(caminho, "rb") as f:
-        for bloco in iter(lambda: f.read(1 << 20), b""):
-            h.update(bloco)
-    return h.hexdigest()
+        return hashlib.file_digest(f, "sha512").hexdigest()
 
 
 URNA_2T = "https://cdn.tse.jus.br/estatistica/sead/eleicoes/eleicoes2026/arqurnatot/bu_imgbu_logjez_rdv_vscmr_2026_2t_{}.zip"
@@ -96,6 +93,8 @@ def main(nomes):
                 esperado = open(os.path.join(destino, arq)).read().split()[0].lower()
                 ok = sha512(os.path.join(destino, arq[:-7])) == esperado
                 print(("OK   " if ok else "FALHA"), arq[:-7])
+                if not ok:
+                    sys.exit(f"SHA-512 não confere: {arq[:-7]}")
 
 
 if __name__ == "__main__":

@@ -68,24 +68,35 @@ def sessoes(linhas, desloc_h):
 
 
 def resumo_urna(votos):
-    r = {"votos_log": len(votos)}
+    r = Counter(votos_log=len(votos))
     por_hora = Counter()
     mesarios = Counter()
     for minuto, tipo, mesario in votos:
+        apos17 = minuto >= 17 * 60
         por_hora[(minuto // 60, tipo)] += 1
-        r[f"n_{tipo}"] = r.get(f"n_{tipo}", 0) + 1
-        if minuto >= 17 * 60:
-            r[f"apos17_{tipo}"] = r.get(f"apos17_{tipo}", 0) + 1
-            r["apos17_votos"] = r.get("apos17_votos", 0) + 1
-        if tipo == "manual":
-            if mesario and mesario != "nao_identificado":
-                mesarios[mesario] += 1
-                r["manual_mesario_identificado"] = r.get("manual_mesario_identificado", 0) + 1
-            if minuto >= 17 * 60 and mesario and mesario != "nao_identificado":
-                r["apos17_manual_mesario_identificado"] = r.get("apos17_manual_mesario_identificado", 0) + 1
+        r[f"n_{tipo}"] += 1
+        if apos17:
+            r[f"apos17_{tipo}"] += 1
+            r["apos17_votos"] += 1
+        if tipo == "manual" and mesario not in (None, "nao_identificado"):
+            mesarios[mesario] += 1
+            r["manual_mesario_identificado"] += 1
+            if apos17:
+                r["apos17_manual_mesario_identificado"] += 1
     r["max_manual_um_mesario"] = max(mesarios.values(), default=0)
     r["por_hora"] = ";".join(f"{h}:{t}:{n}" for (h, t), n in sorted(por_hora.items()))
-    return r
+    return dict(r)
+
+
+def por_hora(serie):
+    """Soma a coluna por_hora ("hora:tipo:n;...") de várias seções num Counter {(hora, tipo): n}."""
+    cont = Counter()
+    for s in serie.dropna():
+        for item in str(s).split(";"):
+            if item.count(":") == 2:
+                h, tp, n = item.split(":")
+                cont[(int(h), tp)] += int(n)
+    return cont
 
 
 def amostra_nacional(n=3000, semente=2026):
@@ -123,7 +134,7 @@ def ler_logs():
     r = pd.DataFrame(linhas).set_index("idx")
     res = sel.join(r)
     cols = ["SG_UF", "CD_MUNICIPIO", "NM_MUNICIPIO", "NR_ZONA", "NR_SECAO", "grupo", "QT_COMPARECIMENTO",
-            "QT_BIOM_SEM_HAB", "V_13", "V_22"] + [c for c in r.columns]
+            "QT_BIOM_SEM_HAB", "V_13", "V_22", *r.columns]
     res[cols].to_csv(CACHE, index=False, compression="gzip")
     return res[cols]
 
@@ -138,21 +149,19 @@ def parte_planilhas():
     out()
     g1 = t1.groupby("SG_UF")[["QT_BIOM_SEM_HAB", "QT_COMPARECIMENTO"]].sum()
     g2 = t2.groupby("SG_UF")[["QT_BIOM_SEM_HAB", "QT_COMPARECIMENTO", "V_13", "V_22"]].sum()
+    x2 = t2.assign(t=t2.QT_BIOM_SEM_HAB / t2.QT_COMPARECIMENTO)
+    mediana, acima20 = x2.groupby("SG_UF").t.median(), x2[x2.t >= 0.2].groupby("SG_UF").size()
+    g1.loc["Brasil"], g2.loc["Brasil"] = g1.sum(), g2.sum()
+    mediana["Brasil"], acima20["Brasil"] = x2.t.median(), (x2.t >= 0.2).sum()
     uf = pd.DataFrame({
-        "liberados 2º turno": g2.QT_BIOM_SEM_HAB.astype(int),
+        "liberados 2º turno": g2.QT_BIOM_SEM_HAB,
         "taxa 1º turno (%)": (g1.QT_BIOM_SEM_HAB / g1.QT_COMPARECIMENTO * 100).round(2),
         "taxa 2º turno (%)": (g2.QT_BIOM_SEM_HAB / g2.QT_COMPARECIMENTO * 100).round(2),
     })
     uf["variação (p.p.)"] = (uf["taxa 2º turno (%)"] - uf["taxa 1º turno (%)"]).round(2)
     uf["% Lula 2º turno"] = (g2.V_13 / (g2.V_13 + g2.V_22) * 100).round(1)
-    x2 = t2.assign(t=t2.QT_BIOM_SEM_HAB / t2.QT_COMPARECIMENTO)
-    uf["mediana por seção (%)"] = (x2.groupby("SG_UF").t.median() * 100).round(1)
-    uf["seções com taxa ≥ 20%"] = x2[x2.t >= 0.2].groupby("SG_UF").size().reindex(uf.index).fillna(0).astype(int)
-    uf.loc["Brasil"] = [int(g2.QT_BIOM_SEM_HAB.sum()), round(g1.QT_BIOM_SEM_HAB.sum() / g1.QT_COMPARECIMENTO.sum() * 100, 2),
-                        round(g2.QT_BIOM_SEM_HAB.sum() / g2.QT_COMPARECIMENTO.sum() * 100, 2), 0,
-                        round(g2.V_13.sum() / (g2.V_13.sum() + g2.V_22.sum()) * 100, 1), round(x2.t.median() * 100, 1),
-                        int((x2.t >= 0.2).sum())]
-    uf.loc["Brasil", "variação (p.p.)"] = round(uf.loc["Brasil", "taxa 2º turno (%)"] - uf.loc["Brasil", "taxa 1º turno (%)"], 2)
+    uf["mediana por seção (%)"] = (mediana * 100).round(1)
+    uf["seções com taxa ≥ 20%"] = acima20.reindex(uf.index).fillna(0)
     uf = uf.sort_values("taxa 2º turno (%)", ascending=False)
     out(md(uf.astype({"liberados 2º turno": "int64", "seções com taxa ≥ 20%": "int64"})))
     out()
@@ -190,11 +199,10 @@ def parte_planilhas():
 
 # ---------------------------------------------------------------- parte 2: relatório dos logs
 def parte_logs(res):
-    ok = res[res.get("erro").isna()] if "erro" in res else res
-    for c in [f"n_{t}" for t in TIPOS] + [f"apos17_{t}" for t in TIPOS] + ["apos17_votos", "manual_mesario_identificado",
-                                                                            "apos17_manual_mesario_identificado"]:
-        if c not in ok:
-            ok[c] = 0
+    ok = res[res.erro.isna()] if "erro" in res else res
+    contagens = [f"{p}_{t}" for p in ("n", "apos17") for t in TIPOS] + [
+        "apos17_votos", "manual_mesario_identificado", "apos17_manual_mesario_identificado"]
+    ok = ok.assign(**{c: 0 for c in contagens if c not in ok})
     ok = ok.fillna({c: 0 for c in ok.columns if c.startswith(("n_", "apos17_", "manual_"))})
     out("## 3. O que os logs mostram, eleitor a eleitor")
     out()
@@ -231,12 +239,8 @@ def parte_logs(res):
     ext = ok[ok.max_manual_um_mesario >= 50].sort_values("max_manual_um_mesario", ascending=False)
     linhas_ext = []
     for _, x in ext.iterrows():
-        zona = d2[(d2.SG_UF == x.SG_UF) & (d2.CD_MUNICIPIO.astype(str) == str(x.CD_MUNICIPIO)) & (d2.NR_ZONA.astype(str) == str(x.NR_ZONA))]
-        cont = Counter()
-        for item in str(x.por_hora).split(";"):
-            if item.count(":") == 2:
-                h, tp, n = item.split(":")
-                cont[(int(h), tp)] += int(n)
+        zona = d2[(d2.SG_UF == x.SG_UF) & (d2.CD_MUNICIPIO == x.CD_MUNICIPIO) & (d2.NR_ZONA == x.NR_ZONA)]
+        cont = por_hora(pd.Series([x.por_hora]))
         manha = sum(cont[(h, "manual")] for h in range(8, 13)), sum(cont[(h, t)] for h in range(8, 13) for t in TIPOS)
         tarde = sum(cont[(h, "manual")] for h in range(13, 20)), sum(cont[(h, t)] for h in range(13, 20) for t in TIPOS)
         linhas_ext.append({"UF": x.SG_UF, "município": str(x.NM_MUNICIPIO).title(), "zona": x.NR_ZONA, "seção": x.NR_SECAO,
@@ -262,14 +266,8 @@ def parte_logs(res):
     # Por hora
     linhas = []
     for g, x in ok.groupby("grupo"):
-        cont = Counter()
-        for s in x.por_hora.dropna():
-            for item in str(s).split(";"):
-                if item.count(":") == 2:
-                    h, tp, n = item.split(":")
-                    cont[(int(h), tp)] += int(n)
-        horas = sorted({h for h, _ in cont})
-        for h in horas:
+        cont = por_hora(x.por_hora)
+        for h in sorted({h for h, _ in cont}):
             tot = sum(cont[(h, tp)] for tp in TIPOS)
             if tot:
                 linhas.append({"grupo": g, "hora (Brasília)": f"{h:02d}h", "votos": tot, "manuais": cont[(h, "manual")],

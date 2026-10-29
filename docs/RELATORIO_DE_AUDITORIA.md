@@ -64,7 +64,7 @@ recalculado (ver [Anexo B](#anexo-b--como-reproduzir)).
 4. **Contagem antes de estatística.** Onde é possível contar (somas, recontagens, cruzamentos de arquivos), a
    conclusão vem da contagem exata. A estatística entra só onde a pergunta é sobre padrões, e sempre com
    margem de erro.
-5. **Controles.** Todo padrão "suspeito" é comparado com: (a) o 1º turno das mesmas seções; (b) a eleição de
+5. **Controles.** Sempre que possível, cada padrão "suspeito" é comparado com: (a) o 1º turno das mesmas seções; (b) a eleição de
    2022; (c) seções vizinhas (mesmo município ou mesmo local de votação).
 6. **Pior caso explícito.** Para cada suspeita, calcula-se quanto da margem ela poderia explicar no cenário mais
    desfavorável que os dados permitem.
@@ -123,9 +123,13 @@ Detalhes de cada arquivo, tamanhos e locais no repositório: README, seção 4.
 - **Procedimentos estatísticos (P9–P13):** um grupo de seções é considerado anômalo se o seu desvio em relação ao
   esperado for positivo para um candidato, estatisticamente significativo (margem de erro de 95%, erro-padrão
   agrupado por município) e robusto às diferentes especificações do modelo.
-- **Materialidade:** um achado é material se, no pior caso calculável, puder explicar uma parte relevante
-  da margem de 4.430.191 votos. Aqui adotou-se como referência qualquer valor que chegue a 10% da margem
-  (443 mil votos).
+- **Materialidade:** um achado é material se, no pior caso compatível com os testes feitos, puder explicar 10% ou
+  mais da margem de 4.430.191 votos (443 mil). Cenários aritméticos que os testes contradizem são mostrados, mas não
+  entram nessa conta. Estes critérios foram definidos durante a análise.
+- **O que mudaria a conclusão:** uma UF cuja soma de boletins não bata com o oficial; um RDV diferente do boletim; um
+  log com voto fora do horário ou liberações diferentes do boletim; um grupo de seções que se desvie a favor de um
+  candidato em todas as especificações, inclusive dentro do município; boletins de papel diferentes dos arquivos;
+  assinaturas inválidas. Os quatro primeiros não apareceram; os dois últimos não foram testados.
 
 ### 2.6 Ferramentas
 
@@ -150,7 +154,7 @@ permitiu ler o RDV de todas as urnas e o log das urnas de interesse evitando bai
 | P9 | A diferença do grupo "até 17h" cai de −5,9 para −0,2 p.p. dentro do mesmo município, aparece em 2022 e já existia no 1º turno (−5,95 p.p.) | `analise/RESULTADOS.md` §2 |
 | P10 | 6.352 seções fecharam às 19h (pico real, só no 2º turno). Só 4.492 de 1.861.259 votos (0,24%) foram dados após as 17h. Mesmo comparecimento e voto que as seções do mesmo local que fecharam às 17h (diferenças de −0,06 e +0,03 p.p.) | `analise/LOGS_TARDIAS.md`, `RESULTADOS.md` §4 |
 | P11 | Dentro do município, os liberados votam quase como os demais (54% Lula); mais liberação vem com menos Lula do que o 1º turno previa; o aumento da liberação entre turnos não tem efeito | `analise/RESULTADOS.md` §5, `PRIMEIRO_TURNO.md` §5 |
-| P12 | O 1º turno explica 91,6% das diferenças entre seções da mesma cidade. Nenhum grupo com desvio positivo, significativo e robusto (2 das 6 formas dão positivo para as seções das 19h, sem resistir à correção para testes múltiplos nem à comparação dentro do município). Limite superior de 95% para as seções das 19h, na forma mais desfavorável: 24.498 votos | `analise/PRIMEIRO_TURNO.md` |
+| P12 | O 1º turno explica 93,2% das diferenças entre seções da mesma cidade (98,5% no país). Nenhum grupo desvia a favor de Lula de forma significativa; nas seções das 19h o desvio fica entre −0,12 e +0,18 p.p., sem nenhuma forma distinguível de zero. O grupo de liberação ≥ 20% fica abaixo do previsto para Lula em todas as formas (−0,19 a −0,58 p.p., 3 a 10 mil votos a favor de Flávio). Limite superior de 95% para as seções das 19h, na forma mais desfavorável: 18.771 votos | `analise/PRIMEIRO_TURNO.md` |
 | P13 | Os dígitos dos votos reais são indistinguíveis dos de uma eleição honesta simulada; último dígito uniforme | `analise/RESULTADOS.md` §7 |
 | P15 | Taxa entre 4,1% (RR) e 9,0% (PI), alta também em estados pró-Flávio (RS 8,45%); estável entre turnos (+0,07 p.p.). Logs de 10.809 urnas: liberações = BU em 100%; mais liberações de manhã, queda ao longo do dia; nas seções das 19h só 245 liberações depois das 17h. 16 seções com ≥ 50 liberações por um mesário, sem favorecimento (Lula abaixo da zona em 11) | `analise/BIOMETRIA.md` |
 | P14 | Arquivos no servidor em 26/10 (~1 dia após a eleição); listados no catálogo em 27/10; ausentes do catálogo na consulta de 29/10, embora ainda no servidor e idênticos | README 6.12 |
@@ -191,15 +195,16 @@ afeta o resultado), **informativo**.
 4. **Inferência ecológica.** Os testes sobre liberação manual usam dados agregados por seção; não é possível saber
    como cada eleitor liberado votou. Por isso foram usados vários testes, inclusive contra o 1º turno.
 5. **Modelo 1º → 2º turno** detecta desvios **entre grupos** de seções; uma manipulação uniforme em todo o país
-   seria absorvida por ele. Essa hipótese é coberta por P2 e P4 (contagens exatas).
+   seria absorvida por ele. Se ocorresse depois da urna, apareceria em P2 e P4; se ocorresse dentro da urna, RDV,
+   boletim e log sairiam coerentes entre si, e só a auditoria do software poderia detectá-la.
 6. **Hash do mesmo servidor e ausência de conferência externa.** Os `.sha512` oficiais vêm do mesmo servidor dos
    dados; provam a integridade do download, não a independência da fonte. Todas as conferências comparam arquivos
    publicados pelo TSE entre si; nenhum boletim de papel (por exemplo, fotografado por fiscais) foi comparado.
-8. **Incerteza dos limites estatísticos.** Os limites das seções das 19h usam erro-padrão agrupado por município,
-   e 75% dessas seções estão em 5 municípios, o que pode subestimar a incerteza. Mesmo dobrado, o limite (cerca de
-   49 mil votos) fica em 1,1% da margem.
 7. **Atos administrativos e judiciais** (motivo do fechamento às 19h, registros das trocas de urna) não constam
    dos dados públicos de votação.
+8. **Incerteza dos limites estatísticos.** Os limites das seções das 19h usam erro-padrão agrupado por município,
+   e 75% dessas seções estão em 5 municípios, o que pode subestimar a incerteza. Como verificação grosseira,
+   dobrar o limite leva a cerca de 38 mil votos (0,8% da margem).
 
 ---
 
@@ -210,13 +215,14 @@ Com base nos procedimentos descritos e dentro do escopo e das limitações acima
 1. O resultado oficial da eleição para Presidente de 2026 corresponde exatamente à soma dos boletins de urna,
    em todas as unidades da federação e nos dois turnos.
 
-2. Os boletins de urna correspondem ao que as urnas registraram. A recontagem voto a voto do Registro Digital
+2. Os boletins de urna coincidem com o Registro Digital do Voto publicado para cada urna (assinaturas não
+   verificadas; ver limitação 1). A recontagem voto a voto do Registro Digital
    do Voto de todas as 499.178 urnas eletrônicas do 2º turno reproduziu exatamente os votos de cada candidato,
    os brancos e os nulos de cada seção. Nos estados em que os arquivos foram lidos integralmente (AC, RR, AP), o
    boletim digital, a imagem do boletim e o log de cada urna também coincidem com a planilha oficial.
 
-3. A cadeia de custódia das urnas é consistente com a lista gerada antes da eleição em 99,4% das seções, com
-   as substituições registradas. Restam 17 seções (4.563 votos) cuja urna não tem explicação nos dados públicos.
+3. A cadeia de custódia das urnas é consistente com a lista gerada antes da eleição em 99,4% das seções; a maior
+   parte das trocas usou urna de contingência da lista, e 382 seções têm explicação provável nos dados. Restam 17 seções (4.563 votos) cuja urna não tem explicação nos dados públicos.
 
 4. As suspeitas que circularam não se sustentam. Os números citados nelas são reproduzíveis, mas as
    conclusões decorrem de erros de interpretação, principalmente o uso do horário local da
@@ -224,13 +230,13 @@ Com base nos procedimentos descritos e dentro do escopo e das limitações acima
    (Anexo A).
 
 5. Não foram encontrados padrões estatísticos compatíveis com manipulação. Nenhum grupo de seções testado
-   (fechamento tardio, corte das 17h no relógio local, liberação manual elevada) se desvia de forma positiva, significativa e robusta em
-   relação ao próprio 1º turno ou às seções vizinhas.
+   (fechamento tardio, corte das 17h no relógio local, liberação manual elevada) se desvia a favor de Lula de forma
+   significativa em relação ao próprio 1º turno ou às seções vizinhas.
 
 6. Nenhum achado é material. Entre as suspeitas medidas em votos, a maior (anular todas as seções que fecharam às
    19h) corresponde a 4,2% da margem; com base nos logs das urnas, os votos efetivamente dados no horário
    estendido correspondem a 0,1%. A liberação manual só inverteria o resultado em cenários (voto em bloco dos
-   liberados, ou comparação que ignora a geografia) que os testes contra o 1º turno descartam.
+   liberados, ou comparação que ignora a geografia) para os quais os testes contra o 1º turno não mostram sinal.
 
 7. A liberação manual de eleitores não mostra uso irregular. A taxa é estável entre os turnos, alta também em
    estados onde Flávio venceu e, nos logs lidos, maior de manhã e decrescente ao longo do dia; nas seções que ficaram abertas até as
@@ -283,9 +289,9 @@ Para quem analisa dados eleitorais:
 ## Anexo B — Como reproduzir
 
 ```bash
-git clone https://github.com/JardaCoder/elections-brazil.git && cd elections-brazil
+git clone https://github.com/JardaCoder/independent-audit-brazil-elections-2026.git && cd independent-audit-brazil-elections-2026
 pip install pandas numpy tabulate matplotlib geopandas   # e poppler-utils para pdftotext
-scripts/remontar_arquivos_urna.sh
+python3 scripts/remontar_arquivos_urna.py
 cd analise
 python3 totalizacao.py; python3 consistencia.py; python3 fuso.py
 python3 recontagem_rdv.py AC RR AP; python3 imagem_bu.py AC RR AP; python3 logs_urna.py AC RR AP

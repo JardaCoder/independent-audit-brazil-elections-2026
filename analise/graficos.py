@@ -5,6 +5,7 @@
 """
 import os
 import sys
+from collections import Counter
 
 import matplotlib
 
@@ -13,12 +14,14 @@ import matplotlib.pyplot as plt  # noqa: E402
 import numpy as np  # noqa: E402
 import pandas as pd  # noqa: E402
 
+from biometria import por_hora  # noqa: E402
 from carregar import RAIZ, carregar, faixa_horario  # noqa: E402
-from estatistica import ajustar, centrar, coef_cluster, especificacoes, junta_turnos, limite_tardias  # noqa: E402
+from estatistica import (CHAVE, ajustar, centrar, coef_cluster, especificacoes, junta_turnos,  # noqa: E402
+                         limite_tardias)
 
 PASTA = os.path.join(RAIZ, "docs", "graficos")
-# Paleta validada (dataviz): azul = Lula, laranja = adversário, cinza = referência.
-LULA, ADV, CINZA, TEXTO, TEXTO2, FUNDO = "#2a78d6", "#eb6834", "#8a8984", "#0b0b0b", "#52514e", "#fcfcfb"
+# Cores dos partidos: vermelho = Lula, azul = adversário; cinza = referência.
+LULA, ADV, CINZA, TEXTO, TEXTO2, FUNDO = "#d1302b", "#2a78d6", "#8a8984", "#0b0b0b", "#52514e", "#fcfcfb"
 plt.rcParams.update({
     "figure.facecolor": FUNDO, "axes.facecolor": FUNDO, "savefig.facecolor": FUNDO,
     "axes.edgecolor": "#d6d5d0", "axes.labelcolor": TEXTO2, "xtick.color": TEXTO2, "ytick.color": TEXTO2,
@@ -98,8 +101,7 @@ def g2_decomposicao(d, t1):
                      ("dentro do\nmesmo município", mun)]:
         b, se = coef_cluster(centrar(x.p, fe), centrar(x.g, fe), mun, peso=x.v)
         barras.append((nome, b, se))
-    k = ["SG_UF", "CD_MUNICIPIO", "NR_ZONA", "NR_SECAO"]
-    j = x[k + ["g"]].merge(t1[k + ["V_13", "V_22"]], on=k)
+    j = x[CHAVE + ["g"]].merge(t1[CHAVE + ["V_13", "V_22"]], on=CHAVE)
     pg = j[j.g == 1].V_13.sum() / (j[j.g == 1].V_13.sum() + j[j.g == 1].V_22.sum()) * 100
     pr = j[j.g == 0].V_13.sum() / (j[j.g == 0].V_13.sum() + j[j.g == 0].V_22.sum()) * 100
     barras.append(("as mesmas seções,\nno 1º turno", pg - pr, 0))
@@ -298,14 +300,10 @@ def g10_biometria_por_hora():
                "vizinha que fechou até 17h15": (ADV, "--")}
     for grupo, (cor, ls) in estilos.items():
         x = r[r.grupo == grupo]
-        tot, man = {}, {}
-        for s in x.por_hora.dropna():
-            for item in str(s).split(";"):
-                if item.count(":") == 2:
-                    h, tp, n = item.split(":")
-                    tot[int(h)] = tot.get(int(h), 0) + int(n)
-                    if tp == "manual":
-                        man[int(h)] = man.get(int(h), 0) + int(n)
+        cont, tot = por_hora(x.por_hora), Counter()
+        for (h, _), n in cont.items():
+            tot[h] += n
+        man = {h: n for (h, tp), n in cont.items() if tp == "manual"}
         hs = [h for h in sorted(tot) if 8 <= h <= 18 and tot[h] >= 200]
         ax.plot(hs, [man.get(h, 0) / tot[h] * 100 for h in hs], color=cor, ls=ls, lw=2, marker="o", ms=4,
                 label=f"{grupo} ({br(len(x), 0)} seções)")
@@ -330,64 +328,151 @@ NOME_IBGE = {("GO", "BOM JESUS"): "Bom Jesus de Goiás", ("MG", "BARÃO DE MONTE
              ("SP", "SÃO LUÍS DO PARAITINGA"): "São Luiz do Paraitinga"}
 
 
-def g11_mapa_lula(t1, t2):
-    """Variação de Lula entre os turnos, em pontos percentuais dos votos válidos, por município (malha do IBGE)."""
+def malha(nome):
+    import geopandas as gpd
+    return gpd.read_file("/vsigzip/" + os.path.join(RAIZ, "dados", "ibge", nome))
+
+
+def malha_uf():
+    ufs = malha("malha_uf.json.gz")
+    sigla = pd.read_json(os.path.join(RAIZ, "dados", "ibge", "municipios.json.gz")).drop_duplicates("UF-id")
+    return ufs.assign(SG_UF=ufs.codarea.astype(int).map(dict(zip(sigla["UF-id"], sigla["UF-sigla"]))))
+
+
+def pct_disputa(d, chave):
+    """% de Lula entre os votos dos dois finalistas (Lula + Flávio), por `chave`; exterior fora."""
+    g = d[d.SG_UF != "ZZ"].groupby(chave)[["V_13", "V_22"]].sum()
+    return g.V_13 / (g.V_13 + g.V_22) * 100
+
+
+def sinal(x):
+    return f"{'+' if x >= 0 else '−'}{br(abs(x))}"
+
+
+def enquadrar(ax, oeste=-74.2, leste=-34.6):
+    ax.set_xlim(oeste, leste)  # corta Fernando de Noronha, que deixaria o mapa encolhido
+    ax.set_ylim(-34, 5.5)
+    ax.set_axis_off()
+
+
+# Estados pequenos: rótulo fora do contorno, ligado por uma linha (lon, lat do rótulo).
+ROTULO_FORA = {"RN": (-33.4, -4.4), "PB": (-32.6, -6.6), "PE": (-32.6, -8.6), "AL": (-33.4, -10.4),
+               "SE": (-35.0, -12.4), "ES": (-36.6, -20.6), "RJ": (-39.6, -24.6), "DF": (-43.6, -16.4)}
+
+
+def rotular(ax, g, norm, tamanho=7.5, com_uf=True):
+    for _, r in g.iterrows():
+        texto = f"{r.SG_UF}\n{sinal(r['var'])}" if com_uf else sinal(r["var"])
+        p = r.geometry.representative_point()
+        if r.SG_UF in ROTULO_FORA:
+            ax.annotate(texto, (p.x, p.y), ROTULO_FORA[r.SG_UF], fontsize=tamanho * 0.85, ha="center", va="center",
+                        color=TEXTO, arrowprops=dict(arrowstyle="-", color=TEXTO2, lw=0.6))
+        else:
+            escuro = norm(r["var"]) > 0.6
+            ax.text(p.x, p.y, texto, fontsize=tamanho, ha="center", va="center", weight="bold",
+                    color="white" if escuro else TEXTO)
+
+
+def g11_mapa_municipios(t1, t2):
+    """Quem ganhou terreno na disputa direta, por município: variação da % de Lula entre Lula e Flávio."""
     import unicodedata
 
-    import geopandas as gpd
-    from matplotlib.colors import LinearSegmentedColormap
+    from matplotlib.colors import LinearSegmentedColormap, TwoSlopeNorm
 
     def chave(uf, nome):
         s = unicodedata.normalize("NFKD", nome).encode("ascii", "ignore").decode().upper()
         return uf + "".join(ch for ch in s if ch.isalpha())
 
-    def pct_lula(d, fora):
-        cand = [c for c in d.columns if c.startswith("V_") and c not in ["V_BRANCO", "V_NULO", *fora]]
-        d = d[d.SG_UF != "ZZ"].assign(VAL=lambda x: x[cand].sum(axis=1))
-        return d.groupby(["SG_UF", "NM_MUNICIPIO"])[["V_13", "VAL"]].sum()
-
-    from estatistica import NULO_TECNICO_1T
-    a, b = pct_lula(t1, NULO_TECNICO_1T), pct_lula(t2, [])
-    var = (b.V_13 / b.VAL - a.V_13 / a.VAL) * 100
-    nac = (b.V_13.sum() / b.VAL.sum() - a.V_13.sum() / a.VAL.sum()) * 100
-
+    k = ["SG_UF", "NM_MUNICIPIO"]
+    mun = (pct_disputa(t2, k) - pct_disputa(t1, k)).rename("var").reset_index()
     ibge = pd.read_json(os.path.join(RAIZ, "dados", "ibge", "municipios.json.gz"))
     cod = dict(zip([chave(u, n) for u, n in zip(ibge["UF-sigla"], ibge["municipio-nome"])], ibge["municipio-id"]))
-    mun = var.rename("var").reset_index()
     mun["codarea"] = [cod.get(chave(u, NOME_IBGE.get((u, n), n))) for u, n in zip(mun.SG_UF, mun.NM_MUNICIPIO)]
     assert mun.codarea.notna().all(), mun[mun.codarea.isna()]
     mun["codarea"] = mun.codarea.astype(int).astype(str)
-
-    malha = lambda nome: gpd.read_file("/vsigzip/" + os.path.join(RAIZ, "dados", "ibge", nome))  # noqa: E731
-    geo, ufs = malha("malha_municipios.json.gz").merge(mun, on="codarea"), malha("malha_uf.json.gz")
+    geo = malha("malha_municipios.json.gz").merge(mun, on="codarea")
     # A malha do IBGE ainda não tem Boa Esperança do Norte (MT, instalado em 2025); a área fica em Sorriso e Nova Ubiratã.
-    sem_poligono = mun[~mun.codarea.isin(geo.codarea)]
-    assert sem_poligono.codarea.tolist() == ["5101837"], sem_poligono
+    assert mun[~mun.codarea.isin(geo.codarea)].codarea.tolist() == ["5101837"]
 
-    cmap = LinearSegmentedColormap.from_list("lula", ["#eef4fb", "#9cc3ee", LULA, "#123f73"])
-    cmap.set_under(ADV)
-    fig, ax = plt.subplots(figsize=(8, 8.6), layout="constrained")
-    geo.plot(column="var", cmap=cmap, vmin=0, vmax=10, ax=ax, linewidth=0)
-    ufs.boundary.plot(ax=ax, color="white", linewidth=0.7)
-    ax.set_axis_off()
-    ax.set_xlim(-74.2, -34.6)  # corta Fernando de Noronha, que deixaria o mapa encolhido
-    ax.set_ylim(-34, 5.5)
-    sm = plt.cm.ScalarMappable(cmap=cmap, norm=plt.Normalize(0, 10))
-    cb = fig.colorbar(sm, ax=ax, orientation="horizontal", fraction=0.035, pad=0.01, extend="both", shrink=0.8)
-    cb.set_label("variação de Lula do 1º para o 2º turno, em pontos percentuais dos votos válidos", color=TEXTO2)
-    cb.outline.set_visible(False)
-    n_queda = int((mun["var"] < 0).sum())
-    fig.suptitle(f"Lula cresceu em {br(len(mun) - n_queda, 0)} dos {br(len(mun), 0)} municípios do 1º para o 2º turno", x=0.02, ha="left",
-                 fontsize=13, weight="bold", color=TEXTO)
-    ax.set_title(f"Brasil: {br(a.V_13.sum() / a.VAL.sum() * 100)}% → {br(b.V_13.sum() / b.VAL.sum() * 100)}% "
-                 f"dos válidos (+{br(nac)} p.p.). Mediana dos municípios: +{br(mun['var'].median())} p.p.\n"
-                 f"Em laranja, os {n_queda} municípios em que ele caiu.", fontsize=10.5, weight="normal", loc="left",
+    norm = TwoSlopeNorm(vmin=-6, vcenter=0, vmax=6)
+    cmap = LinearSegmentedColormap.from_list("disputa", ["#163f75", ADV, "#f4f3ef", LULA, "#7a1512"])
+    fig, ax = plt.subplots(figsize=(8, 8.8), layout="constrained")
+    geo.plot(column="var", cmap=cmap, norm=norm, ax=ax, linewidth=0)
+    malha_uf().boundary.plot(ax=ax, color=TEXTO2, linewidth=0.5)
+    enquadrar(ax)
+    cb = fig.colorbar(plt.cm.ScalarMappable(cmap=cmap, norm=norm), ax=ax, orientation="horizontal", fraction=0.035,
+                      pad=0.01, extend="both", shrink=0.8)
+    cb.set_label("← Flávio ganhou terreno · variação da % de Lula entre os dois, em p.p. · Lula ganhou terreno →",
                  color=TEXTO2)
+    cb.outline.set_visible(False)
+    n_flavio = int((mun["var"] < 0).sum())
+    fig.suptitle(f"Lula ganhou terreno sobre Flávio em {br(len(mun) - n_flavio, 0)} dos {br(len(mun), 0)} municípios",
+                 x=0.02, ha="left", fontsize=13, weight="bold", color=TEXTO)
+    ax.set_title(f"Mediana dos municípios: {sinal(mun['var'].median())} p.p. Em azul, os {n_flavio} em que Flávio "
+                 "avançou.", fontsize=10.5, weight="normal", loc="left", color=TEXTO2)
     cb.ax.text(0, -3.4, "Malha municipal do IBGE. Boa Esperança do Norte (MT), criado em 2025, ainda não tem polígono\n"
                "e aparece dentro dos municípios de origem. Fernando de Noronha fora do recorte.",
                transform=cb.ax.transAxes, fontsize=8, color=TEXTO2)
-    salvar(fig, "11_mapa_crescimento_lula.png")
+    salvar(fig, "11_mapa_municipios_disputa.png")
     return mun
+
+
+def g12_mapa_estados_disputa(t1, t2):
+    """Quanto Lula ganhou de terreno sobre Flávio em cada estado (variação da % de Lula entre os dois)."""
+    from matplotlib.colors import LinearSegmentedColormap, Normalize
+
+    var = pct_disputa(t2, "SG_UF") - pct_disputa(t1, "SG_UF")
+    br1 = pct_disputa(t1.assign(X=0), "X").iloc[0]
+    br2 = pct_disputa(t2.assign(X=0), "X").iloc[0]
+    g = malha_uf().assign(var=lambda u: u.SG_UF.map(var))
+    norm = Normalize(0, 5)
+    cmap = LinearSegmentedColormap.from_list("lula", ["#f4f3ef", "#f2a59c", LULA, "#7a1512"])
+    fig, ax = plt.subplots(figsize=(8.5, 9), layout="constrained")
+    g.plot(column="var", cmap=cmap, norm=norm, ax=ax, edgecolor="white", linewidth=1)
+    rotular(ax, g, norm, tamanho=10)
+    enquadrar(ax, leste=-31.5)
+    fig.suptitle("Do 1º para o 2º turno, Lula ganhou terreno\nsobre Flávio em todos os estados", x=0.5, ha="center",
+                 fontsize=16, weight="bold", color=TEXTO)
+    ax.set_title(f"Variação da % de Lula entre os votos dos dois, em pontos percentuais. "
+                 f"Brasil: {br(br1)}% → {br(br2)}% ({sinal(br2 - br1)} p.p.)", fontsize=10, weight="normal",
+                 color=TEXTO2)
+    mx, mn = var.idxmax(), var.idxmin()
+    ax.text(-73.5, -29.5, f"Lula avançou mais em {mx} ({sinal(var[mx])}) e\nmenos em {mn} ({sinal(var[mn])}), "
+            f"onde já tinha\n{br(pct_disputa(t1, 'SG_UF')[mn], 0)}% no 1º turno.", fontsize=9, color=TEXTO2,
+            bbox=dict(boxstyle="square,pad=0.6", fc=FUNDO, ec=CINZA, lw=0.8))
+    fig.text(0.02, -0.01, "Exterior fora. Malha: IBGE.", fontsize=8, color=TEXTO2)
+    salvar(fig, "12_mapa_estados_disputa.png")
+
+
+def g13_mapa_estados_validos(t1, t2):
+    """Crescimento de Lula e de Flávio do 1º para o 2º turno, por estado, em p.p. dos votos válidos."""
+    from matplotlib.colors import LinearSegmentedColormap, TwoSlopeNorm
+
+    from estatistica import NULO_TECNICO_1T
+
+    def validos(d, fora):
+        cand = [c for c in d.columns if c.startswith("V_") and c not in ["V_BRANCO", "V_NULO", *fora]]
+        d = d[d.SG_UF != "ZZ"].assign(VAL=lambda x: x[cand].sum(axis=1))
+        return d.groupby("SG_UF")[["V_13", "V_22", "VAL"]].sum()
+
+    a, b = validos(t1, NULO_TECNICO_1T), validos(t2, [])
+    ufs = malha_uf()
+    norm = TwoSlopeNorm(vmin=-2, vcenter=0, vmax=10)  # mesma escala nos dois mapas; queda em cinza
+    fig, eixos = plt.subplots(1, 2, figsize=(13, 7.2), layout="constrained")
+    for ax, num, nome, cor in [(eixos[0], "V_13", "Lula", LULA), (eixos[1], "V_22", "Flávio", ADV)]:
+        g = ufs.assign(var=ufs.SG_UF.map((b[num] / b.VAL - a[num] / a.VAL) * 100))
+        nac = (b[num].sum() / b.VAL.sum() - a[num].sum() / a.VAL.sum()) * 100
+        cmap = LinearSegmentedColormap.from_list(nome, ["#b9b8b3", "#ffffff", cor])
+        g.plot(column="var", cmap=cmap, norm=norm, ax=ax, edgecolor="#c9c8c3", linewidth=0.6)
+        rotular(ax, g, norm)
+        enquadrar(ax, leste=-31.5)
+        ax.set_title(f"{nome}: {br(a[num].sum() / a.VAL.sum() * 100)}% → {br(b[num].sum() / b.VAL.sum() * 100)}% "
+                     f"dos válidos ({sinal(nac)} p.p.)", color=cor, fontsize=12)
+    fig.suptitle("Quanto cada candidato cresceu do 1º para o 2º turno, por estado (pontos percentuais dos votos "
+                 "válidos)", x=0.01, ha="left", fontsize=13, weight="bold", color=TEXTO)
+    fig.text(0.01, -0.01, "Os votos dos candidatos que ficaram fora do 2º turno se dividiram entre os dois. "
+             "Em cinza, queda. Exterior fora. Malha: IBGE.", fontsize=8.5, color=TEXTO2)
+    salvar(fig, "13_mapa_estados_validos.png")
 
 
 if __name__ == "__main__":
@@ -398,6 +483,7 @@ if __name__ == "__main__":
                     ("g3", lambda: g3_horarios(t1, t2, d22)), ("g4", g4_logs_tardias), ("g5", lambda: g5_modelo(mm)),
                     ("g6", lambda: g6_residuo(mm)), ("g7", g7_logs), ("g8", lambda: print(g8_margem(t2, mm))),
                     ("g9", lambda: g9_biometria_estados(t2)), ("g10", g10_biometria_por_hora),
-                    ("g11", lambda: g11_mapa_lula(t1, t2))]:
+                    ("g11", lambda: g11_mapa_municipios(t1, t2)), ("g12", lambda: g12_mapa_estados_disputa(t1, t2)),
+                    ("g13", lambda: g13_mapa_estados_validos(t1, t2))]:
         if not so or nome in so:
             f()

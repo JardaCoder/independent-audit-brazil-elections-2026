@@ -18,11 +18,8 @@ CONJUNTOS = [("2026", "1"), ("2026", "2"), ("2022", "2")]
 
 
 def sha512(caminho):
-    h = hashlib.sha512()
     with open(caminho, "rb") as f:
-        for b in iter(lambda: f.read(1 << 20), b""):
-            h.update(b)
-    return h.hexdigest()
+        return hashlib.file_digest(f, "sha512").hexdigest()
 
 
 def extrair(zip_path, destino):

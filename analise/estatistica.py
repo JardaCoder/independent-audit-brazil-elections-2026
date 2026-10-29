@@ -1,9 +1,11 @@
 """Ferramentas estatísticas usadas pelas análises: junção 1º × 2º turno, modelos de previsão do 2º turno
 a partir do 1º, centragem dentro de grupos (efeito fixo) e erro-padrão agrupado (cluster)."""
+import os
+
 import numpy as np
 import pandas as pd
 
-from carregar import carregar
+from carregar import RAIZ, carregar
 
 CHAVE = ["SG_UF", "CD_MUNICIPIO", "NR_ZONA", "NR_SECAO"]
 NULO_TECNICO_1T = ["V_28"]  # candidato com registro anulado: votos viraram "nulos técnicos" no oficial
@@ -63,7 +65,8 @@ def junta_turnos():
 
 
 def regressores(m):
-    """Fatias do 1º turno. Linear: frações dos aptos (somam 1). Logit: frações do comparecimento + abstenção."""
+    """Fatias do 1º turno + o próprio Lula × Flávio do 1º turno (sozinho já prevê melhor que as fatias).
+    Linear: frações dos aptos (somam 1) + lula_1. Logit: frações do comparecimento + abstenção + log(Lula/Flávio)."""
     nominais = [c for c in m if c.startswith("V_") and c.endswith("_1") and c not in ("V_BRANCO_1", "V_NULO_1")
                 and c[:-2] not in NULO_TECNICO_1T]
     principais = list(m[nominais].sum().sort_values(ascending=False).index[:6])
@@ -72,8 +75,10 @@ def regressores(m):
     base["outros"] = m[outros].sum(axis=1)
     base["branco+nulo"] = m.V_BRANCO_1 + m.V_NULO_1 + m[[c + "_1" for c in NULO_TECNICO_1T if c + "_1" in m]].sum(axis=1)
     lin = base.assign(abstencao=m.QT_APTOS_1 - m.QT_COMPARECIMENTO_1).div(m.QT_APTOS_1, axis=0)
+    lin["lula_1"] = m.lula_1
     lgt = base.div(m.QT_COMPARECIMENTO_1, axis=0)
     lgt["abstencao"] = 1 - m.QT_COMPARECIMENTO_1 / m.QT_APTOS_1
+    lgt["log_lula_flavio_1"] = np.log((m.V_13_1 + 0.5) / (m.V_22_1 + 0.5))
     return lin, lgt
 
 
@@ -99,17 +104,14 @@ def ajustar(m, tipo="linear", grupos=None, peso=False):
     coef, *_ = np.linalg.lstsq(Xc * sw[:, None], yc * sw, rcond=None)
     ajuste = y - (yc - Xc @ coef)  # previsão no nível original (média do grupo + parte explicada)
     prev = ajuste if tipo == "linear" else 1 / (1 + np.exp(-ajuste))
-    res = (m.lula_2.values - prev) * 100
-    alvo = m.lula_2.values
-    base = centrar(pd.Series(alvo, index=m.index), grupos).values if grupos is not None else alvo - alvo.mean()
-    r2 = 1 - ((m.lula_2.values - prev) ** 2 * w).sum() / (base ** 2 * w).sum()
-    return pd.Series(prev * 100, index=m.index), pd.Series(res, index=m.index), r2
+    res = m.lula_2.values - prev
+    base = centrar(m.lula_2, grupos).values
+    r2 = 1 - (res ** 2 * w).sum() / (base ** 2 * w).sum()
+    return pd.Series(prev * 100, index=m.index), pd.Series(res * 100, index=m.index), r2
 
 
 def locais(ano=2026, turno=2):
     """Número do local de votação (NR_LOCAL_VOTACAO) de cada seção, lido dos BWeb de Presidente (com cache)."""
-    import os
-    from carregar import RAIZ
     cache = os.path.join(RAIZ, "dados", "derivados", f"locais_{turno}t_{ano}.csv.gz")
     if os.path.exists(cache):
         return pd.read_csv(cache, dtype=str)
@@ -131,15 +133,16 @@ def especificacoes(m):
     }
 
 
-def desvio_grupo(m, resid, nome_spec, mask):
+def desvio_grupo(m, resid, nome_spec, mask, peso=None):
     """Diferença média do resíduo entre o grupo e as demais seções, com EP agrupado por município."""
     fe = m.mun if "município" in nome_spec else (m.SG_UF if "UF" in nome_spec else None)
-    return coef_cluster(centrar(resid, fe), centrar(mask.astype(float), fe), m.mun)
+    return coef_cluster(centrar(resid, fe), centrar(mask.astype(float), fe), m.mun, peso=peso)
 
 
 def limite_tardias(m, residuos):
     """Maior efeito plausível das seções que fecharam às 19h+ sobre a margem: limite superior de 95% da
-    especificação mais desfavorável × válidos do grupo × 2."""
+    especificação mais desfavorável (média simples ou ponderada por válidos) × válidos do grupo × 2."""
     mask = (m.ENC_BRASILIA_2 - m.ENC_BRASILIA_2.dt.normalize()).dt.total_seconds() >= 19 * 3600
-    lim = max(b + 1.96 * se for b, se in (desvio_grupo(m, r, n, mask) for n, r in residuos.items()))
+    lim = max(b + 1.96 * se for b, se in (desvio_grupo(m, r, n, mask, p) for n, r in residuos.items()
+                                          for p in (None, m.validos_2)))
     return lim, int(lim / 100 * m.loc[mask, "validos_2"].sum() * 2)

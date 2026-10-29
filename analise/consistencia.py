@@ -59,12 +59,12 @@ def main():
             "BU recebido pelo TSE depois de emitido pela urna (Brasil, em horário de Brasília, sem folga)": atraso < 0,
             "carga da urna antes do dia da eleição": s.carga >= pd.Timestamp("2026-10-25"),
         }
-        for k, v in [("recebido antes de emitido: maior diferença (s)", -atraso[atraso < 0].min() if (atraso < 0).any() else 0)]:
-            checks[k] = max(checks.get(k, 0), int(v))
+        k = "recebido antes de emitido: maior diferença (s)"
+        checks[k] = max(checks.get(k, 0), int(-atraso.min()) if (atraso < 0).any() else 0)
         for nome, m in regras.items():
-            checks[nome] = checks.get(nome, 0) + int(m.fillna(False).sum())
-            if m.fillna(False).any():
-                exemplos.append(s[m.fillna(False)].head(3).assign(regra=nome))
+            checks[nome] = checks.get(nome, 0) + int(m.sum())
+            if m.any():
+                exemplos.append(s[m].head(3).assign(regra=nome))
     todas = pd.concat(secoes_cargo)
     pres = todas[todas.CD_CARGO_PERGUNTA == "1"]
     # Mesma urna em duas seções diferentes (fora seções agregadas, que compartilham urna)

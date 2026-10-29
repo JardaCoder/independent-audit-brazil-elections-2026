@@ -28,16 +28,15 @@ FAIXAS_ROTULO = ["até 17:00:59", "17:01 a 17:15:59", "17:16 a 18:59:59", "19:00
 
 def fuso(df):
     """Horas a somar ao relógio da urna; NaN para o exterior (cada país tem seu fuso)."""
-    f = df["SG_UF"].map(FUSO).fillna(0)
-    chave = list(zip(df["SG_UF"], df["NM_MUNICIPIO"]))
-    f = f.where([k not in FUSO_MUNICIPIO for k in chave], [FUSO_MUNICIPIO.get(k, 0) for k in chave])
-    return f.where(df["SG_UF"] != "ZZ")
+    f = [FUSO_MUNICIPIO.get(k, FUSO.get(k[0], 0)) for k in zip(df["SG_UF"], df["NM_MUNICIPIO"])]
+    return pd.Series(f, index=df.index, dtype=float).where(df["SG_UF"] != "ZZ")
 
 
 def faixa_horario(horario):
     """Classifica uma série de datetimes nas FAIXAS (pelo horário do dia)."""
     seg = (horario - horario.dt.normalize()).dt.total_seconds()
     return pd.cut(seg, FAIXAS_SEG, right=False, labels=FAIXAS_ROTULO)
+
 
 COLS = ["SG_UF", "CD_MUNICIPIO", "NM_MUNICIPIO", "NR_ZONA", "NR_SECAO", "CD_CARGO_PERGUNTA",
         "QT_APTOS", "QT_COMPARECIMENTO", "DS_TIPO_URNA", "DS_TIPO_VOTAVEL", "NR_VOTAVEL", "QT_VOTOS",
@@ -57,16 +56,13 @@ def _ler_uf(caminho):
                 df = pd.concat(b[b["CD_CARGO_PERGUNTA"] == "1"] for b in blocos)
     df = df.rename(columns={"QT_ELEITORES_BIOMETRIA_NH": "QT_ELEI_BIOM_SEM_HABILITACAO"})
     df = df[df["CD_CARGO_PERGUNTA"] == "1"]  # Presidente
-    for c in ["QT_APTOS", "QT_COMPARECIMENTO", "QT_VOTOS", "NR_VOTAVEL"]:
-        df[c] = pd.to_numeric(df[c], errors="coerce")
-    df["QT_ELEI_BIOM_SEM_HABILITACAO"] = pd.to_numeric(
-        df["QT_ELEI_BIOM_SEM_HABILITACAO"].str.replace("#NULO#", "", regex=False), errors="coerce")
+    for c in ["QT_APTOS", "QT_COMPARECIMENTO", "QT_VOTOS", "NR_VOTAVEL", "QT_ELEI_BIOM_SEM_HABILITACAO"]:
+        df[c] = pd.to_numeric(df[c], errors="coerce")  # "#NULO#" vira NaN
     chave = ["SG_UF", "CD_MUNICIPIO", "NM_MUNICIPIO", "NR_ZONA", "NR_SECAO"]
-    meta = df.groupby(chave, as_index=False).agg(
-        QT_APTOS=("QT_APTOS", "first"), QT_COMPARECIMENTO=("QT_COMPARECIMENTO", "first"),
-        DS_TIPO_URNA=("DS_TIPO_URNA", "first"), DT_ABERTURA=("DT_ABERTURA", "first"),
-        DT_ENCERRAMENTO=("DT_ENCERRAMENTO", "first"), DT_BU_RECEBIDO=("DT_BU_RECEBIDO", "first"),
-        QT_BIOM_SEM_HAB=("QT_ELEI_BIOM_SEM_HABILITACAO", "first"))
+    # campos da seção se repetem em cada linha de votável: um valor por seção
+    meta = df.groupby(chave, as_index=False)[["QT_APTOS", "QT_COMPARECIMENTO", "DS_TIPO_URNA", "DT_ABERTURA",
+                                             "DT_ENCERRAMENTO", "DT_BU_RECEBIDO", "QT_ELEI_BIOM_SEM_HABILITACAO"]].first()
+    meta = meta.rename(columns={"QT_ELEI_BIOM_SEM_HABILITACAO": "QT_BIOM_SEM_HAB"})
     nom = df[df["DS_TIPO_VOTAVEL"] == "Nominal"]
     votos = nom.pivot_table(index=chave, columns="NR_VOTAVEL", values="QT_VOTOS",
                             aggfunc="sum", fill_value=0)
@@ -83,11 +79,13 @@ def carregar(usar_cache=True, ano=2026, turno=2):
     cache = CACHE.replace("2026", str(ano)).replace("_2t_", f"_{turno}t_")
     if usar_cache and os.path.exists(cache):
         df = pd.read_csv(cache, dtype={"CD_MUNICIPIO": str, "NR_ZONA": str, "NR_SECAO": str})
-        df[[c for c in df if c.startswith("V_")]] = df[[c for c in df if c.startswith("V_")]].fillna(0)
+        v = [c for c in df if c.startswith("V_")]
+        df[v] = df[v].fillna(0)
     else:
         partes = [_ler_uf(z) for z in sorted(glob.glob(os.path.join(pasta, f"bweb_presidente_{turno}t_*.csv.gz")))]
         df = pd.concat(partes, ignore_index=True)
-        df[[c for c in df if c.startswith("V_")]] = df[[c for c in df if c.startswith("V_")]].fillna(0).astype(int)
+        v = [c for c in df if c.startswith("V_")]
+        df[v] = df[v].fillna(0).astype(int)
         os.makedirs(os.path.dirname(cache), exist_ok=True)
         df.to_csv(cache, index=False, compression="gzip")
     # 2026 vem em ISO (aaaa-mm-dd); 2022, em dd/mm/aaaa. dayfirst=True em ISO trocaria dia e mês (04/10 → 10/04).

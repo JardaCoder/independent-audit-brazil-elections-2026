@@ -5,7 +5,8 @@ Auditoria independente, com dados públicos do TSE, da eleição presidencial de
 2º turno. **Idioma do projeto: português (BR).** Os textos (README, relatório, saídas .md) são escritos para
 leigos entenderem.
 
-**Regra editorial (pedido do usuário):** os textos públicos (README, relatório, saídas .md, gráficos) não dizem que
+**Regra editorial (pedido do usuário):** README em pt-BR (`README.md`) e inglês (`README.en.md`), mantidos juntos;
+leitura rápida, entendível por leigo. os textos públicos (README, relatório, saídas .md, gráficos) não dizem que
 o trabalho foi feito a partir de um relatório específico de rede social, não mencionam revisões/revisores e não
 podem ter cara de texto gerado por IA (pouco negrito, sem frases de efeito, sem fórmulas "não é X, é Y", prosa
 em vez de listas quando couber). As suspeitas aparecem como "suspeitas que circularam".
@@ -33,9 +34,9 @@ em vez de listas quando couber). As suspeitas aparecem como "suspeitas que circu
 | Recontagem RDV nacional | 499.178/499.178 urnas eletrônicas idênticas à BWeb; 27 seções ZZ em cédula (Sistema de Apuração) sem RDV, 831 votos |
 | Liberação manual ("sem biometria") | 8.632.488 no 2º turno (6,73%); campo `QT_ELEI_BIOM_SEM_HABILITACAO` = linha "Habilitação biográfica" do BU |
 | Seções que fecharam ≥19h Brasília | 6.352 (1.993 no minuto 19:00; 1.131 locais); só 4.492 de 1.861.259 votos após 17h (logs) |
-| Limite estatístico das seções das 19h | 24.498 votos (pior especificação, IC 95%) |
+| Limite estatístico das seções das 19h | 18.771 votos (pior especificação e ponderação, IC 95%) |
 | Urnas fora das listas sem explicação | 17 seções, 4.563 votos, saldo +42 Lula |
-| Modelo 1º→2º turno | R² 0,979 nacional; 0,916 dentro do município |
+| Modelo 1º→2º turno (com lula_1) | R² 0,985 nacional; 0,932 dentro do município |
 | Biometria (logs de 10.809 urnas distintas) | liberações no log = BU em 100%; nas seções das 19h, 245 liberações manuais depois das 17h; taxa por UF 4,1% (RR) a 9,0% (PI) |
 
 ## Estrutura
@@ -51,7 +52,7 @@ analise/estatistica.py   junta_turnos() (1º×2º por seção, sufixos _1/_2), r
 analise/<verificação>.py um script por verificação; cada um grava o seu .md em analise/
                          (suspeitas.py = antigo verificar_relatorio.py → RESULTADOS.md)
 scripts/                 baixar_dados_tse.py (conjuntos do portal + arquivos_urna_2t <UF>), extrair_presidente.py,
-                         remontar_arquivos_urna.sh
+                         remontar_arquivos_urna.py
 dados/tse/2026/boletim_urna/2turno/   BWeb oficiais (todos os cargos) + .sha512 + SERVIDOR.csv + CATALOGO.csv
 dados/tse/2026/boletim_urna/1turno/   só .sha512 + SERVIDOR.csv (os .zip, 4,8 GB, ficam fora do git)
 dados/tse/{2026,2022}/presidente/     linhas de Presidente copiadas byte a byte + MANIFESTO.csv
@@ -61,7 +62,7 @@ dados/tse/2026/arquivos_urna/2turno/  pacotes AC/RR/AP em partes de 90 MB (parte
 dados/tse/2026/totalizacao/           PDF oficial (Relatorio_Resultado_Totalizacao_2026_BR.zip, T1 e T2)
 dados/derivados/                      caches/resultados: secoes_*, locais_2t_2026, logs_tardias_2t_2026,
                                       recontagem_rdv_2t_2026 (consolidado). recontagem_rdv/ (parciais) é ignorado.
-docs/graficos/                        11 PNGs gerados por analise/graficos.py (11 = mapa por município)
+docs/graficos/                        13 PNGs gerados por analise/graficos.py (11–13 = mapas)
 dados/ibge/                           malhas do IBGE para o mapa + MANIFESTO.csv
 ```
 
@@ -69,7 +70,7 @@ dados/ibge/                           malhas do IBGE para o mapa + MANIFESTO.csv
 
 ```bash
 pip install pandas numpy tabulate matplotlib geopandas   # pdftotext (poppler-utils) já existe no ambiente
-scripts/remontar_arquivos_urna.sh              # necessário para logs_urna, imagem_bu, recontagem_rdv, fuso, graficos (g7)
+python3 scripts/remontar_arquivos_urna.py      # necessário para logs_urna, imagem_bu, recontagem_rdv, fuso, graficos (g7)
 cd analise
 python3 totalizacao.py; python3 consistencia.py; python3 fuso.py
 python3 recontagem_rdv.py AC RR AP; python3 imagem_bu.py AC RR AP; python3 logs_urna.py AC RR AP
@@ -122,9 +123,8 @@ e atualize README e `docs/RELATORIO_DE_AUDITORIA.md` se algum número citado mud
 
 ## Próximos passos possíveis (não feitos)
 
-0. Melhorias de método apontadas e não aplicadas (nenhuma muda a conclusão): incluir `lula_1` (ou log Lula/Flávio do
-   1º turno) nos regressores de `primeiro_turno.py` (R² sobe para 0,985/0,932 e mudaria números citados); EP por
-   jackknife/wild bootstrap em `limite_tardias` (poucos municípios com seção tardia; limite ~35 mil); pesar por
+0. Melhorias de método apontadas e não aplicadas (nenhuma muda a conclusão): EP por
+   jackknife/wild bootstrap em `limite_tardias` (poucos municípios com seção tardia); pesar por
    município a comparação "grupo × demais" (3,21 × 3,24 em vez de 3,25 × 3,20); `z_bin` usar a previsão do mesmo
    modelo do resíduo; `centrar()` com média ponderada quando há peso (efeito desprezível); fixar versões
    (requirements.txt) — numpy/pandas diferentes mudam a 15ª casa e a simulação de Benford.

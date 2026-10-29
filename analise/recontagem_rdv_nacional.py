@@ -15,7 +15,7 @@ from concurrent.futures import ThreadPoolExecutor
 
 import pandas as pd
 
-from carregar import RAIZ
+from carregar import RAIZ, carregar
 from estatistica import fmt
 from logs_tardias import URL, ArquivoRemoto, ler_membro
 from recontagem_rdv import bweb, votos_rdv
@@ -88,18 +88,16 @@ def main(ufs):
          f"**RDV idêntico à BWeb (Lula, Flávio, brancos e nulos): {fmt(igual.sum())}**.",
          f"- Seções da BWeb sem arquivo RDV no pacote: {len(sem_rdv)}.",
          "", "## Totais", "", pd.Series(tot).to_frame("votos").to_markdown(), "", "## Por UF", "", por_uf.to_markdown(), ""]
-    from carregar import carregar
     sec = carregar()
-    cedula = sec[sec.DT_ABERTURA.isna()][["SG_UF", "CD_MUNICIPIO", "NR_SECAO", "NR_ZONA"]].astype(str)
+    cedula = sec[sec.DT_ABERTURA.isna()][["SG_UF", "CD_MUNICIPIO", "NR_ZONA", "NR_SECAO"]].astype(str)
     chave_ced = set(zip(cedula.SG_UF, cedula.CD_MUNICIPIO, cedula.NR_ZONA, cedula.NR_SECAO))
+    eh_cedula = pd.Series([(u, str(m), str(z), str(s_)) in chave_ced for u, m, z, s_ in
+                           zip(ok.SG_UF, ok.CD_MUNICIPIO, ok.NR_ZONA, ok.NR_SECAO)], index=ok.index)
     dif = ok[~igual]
-    eh_cedula = [(u, str(m), str(z), str(s_)) in chave_ced for u, m, z, s_ in zip(dif.SG_UF, dif.CD_MUNICIPIO, dif.NR_ZONA, dif.NR_SECAO)]
-    eletronicas = ok[[(u, str(m), str(z), str(s_)) not in chave_ced for u, m, z, s_ in zip(ok.SG_UF, ok.CD_MUNICIPIO, ok.NR_ZONA, ok.NR_SECAO)]]
-    ig_el = igual.loc[eletronicas.index]
-    L.insert(5, f"- **Seções com urna eletrônica: {fmt(ig_el.sum())} de {fmt(len(eletronicas))} idênticas.** As "
-             f"{fmt(sum(eh_cedula))} que não batem são todas seções do exterior apuradas em **cédula** (Sistema de Apuração): "
+    L.insert(5, f"- **Seções com urna eletrônica: {fmt(igual[~eh_cedula].sum())} de {fmt((~eh_cedula).sum())} idênticas.** As "
+             f"{fmt(eh_cedula[~igual].sum())} que não batem são todas seções do exterior apuradas em **cédula** (Sistema de Apuração): "
              "o arquivo delas não segue o formato do RDV da urna e o leitor não o interpreta. Os votos dessas seções somam "
-             f"{fmt(dif[eh_cedula].bweb_comparecimento.sum())}, exatamente a diferença entre os totais abaixo.")
+             f"{fmt(dif[eh_cedula[~igual]].bweb_comparecimento.sum())}, exatamente a diferença entre os totais abaixo.")
     if len(dif):
         L += ["## Seções com diferença", "", dif.head(50).to_markdown(index=False), ""]
     open(SAIDA, "w", encoding="utf-8").write("\n".join(L) + "\n")

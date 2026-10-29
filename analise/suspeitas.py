@@ -12,7 +12,7 @@ import pandas as pd
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from carregar import FAIXAS_ROTULO, FUSO, RAIZ, carregar, faixa_horario  # noqa: E402
-from estatistica import centrar, coef_cluster, fmt, locais, md  # noqa: E402
+from estatistica import CHAVE, centrar, coef_cluster, fmt, locais, md  # noqa: E402
 
 SAIDA = os.path.join(RAIZ, "analise", "RESULTADOS.md")
 NE = {"BA", "PE", "CE", "MA", "PB", "PI", "RN", "AL", "SE"}
@@ -24,8 +24,12 @@ def out(s=""):
     L.append(s)
 
 
-def pct(x, a="V_13", b="V_22"):
-    return x[a].sum() / (x[a].sum() + x[b].sum()) * 100
+def pct(x):
+    return x.V_13.sum() / (x.V_13.sum() + x.V_22.sum()) * 100
+
+
+def segundos(horario):
+    return (horario - horario.dt.normalize()).dt.total_seconds()
 
 
 def tabela_faixas(d, col):
@@ -75,8 +79,7 @@ def secao_replica(d, d22):
 def secao_ate17(d, t1):
     out("## 2. O grupo \"até 17:00:59\": por que Flávio vence nele?")
     out()
-    seg = (d.ENC_LOCAL - d.ENC_LOCAL.dt.normalize()).dt.total_seconds()
-    g = seg < 17 * 3600 + 60
+    g = segundos(d.ENC_LOCAL) < 17 * 3600 + 60
     oeste = d.SG_UF.isin(FUSO)
     a, b = d[g], d[~g]
     out(f"- Diferença bruta: {pct(a):.2f}% de Lula no grupo contra {pct(b):.2f}% no resto (**{pct(a) - pct(b):+.2f} p.p.**).")
@@ -95,11 +98,7 @@ def secao_ate17(d, t1):
     out()
     out(md(pd.DataFrame(linhas), index=False))
     out()
-    t1 = t1.copy()
-    for c in ["CD_MUNICIPIO", "NR_ZONA", "NR_SECAO"]:
-        t1[c] = t1[c].astype(str)
-    k = ["SG_UF", "CD_MUNICIPIO", "NR_ZONA", "NR_SECAO"]
-    j = d.assign(g=g)[k + ["g"]].merge(t1[k + ["V_13", "V_22"]], on=k)
+    j = d.assign(g=g)[CHAVE + ["g"]].merge(t1[CHAVE + ["V_13", "V_22"]], on=CHAVE)
     out(f"- **As mesmas seções já votavam assim no 1º turno**: lá, o grupo deu {pct(j[j.g]):.2f}% a Lula contra "
         f"{pct(j[~j.g]):.2f}% no resto ({pct(j[j.g]) - pct(j[~j.g]):+.2f} p.p.), praticamente a mesma diferença do 2º turno.")
     out(f"- Tamanho: mediana de {a.QT_APTOS.median():.0f} aptos no grupo contra {b.QT_APTOS.median():.0f} no resto. "
@@ -114,8 +113,7 @@ def secao_brasilia(d):
     out()
     out(md(tabela_faixas(d, "ENC_BRASILIA")))
     out()
-    seg = (d.ENC_BRASILIA - d.ENC_BRASILIA.dt.normalize()).dt.total_seconds()
-    n = d[seg < 17 * 3600 + 16 * 60]
+    n = d[segundos(d.ENC_BRASILIA) < 17 * 3600 + 16 * 60]
     out(f"- Só com as seções que fecharam até 17h15 (Brasília), Lula vence por **{fmt(n.V_13.sum() - n.V_22.sum())}** votos.")
     out()
 
@@ -123,8 +121,7 @@ def secao_brasilia(d):
 def secao_tardias(d):
     out("## 4. As seções que fecharam às 19h ou depois (Brasília)")
     out()
-    seg = (d.ENC_BRASILIA - d.ENC_BRASILIA.dt.normalize()).dt.total_seconds()
-    tarde = seg >= 19 * 3600
+    tarde = segundos(d.ENC_BRASILIA) >= 19 * 3600
     t = d[tarde]
     mi = d.ENC_BRASILIA.dt.hour * 60 + d.ENC_BRASILIA.dt.minute
     saldo = int(t.V_13.sum() - t.V_22.sum())
@@ -138,8 +135,7 @@ def secao_tardias(d):
     mun = t.groupby(["SG_UF", "NM_MUNICIPIO"]).size().sort_values(ascending=False)
     out(f"- Onde estão: {', '.join(f'{m.title()} ({u}) {fmt(v)}' for (u, m), v in mun.head(6).items())}. Os 5 primeiros "
         f"municípios somam {mun.head(5).sum() / len(t) * 100:.0f}% do grupo.")
-    loc = locais()
-    x = d.merge(loc, on=["SG_UF", "CD_MUNICIPIO", "NR_ZONA", "NR_SECAO"], how="left")
+    x = d.merge(locais(), on=CHAVE, how="left")
     x["tarde"] = tarde.values
     x["local"] = x.SG_UF + "-" + x.CD_MUNICIPIO.astype(str) + "-" + x.NR_ZONA.astype(str) + "-" + x.NR_LOCAL_VOTACAO.astype(str)
     por_local = x[x.local.isin(x.loc[x.tarde, "local"])].groupby("local").tarde.mean()
@@ -274,12 +270,12 @@ def secao_benford(d):
         dig = pd.Series(vals).astype(int).astype(str).str[1].astype(int)
         obs = dig.value_counts().reindex(range(10), fill_value=0).values
         esp = ben2 * len(dig)
-        return obs / len(dig), ((obs - esp) ** 2 / esp).sum(), (dig.mean())
+        return ((obs - esp) ** 2 / esp).sum(), dig.mean()
 
     linhas = []
     for nome, vals in [("Lula (real)", x.V_13.values), ("Flávio (real)", x.V_22.values),
                        ("Lula (simulação honesta: sorteio binomial com o tamanho e a % de cada seção)", sim13)]:
-        _, chi, media = segundo(vals)
+        chi, media = segundo(vals)
         linhas.append({"série": nome, "média do 2º dígito": round(media, 3), "qui-quadrado vs Benford": round(chi)})
     out("**2º dígito** (Benford esperado: média 4,187)")
     out()
