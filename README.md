@@ -52,6 +52,32 @@ Em linguagem direta:
 
 ![Quanto da margem cada suspeita poderia explicar](docs/graficos/08_suspeitas_vs_margem.png)
 
+### Resultado oficial (= soma dos boletins de urna)
+
+| 1º turno — 05/10/2026 | Votos | % dos válidos |
+|---|---|---|
+| Flávio Bolsonaro (22) | 56.104.503 | 47,03% |
+| Lula (13) | 53.879.538 | 45,16% |
+| Augusto Cury (70) | 3.448.569 | 2,89% |
+| Renan Santos (14) | 2.675.887 | 2,24% |
+| Ronaldo Caiado (55) | 2.605.148 | 2,18% |
+| Demais 7 candidatos | 587.143 | 0,49% |
+| **Válidos** | **119.300.788** | |
+| Brancos / nulos | 2.300.798 / 3.674.249 (inclui 5.246 nulos técnicos) | |
+| Comparecimento | 125.275.835 (78,92% dos aptos) | |
+
+| 2º turno — 25/10/2026 | Votos | % dos válidos |
+|---|---|---|
+| **Lula (13)** | **64.256.232** | **51,79%** |
+| Flávio Bolsonaro (22) | 59.826.041 | 48,21% |
+| **Margem** | **4.430.191** | |
+| Brancos / nulos | 1.430.496 / 2.723.305 | |
+| Comparecimento | 128.236.074 (80,78% dos aptos) | |
+
+Do 1º para o 2º turno, Lula passou de 45,2% para 51,8% e Flávio de 47,0% para 48,2%. A virada aconteceu em
+todas as regiões de forma parecida, e o 1º turno de cada seção prevê o 2º com precisão ([6.11](#611-1º-turno--2º-turno-seção-por-seção)).
+Comparecimento por UF e a comparação estado a estado: [`PRIMEIRO_TURNO.md`](analise/PRIMEIRO_TURNO.md), seção 9.
+
 ---
 
 ## 2. O que o relatório afirma
@@ -69,6 +95,26 @@ O "Relatório Pericial Independente — Eleições 2026" (8 páginas, compartilh
 | 7 | Afirmações políticas e jurídicas (decisões de ministros, passaportes, PF, reações internacionais). | Não estão nos dados; não avaliadas |
 
 ---
+
+### Por que o relatório errou, se os números dele estão certos
+
+Refazendo as contas, **todos os números do relatório se reproduzem**. O erro está na interpretação:
+
+1. **Leu o relógio local como se fosse Brasília.** A urna grava a hora do estado onde está (ver
+   [problema 1](#problemas-nos-dados)). As urnas do Acre, do Amazonas e do Centro-Oeste, que fecharam às 17h de
+   Brasília, aparecem como "15h" ou "16h" e caíram no grupo "fechou antes das 17h". São regiões pró-Flávio, e o grupo
+   pareceu "outra eleição".
+2. **Não usou grupo de controle.** O mesmo corte em 2022 dá o mesmo padrão, e as mesmas seções já votavam assim no
+   1º turno de 2026.
+3. **Misturou regiões.** Comparou o país inteiro de uma vez. Comparando só seções da mesma cidade, as diferenças somem.
+4. **Comparou grandezas que não se comparam.** 8,6 milhões de liberados contra 4,4 milhões de margem só faria
+   sentido se todos tivessem votado no mesmo candidato. Não votaram.
+5. **Trocou aptos por votantes.** Os "mais de 2 milhões" das seções das 19h são eleitores aptos; votaram 1,86 milhão,
+   e só 4.492 depois das 17h.
+6. **Usou testes inadequados e não mostrou o resultado** (Benford no 1º dígito).
+
+O que o relatório apontou de real: cerca de 1.100 locais de votação ficaram abertos até as 19h no 2º turno. É uma
+pergunta legítima (por quê?), que se responde com os atos dos TREs, e os dados mostram que isso não alterou o resultado.
 
 ## 3. Glossário
 
@@ -124,7 +170,7 @@ o catálogo do portal os listou (`CATALOGO.csv`), em `dados/tse/2026/boletim_urn
 
 | # | Problema | Como resolvi |
 |---|---|---|
-| 1 | O horário de fechamento está no **relógio local** da urna. No Acre e no oeste do Amazonas, 17h de Brasília aparece como 15h; em MT, MS, RO, RR e no resto do AM, como 16h; em Fernando de Noronha, como 18h. | Converti por município (o fuso foi conferido pela hora de abertura: todas as urnas abrem às 8h de Brasília). O exterior ficou fora da conversão. **É a origem do principal erro do relatório.** |
+| 1 | O horário de fechamento está no **relógio local** da urna. No Acre e no oeste do Amazonas, 17h de Brasília aparece como 15h; em MT, MS, RO, RR e no resto do AM, como 16h; em Fernando de Noronha, como 18h. | Converti por município. **Três provas** ([`FUSO.md`](analise/FUSO.md)): (1) as urnas abrem às 06h no AC, 07h no Norte/Centro-Oeste e 08h no resto, ou seja, todas às 8h de Brasília; (2) nenhum boletim chegou ao TSE (relógio do servidor, em Brasília) antes das 17h05, e o menor intervalo entre "fechou" e "chegou" é exatamente 2h no AC, 1h no Norte/Centro-Oeste e 0h no resto; (3) o log de cada urna mostra o operador digitando a hora à mão na preparação (as urnas não têm internet). O exterior ficou fora da conversão. **É a origem do principal erro do relatório.** |
 | 2 | O BU do 2º turno de **Roraima** não aparecia no catálogo; só o `.sha512`. | Baixei pela URL direta. Hash conferido. |
 | 3 | Os **BUs do 2º turno sumiram do catálogo** entre a 1ª e a 2ª consulta (29/10). Os arquivos continuam no servidor, iguais. | Registrado em `CATALOGO.csv`. Não sabemos o motivo. |
 | 4 | Os **arquivos originais das urnas** do 2º turno não estão no catálogo e não têm hash oficial. | Baixei pela URL padrão e registrei tamanho, SHA-512, data e ETag em `MANIFESTO.csv`. |
@@ -452,6 +498,7 @@ scripts/remontar_arquivos_urna.sh       # junta os pacotes das urnas de AC, RR e
 
 cd analise
 python3 totalizacao.py                  # 6.2  soma dos BUs × resultado oficial
+python3 fuso.py                         # 5    prova de que a urna grava o horário local
 python3 consistencia.py                 # 6.3  regras em cada BU
 python3 recontagem_rdv.py AC RR AP      # 6.4  recontagem voto a voto (local)
 python3 imagem_bu.py AC RR AP           # 6.4  BU impresso × planilha
@@ -479,6 +526,7 @@ analise/
   RESULTADOS.md                    réplica e testes do relatório (6.6 a 6.10)
   PRIMEIRO_TURNO.md                1º × 2º turno (6.11)
   TOTALIZACAO.md                   soma dos BUs × oficial (6.2)
+  FUSO.md                          prova de que a urna grava o horário local (problema 1)
   CONSISTENCIA.md                  regras por BU (6.3)
   RECONTAGEM_RDV.md                recontagem voto a voto AC/RR/AP (6.4)
   RECONTAGEM_RDV_NACIONAL.md       recontagem voto a voto, Brasil (6.4)
