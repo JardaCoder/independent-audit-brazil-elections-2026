@@ -80,7 +80,7 @@ def main():
              f"{int((gov.comp_gov != gov.comp_pres).sum())} de {len(gov)} |")
     L.append(f"| …comparecimento de Presidente **menor** que o de Governador | {int((gov.comp_pres < gov.comp_gov).sum())} |")
     L.append(f"| mesmo nº de urna em mais de uma seção | {int((dup_urna > 1).sum())} (são as urnas do Sistema de Apuração do exterior, usadas para digitar cédulas) |")
-    L += ["", "Horários vêm do relógio local da urna (ver RESULTADOS.md).", ""]
+    L += ["", "Horários vêm do relógio local da urna (ver FUSO.md).", ""]
     L += ["## Carga das urnas (DT_CARGA_URNA_EFETIVADA)", "",
           f"De {pres.carga.min()} a {pres.carga.max()}.", ""]
     L += ["## Abertura (relógio local)", "", pres.abertura.dt.strftime("%H").value_counts().sort_index().to_frame("seções").to_markdown(), ""]

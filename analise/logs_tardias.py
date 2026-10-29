@@ -9,7 +9,6 @@ do .zip e baixa só os logs necessários, por "download parcial" (HTTP Range).
 """
 import io
 import os
-import random
 import struct
 import sys
 import urllib.request

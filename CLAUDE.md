@@ -1,9 +1,14 @@
 # CLAUDE.md — contexto para continuar o trabalho
 
-Auditoria independente, com dados públicos do TSE, da eleição presidencial de 2026 (1º turno 05/10, 2º turno
-25/10, Lula nº 13 × Flávio Bolsonaro nº 22). Nasceu para checar um "Relatório Pericial Independente" viral
-(Instagram) que alegava fraude no 2º turno. **Idioma do projeto: português (BR).** Os textos (README, relatório,
-saídas .md) são escritos para leigos entenderem.
+Auditoria independente, com dados públicos do TSE, da eleição presidencial de 2026 (1º turno 04/10, 2º turno
+25/10, Lula nº 13 × Flávio Bolsonaro nº 22), incluindo o teste das suspeitas de fraude que circularam depois do
+2º turno. **Idioma do projeto: português (BR).** Os textos (README, relatório, saídas .md) são escritos para
+leigos entenderem.
+
+**Regra editorial (pedido do usuário):** os textos públicos (README, relatório, saídas .md, gráficos) não dizem que
+o trabalho foi feito a partir de um relatório específico de rede social, não mencionam revisões/revisores e não
+podem ter cara de texto gerado por IA (pouco negrito, sem frases de efeito, sem fórmulas "não é X, é Y", prosa
+em vez de listas quando couber). As suspeitas aparecem como "suspeitas que circularam".
 
 ## Estado atual (concluído)
 
@@ -15,9 +20,6 @@ saídas .md) são escritos para leigos entenderem.
   - `docs/RELATORIO_DE_AUDITORIA.md`: relatório formal (escopo, metodologia P1–P15, achados A1–A8, limitações,
     parecer, recomendações, anexo com parecer por alegação).
   - `analise/*.md`: saída de cada script (gerada; não editar à mão — rode o script).
-- O trabalho passou por 5 revisões independentes (subagentes): recontagem, estatística, código dos logs,
-  leitor adversário, investigação das seções das 19h. Todos os erros apontados foram corrigidos
-  (lista no README, seção 5).
 
 ## Números-chave (para conferir se algo mudou)
 
@@ -34,7 +36,7 @@ saídas .md) são escritos para leigos entenderem.
 | Limite estatístico das seções das 19h | 24.498 votos (pior especificação, IC 95%) |
 | Urnas fora das listas sem explicação | 17 seções, 4.563 votos, saldo +42 Lula |
 | Modelo 1º→2º turno | R² 0,979 nacional; 0,916 dentro do município |
-| Biometria (logs de 10.852 urnas) | liberações no log = BU em 100%; nas seções das 19h, 245 liberações manuais depois das 17h; taxa por UF 4,1% (RR) a 9,0% (PI) |
+| Biometria (logs de 10.809 urnas distintas) | liberações no log = BU em 100%; nas seções das 19h, 245 liberações manuais depois das 17h; taxa por UF 4,1% (RR) a 9,0% (PI) |
 
 ## Estrutura
 
@@ -47,6 +49,7 @@ analise/estatistica.py   junta_turnos() (1º×2º por seção, sufixos _1/_2), r
                          efeito fixo por UF/município, peso), centrar(), coef_cluster() (EP agrupado),
                          especificacoes(), desvio_grupo(), limite_tardias(), locais() (NR_LOCAL_VOTACAO), fmt(), md()
 analise/<verificação>.py um script por verificação; cada um grava o seu .md em analise/
+                         (suspeitas.py = antigo verificar_relatorio.py → RESULTADOS.md)
 scripts/                 baixar_dados_tse.py (conjuntos do portal + arquivos_urna_2t <UF>), extrair_presidente.py,
                          remontar_arquivos_urna.sh
 dados/tse/2026/boletim_urna/2turno/   BWeb oficiais (todos os cargos) + .sha512 + SERVIDOR.csv + CATALOGO.csv
@@ -58,18 +61,19 @@ dados/tse/2026/arquivos_urna/2turno/  pacotes AC/RR/AP em partes de 90 MB (parte
 dados/tse/2026/totalizacao/           PDF oficial (Relatorio_Resultado_Totalizacao_2026_BR.zip, T1 e T2)
 dados/derivados/                      caches/resultados: secoes_*, locais_2t_2026, logs_tardias_2t_2026,
                                       recontagem_rdv_2t_2026 (consolidado). recontagem_rdv/ (parciais) é ignorado.
-docs/graficos/                        8 PNGs gerados por analise/graficos.py
+docs/graficos/                        11 PNGs gerados por analise/graficos.py (11 = mapa por município)
+dados/ibge/                           malhas do IBGE para o mapa + MANIFESTO.csv
 ```
 
 ## Como rodar
 
 ```bash
-pip install pandas numpy tabulate matplotlib   # pdftotext (poppler-utils) já existe no ambiente
-scripts/remontar_arquivos_urna.sh              # necessário para logs_urna, imagem_bu, recontagem_rdv, fuso
+pip install pandas numpy tabulate matplotlib geopandas   # pdftotext (poppler-utils) já existe no ambiente
+scripts/remontar_arquivos_urna.sh              # necessário para logs_urna, imagem_bu, recontagem_rdv, fuso, graficos (g7)
 cd analise
 python3 totalizacao.py; python3 consistencia.py; python3 fuso.py
 python3 recontagem_rdv.py AC RR AP; python3 imagem_bu.py AC RR AP; python3 logs_urna.py AC RR AP
-python3 correspondencia.py; python3 verificar_relatorio.py; python3 primeiro_turno.py; python3 graficos.py
+python3 correspondencia.py; python3 suspeitas.py; python3 primeiro_turno.py; python3 graficos.py
 python3 logs_tardias.py            # usa cache; --refazer lê do servidor do TSE (~20 min)
 python3 biometria.py               # usa cache dados/derivados/biometria_logs_2t_2026.csv.gz; --refazer ~30 min
 python3 recontagem_rdv_nacional.py # usa parciais em dados/derivados/recontagem_rdv/ se existirem; sem eles ~2 h
@@ -117,6 +121,13 @@ e atualize README e `docs/RELATORIO_DE_AUDITORIA.md` se algum número citado mud
   `Claude-Session`, se o ambiente pedir. Não citar modelo em commits.
 
 ## Próximos passos possíveis (não feitos)
+
+0. Melhorias de método apontadas e não aplicadas (nenhuma muda a conclusão): incluir `lula_1` (ou log Lula/Flávio do
+   1º turno) nos regressores de `primeiro_turno.py` (R² sobe para 0,985/0,932 e mudaria números citados); EP por
+   jackknife/wild bootstrap em `limite_tardias` (poucos municípios com seção tardia; limite ~35 mil); pesar por
+   município a comparação "grupo × demais" (3,21 × 3,24 em vez de 3,25 × 3,20); `z_bin` usar a previsão do mesmo
+   modelo do resíduo; `centrar()` com média ponderada quando há peso (efeito desprezível); fixar versões
+   (requirements.txt) — numpy/pandas diferentes mudam a 15ª casa e a simulação de Benford.
 
 1. **Verificar assinaturas digitais** (`*-vota.vsc`) com as chaves públicas do TSE — principal limitação aberta.
 2. Ler logs e BU impresso de todas as UFs (hoje: AC, RR, AP inteiros + 6.352 seções das 19h + 1.500 controles),

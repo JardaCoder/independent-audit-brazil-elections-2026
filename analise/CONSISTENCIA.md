@@ -19,7 +19,7 @@
 | …comparecimento de Presidente **menor** que o de Governador | 0 |
 | mesmo nº de urna em mais de uma seção | 2 (são as urnas do Sistema de Apuração do exterior, usadas para digitar cédulas) |
 
-Horários vêm do relógio local da urna (ver RESULTADOS.md).
+Horários vêm do relógio local da urna (ver FUSO.md).
 
 ## Carga das urnas (DT_CARGA_URNA_EFETIVADA)
 

@@ -16,7 +16,7 @@ CACHE = os.path.join(RAIZ, "dados", "derivados", "secoes_presidente_2t_2026.csv.
 # DT_ABERTURA/DT_ENCERRAMENTO são gravados no relógio local da urna. Conferido pela hora de abertura:
 # todas as urnas abrem às 8h de Brasília, então abrem às 7h locais em UTC-4, às 6h em UTC-5 e às 9h em UTC-2.
 FUSO = {"AC": 2, "AM": 1, "MT": 1, "MS": 1, "RO": 1, "RR": 1}
-# Municípios do oeste do Amazonas em UTC-5 (Lei 11.662/2008) e Fernando de Noronha (UTC-2).
+# Municípios do oeste do Amazonas em UTC-5 (restabelecido pela Lei 12.876/2013) e Fernando de Noronha (UTC-2).
 FUSO_MUNICIPIO = {("AM", m): 2 for m in ["AMATURÁ", "ATALAIA DO NORTE", "BENJAMIN CONSTANT", "EIRUNEPÉ", "ENVIRA",
                                           "GUAJARÁ", "IPIXUNA", "ITAMARATI", "JUTAÍ", "SÃO PAULO DE OLIVENÇA", "TABATINGA"]}
 FUSO_MUNICIPIO[("PE", "FERNANDO DE NORONHA")] = -1
@@ -90,7 +90,9 @@ def carregar(usar_cache=True, ano=2026, turno=2):
         df[[c for c in df if c.startswith("V_")]] = df[[c for c in df if c.startswith("V_")]].fillna(0).astype(int)
         os.makedirs(os.path.dirname(cache), exist_ok=True)
         df.to_csv(cache, index=False, compression="gzip")
-    df["ENC_LOCAL"] = pd.to_datetime(df["DT_ENCERRAMENTO"], errors="coerce", format="mixed", dayfirst=True)
+    # 2026 vem em ISO (aaaa-mm-dd); 2022, em dd/mm/aaaa. dayfirst=True em ISO trocaria dia e mês (04/10 → 10/04).
+    iso = df["DT_ENCERRAMENTO"].dropna().iloc[0][:4].isdigit()
+    df["ENC_LOCAL"] = pd.to_datetime(df["DT_ENCERRAMENTO"], errors="coerce", format="ISO8601" if iso else "%d/%m/%Y %H:%M:%S")
     df["ENC_BRASILIA"] = df["ENC_LOCAL"] + pd.to_timedelta(fuso(df), unit="h")
     return df
 

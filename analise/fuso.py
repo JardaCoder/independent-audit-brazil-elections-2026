@@ -46,7 +46,7 @@ def main():
          f"- BUs recebidos pelo TSE antes das 17h00 de Brasília: **{fmt((rec.dt.hour < 17).sum())}**.",
          "- Se as urnas do Acre estivessem no horário de Brasília, teriam aberto 2 horas antes do permitido e fechado às "
          "15h de Brasília, e seus boletins chegariam ao TSE entre 15h e 17h. Nenhum chegou antes das 17h.",
-         "- O menor intervalo entre \"fechou\" e \"chegou\" é exatamente o fuso de cada grupo (2h, 1h, 0h).", ""]
+         "- O menor intervalo entre \"fechou\" e \"chegou\" é o fuso de cada grupo (cerca de 2h, 1h e 0h).", ""]
     linhas = []
     for uf in ["AC", "RR", "AP"]:
         z = zipfile.ZipFile(os.path.join(PASTA_URNA, f"bu_imgbu_logjez_rdv_vscmr_2026_2t_{uf}.zip"))

@@ -1,16 +1,16 @@
-# Verificação do "Relatório Pericial Independente" — 2º turno 2026
+# Horário de fechamento, seções das 19h, liberação manual, seções unânimes e Benford — 2º turno 2026
 
 Fonte: BWeb de Presidente do 2º turno (`dados/tse/2026/presidente/2turno/`), extraídos dos .zip oficiais conferidos com o SHA-512 do TSE.
 
-## 0. Totais (conferem com o relatório e com o resultado oficial)
+## 0. Totais (conferem com o resultado oficial)
 
 - Seções com voto: 499.205 · comparecimento: 128.236.074
 - Lula: 64.256.232 (51.79% dos válidos) · Flávio: 59.826.041 · margem: **4.430.191**
 - Liberados manualmente (digital falhou; campo QT_ELEI_BIOM_SEM_HABILITACAO): 8.632.488 (6.73% do comparecimento)
 
-## 1. Réplica exata das tabelas do relatório (horário local da urna)
+## 1. Os números que circularam, recalculados com o horário local da urna
 
-O relatório usa o horário **como gravado pela urna** (local) e estas faixas. Todos os números dele se reproduzem:
+Com o horário como gravado pela urna (local) e estas faixas, os números que circularam se reproduzem:
 
 ### 2026 (Lula × Flávio Bolsonaro)
 
@@ -32,7 +32,7 @@ O relatório usa o horário **como gravado pela urna** (local) e estas faixas. T
 | 19:00 a 19:59:59 | 15       | 2.908            | 1.762      | 1.003        | 63.73    | 759          |
 | 20:00 ou depois  | 5        | 1.023            | 597        | 407          | 59.46    | 190          |
 
-- O relatório diz que "mais de 2 milhões de eleitores" votaram nas seções fechadas depois das 19h. Nessas 6.333 seções havia 2.302.067 eleitores **aptos**, mas votaram 1.856.306. O número do relatório só bate contando os aptos.
+- A afirmação de que "mais de 2 milhões de eleitores" votaram nas seções fechadas depois das 19h: nessas 6.333 seções havia 2.302.067 eleitores **aptos**, mas votaram 1.856.306. O número só bate contando os aptos.
 
 ## 2. O grupo "até 17:00:59": por que Flávio vence nele?
 
@@ -97,7 +97,7 @@ O relatório usa o horário **como gravado pela urna** (local) e estas faixas. T
 
 | % liberados na seção   | secoes   | lula       | flavio     | liberados   | % Lula   | % das seções no Nordeste   |
 |:-----------------------|:---------|:-----------|:-----------|:------------|:---------|:---------------------------|
-| 0-2%                   | 19.118   | 2.468.276  | 2.264.179  | 65.416      | 52.16    | 23.0                       |
+| 0-2%                   | 17.810   | 2.268.122  | 2.092.682  | 65.416      | 52.01    | 24.6                       |
 | 2-5%                   | 157.893  | 20.729.348 | 19.877.339 | 1.565.408   | 51.05    | 25.6                       |
 | 5-10%                  | 237.829  | 30.521.272 | 28.758.874 | 4.336.218   | 51.49    | 28.0                       |
 | 10-20%                 | 80.331   | 10.061.133 | 8.584.117  | 2.454.737   | 53.96    | 34.5                       |
@@ -109,15 +109,15 @@ A % de Lula sobe nas faixas de liberação alta, mas essas faixas têm poucas se
 
 | comparação          | inclinação (EP)   | % Lula entre liberados (estimativa)   | margem sem os liberados (estimativa)   | % Lula entre liberados (limite de 95%)   | margem sem os liberados (limite de 95%)   |
 |:--------------------|:------------------|:--------------------------------------|:---------------------------------------|:-----------------------------------------|:------------------------------------------|
-| nacional            | 0.284 (0.078)     | 78.2                                  | -287.869                               | 92.5                                     | -2.679.340                                |
-| dentro do estado    | 0.171 (0.055)     | 67.7                                  | 1.469.153                              | 77.9                                     | -225.359                                  |
-| dentro do município | 0.024 (0.039)     | 54.0                                  | 3.754.830                              | 61.2                                     | 2.551.435                                 |
+| nacional            | 0.289 (0.080)     | 78.7                                  | -373.626                               | 93.3                                     | -2.802.136                                |
+| dentro do estado    | 0.171 (0.055)     | 67.7                                  | 1.470.770                              | 77.8                                     | -223.374                                  |
+| dentro do município | 0.024 (0.039)     | 54.0                                  | 3.755.951                              | 61.2                                     | 2.552.818                                 |
 
 - **Pior caso aritmético** (todo liberado votou em Lula sempre que possível e é retirado): margem de -4.189.464. Esse cenário exige que, em cada seção, os liberados tenham votado em Lula em bloco, o que contradiz os testes abaixo.
-- Por que as linhas dão resultados tão diferentes: liberação manual e voto em Lula são ambos mais altos em certas regiões (Nordeste, interior). Comparar o país todo (ou o estado todo) mistura essas regiões e atribui à liberação um efeito que é da geografia: é a clássica *falácia ecológica*. A comparação mais justa é entre seções da **mesma cidade**: aí a inclinação cai a quase zero, e mesmo no limite de 95% Lula mantém pelo menos 2,5 milhões de margem.
+- Por que as linhas dão resultados tão diferentes: liberação manual e voto em Lula são ambos mais altos em certas regiões (Nordeste, interior). Comparar o país todo (ou o estado todo) mistura essas regiões e atribui à liberação um efeito que é da geografia: é a *falácia ecológica*. A comparação mais justa é entre seções da **mesma cidade**: aí a inclinação cai a quase zero, e mesmo no limite de 95% Lula mantém pelo menos 2,5 milhões de margem.
 - Mesmo assim, estimativas com dados agregados nunca são definitivas. Por isso o teste mais forte é o do 1º turno (abaixo), que compara cada seção com ela mesma.
 - **Testes contra o 1º turno** (em `PRIMEIRO_TURNO.md`, seção 5): dado o voto da própria seção no 1º turno, mais liberação vem com **menos** Lula do que o esperado, e o **aumento** da liberação do 1º para o 2º turno não tem relação com o resultado. Se liberações fossem usadas para pôr votos em Lula, apareceria o contrário.
-- A taxa de liberação é parecida no Nordeste (7.19%) e no resto do país (6.55%), e quase igual no 1º turno (6.66%).
+- A taxa de liberação é parecida no Nordeste (7.19%) e no resto do país (6.58%), e quase igual no 1º turno (6.66%).
 - O que o campo significa, pelos logs das urnas (`LOGS.md`): o eleitor tem biometria cadastrada, a digital falhou 4 vezes, a urna pediu um dado pessoal (e recusou quando não conferia) e exigiu a digital do mesário. É a linha "Habilitação biográfica" do BU impresso.
 
 ## 6. Seções quase unânimes
@@ -154,7 +154,7 @@ A % de Lula sobe nas faixas de liberação alta, mas essas faixas têm poucas se
 |:-----------------------------------------------------------------------------|:---------------------|:--------------------------|
 | Lula (real)                                                                  | 3.858                | 6.731                     |
 | Flávio (real)                                                                | 3.971                | 6.461                     |
-| Lula (simulação honesta: sorteio binomial com o tamanho e a % de cada seção) | 3.865                | 6.510                     |
+| Lula (simulação honesta: sorteio binomial com o tamanho e a % de cada seção) | 3.865                | 6.490                     |
 
 - O 2º dígito real "falha" em Benford, mas **a simulação de uma eleição honesta falha do mesmo jeito**: o que se observa é o esperado para contagens desse tamanho, não sinal de manipulação.
 

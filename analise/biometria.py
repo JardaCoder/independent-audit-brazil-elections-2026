@@ -172,7 +172,7 @@ def parte_planilhas():
     grandes = gm[gm.comp >= 5000]
     out("## 2. Municípios com as maiores taxas (com pelo menos 5.000 votantes)")
     out()
-    top = grandes.sort_values("taxa (%)", ascending=False).head(15).reset_index()
+    top = grandes.sort_values(["taxa (%)", "NM_MUNICIPIO"], ascending=[False, True]).head(15).reset_index()
     top = top.rename(columns={"comp": "votantes", "lib": "liberados"})[["SG_UF", "NM_MUNICIPIO", "votantes", "liberados",
                                                                          "taxa (%)", "% Lula"]]
     out(md(top.astype({"votantes": "int64", "liberados": "int64"}), index=False))
@@ -202,7 +202,10 @@ def parte_logs(res):
         "reconhecida), **manual** (digital falhou 4 vezes; dado pessoal + digital do mesário), **sem biometria cadastrada** "
         "(eleitor sem digital no cadastro; ano de nascimento). Horário convertido para Brasília.")
     out()
-    out(f"- Logs lidos: {fmt(len(ok))} de {fmt(len(res))}. Conferência: liberações manuais no log = número do BU em "
+    # A amostra aleatória pode repetir seções dos outros grupos; as tabelas por grupo as contam em cada um.
+    distintas = len(ok.drop_duplicates(["SG_UF", "CD_MUNICIPIO", "NR_ZONA", "NR_SECAO"]))
+    out(f"- Logs lidos: {fmt(len(ok))} de {fmt(len(res))} ({fmt(distintas)} urnas distintas; "
+        f"{fmt(len(ok) - distintas)} seções da amostra aleatória também estão em outro grupo). Conferência: liberações manuais no log = número do BU em "
         f"{fmt((ok.n_manual == ok.QT_BIOM_SEM_HAB).sum())} seções; votos no log = comparecimento em "
         f"{fmt((ok.votos_log == ok.QT_COMPARECIMENTO).sum())}.")
     out()
@@ -249,7 +252,7 @@ def parte_logs(res):
     manha = int(((te["% manual 8h–12h"] >= 50) & (te["% manual 13h em diante"] < 30)).sum())
     abaixo = int((te["% Lula na seção"] < te["% Lula na zona"]).sum())
     acima = int((te["% Lula na seção"] > te["% Lula na zona"] + 2).sum())
-    out(f"{fmt(len(ext))} das {fmt(len(ok))} seções lidas. Em {manha} delas quase todos os eleitores foram liberados "
+    out(f"{fmt(len(ext))} das {fmt(distintas)} seções lidas. Em {manha} delas quase todos os eleitores foram liberados "
         "manualmente de manhã e a digital voltou a funcionar à tarde (leitor biométrico com defeito, depois consertado ou "
         "trocado). Nas demais, a taxa é alta o dia inteiro, sem pico em nenhum horário. Em "
         f"{abaixo} das {len(te)} a % de Lula na seção ficou **abaixo** da % na zona eleitoral; em {acima}, mais de 2 p.p. acima.")

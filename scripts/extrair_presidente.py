@@ -48,10 +48,14 @@ def main():
     for ano, turno in CONJUNTOS:
         origem = os.path.join(RAIZ, "dados", "tse", ano, "boletim_urna", f"{turno}turno")
         saida = os.path.join(RAIZ, "dados", "tse", ano, "presidente", f"{turno}turno")
+        zips = sorted(glob.glob(os.path.join(origem, f"bweb_{turno}t_*.zip")))
+        if not zips:  # ex.: 1º turno, cujos .zip ficam fora do git; não apagar o MANIFESTO existente
+            print(f"{ano} {turno}t: nenhum .zip em {origem}; pulado (baixe com scripts/baixar_dados_tse.py)")
+            continue
         os.makedirs(saida, exist_ok=True)
         linhas = ["arquivo_extraido;sha512_extraido;linhas_presidente;linhas_totais_no_original;"
                   "zip_oficial;csv_dentro_do_zip;sha512_zip_oficial_publicado_pelo_TSE;sha512_zip_conferido"]
-        for z in sorted(glob.glob(os.path.join(origem, f"bweb_{turno}t_*.zip"))):
+        for z in zips:
             uf = os.path.basename(z).split("_")[2]
             dest = os.path.join(saida, f"bweb_presidente_{turno}t_{uf}_{ano}.csv.gz")
             nome, total, copiadas = extrair(z, dest)

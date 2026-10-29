@@ -1,6 +1,6 @@
 # 1º turno de 2026 e comparação com o 2º turno
 
-Fonte: BWeb de Presidente do 1º turno (05/10/2026) e do 2º turno (25/10/2026), extraídos dos .zip oficiais conferidos com o SHA-512 do TSE (`dados/tse/2026/presidente/`).
+Fonte: BWeb de Presidente do 1º turno (04/10/2026) e do 2º turno (25/10/2026), extraídos dos .zip oficiais conferidos com o SHA-512 do TSE (`dados/tse/2026/presidente/`).
 
 ## 1. Resultado do 1º turno (soma dos BUs)
 
@@ -65,11 +65,11 @@ Para cada seção, prevemos a % de Lula (entre Lula e Flávio) no 2º turno usan
 
 Resíduo = % real de Lula − % prevista, em pontos percentuais (p.p.). A tabela mostra a diferença média do resíduo entre o grupo e as demais seções, com o erro-padrão (EP) agrupado por município entre parênteses. Um valor positivo e grande indicaria Lula acima do esperado no grupo.
 
-| grupo                                                   | seções   | linear, nacional   | linear, nacional, ponderado   | linear, dentro da UF   | linear, dentro do município   | logit, nacional   | logit, dentro do município   |
-|:--------------------------------------------------------|:---------|:-------------------|:------------------------------|:-----------------------|:------------------------------|:------------------|:-----------------------------|
-| fechou às 19h ou depois (Brasília)                      | 6.352    | +0.34 (0.13)       | +0.35 (0.12)                  | +0.07 (0.25)           | -0.20 (0.17)                  | +0.13 (0.28)      | +0.09 (0.26)                 |
-| fechou até 17:00:59 (relógio local, corte do relatório) | 150.771  | -0.15 (0.04)       | -0.15 (0.04)                  | -0.10 (0.03)           | -0.04 (0.01)                  | +0.03 (0.04)      | -0.02 (0.01)                 |
-| liberação manual ≥ 20% da seção (2º turno)              | 4.154    | -0.64 (0.07)       | -0.65 (0.07)                  | -0.53 (0.07)           | -0.33 (0.05)                  | -0.42 (0.07)      | -0.10 (0.06)                 |
+| grupo                                      | seções   | linear, nacional   | linear, nacional, ponderado   | linear, dentro da UF   | linear, dentro do município   | logit, nacional   | logit, dentro do município   |
+|:-------------------------------------------|:---------|:-------------------|:------------------------------|:-----------------------|:------------------------------|:------------------|:-----------------------------|
+| fechou às 19h ou depois (Brasília)         | 6.352    | +0.34 (0.13)       | +0.35 (0.12)                  | +0.07 (0.25)           | -0.20 (0.17)                  | +0.13 (0.28)      | +0.09 (0.26)                 |
+| fechou até 17:00:59 (relógio local)        | 150.771  | -0.15 (0.04)       | -0.15 (0.04)                  | -0.10 (0.03)           | -0.04 (0.01)                  | +0.03 (0.04)      | -0.02 (0.01)                 |
+| liberação manual ≥ 20% da seção (2º turno) | 4.154    | -0.64 (0.07)       | -0.65 (0.07)                  | -0.53 (0.07)           | -0.33 (0.05)                  | -0.42 (0.07)      | -0.10 (0.06)                 |
 
 - Seções tardias: o sinal muda conforme a especificação (positivo no nacional, negativo dentro do município). No pior caso (limite superior de 95% da especificação mais desfavorável, +0.68 p.p.), o efeito sobre a margem seria de no máximo **24.498 votos** (2 × 0.68% × 1.793.914 válidos).
 - Efeito no resíduo de +10 p.p. de **nível da liberação manual no 2º turno**: linear, dentro do município: -0.370 p.p. (EP 0.055); logit, dentro do município: -0.243 p.p. (EP 0.025).
@@ -78,11 +78,11 @@ Resíduo = % real de Lula − % prevista, em pontos percentuais (p.p.). A tabela
 
 ## 6. Comparação simples: o grupo já votava diferente no 1º turno?
 
-| grupo                                                   | Lula 1º turno (grupo)   | Lula 2º turno (grupo)   | variação grupo   | Lula 1º (demais, mesmos municípios)   | Lula 2º (demais)   | variação demais   |
-|:--------------------------------------------------------|:------------------------|:------------------------|:-----------------|:--------------------------------------|:-------------------|:------------------|
-| fechou às 19h ou depois (Brasília)                      | 51.93                   | 55.18                   | 3.25             | 51.4                                  | 54.6               | 3.2               |
-| fechou até 17:00:59 (relógio local, corte do relatório) | 44.8                    | 47.61                   | 2.8              | 50.73                                 | 53.51              | 2.77              |
-| liberação manual ≥ 20% da seção (2º turno)              | 56.73                   | 58.22                   | 1.49             | 50.33                                 | 53.24              | 2.91              |
+| grupo                                      | Lula 1º turno (grupo)   | Lula 2º turno (grupo)   | variação grupo   | Lula 1º (demais, mesmos municípios)   | Lula 2º (demais)   | variação demais   |
+|:-------------------------------------------|:------------------------|:------------------------|:-----------------|:--------------------------------------|:-------------------|:------------------|
+| fechou às 19h ou depois (Brasília)         | 51.93                   | 55.18                   | 3.25             | 51.4                                  | 54.6               | 3.2               |
+| fechou até 17:00:59 (relógio local)        | 44.8                    | 47.61                   | 2.8              | 50.73                                 | 53.51              | 2.77              |
+| liberação manual ≥ 20% da seção (2º turno) | 56.73                   | 58.22                   | 1.49             | 50.33                                 | 53.24              | 2.91              |
 
 Lula entre Lula e Flávio (somando os votos do grupo). Se a variação do grupo é igual à das demais seções dos mesmos municípios, o grupo não teve nada de especial no 2º turno: já votava diferente antes.
 

@@ -51,8 +51,8 @@ Taxa = eleitores liberados manualmente ÷ comparecimento. "% Lula" = Lula ÷ (Lu
 | RS      | CRUZEIRO DO SUL   | 7.852      | 1.454       | 18.5       | 32.3     |
 | RS      | ROSÁRIO DO SUL    | 23.474     | 4.282       | 18.2       | 50.7     |
 | RS      | PLANALTO          | 6.563      | 1.188       | 18.1       | 38.2     |
-| CE      | JAGUARETAMA       | 13.085     | 2.351       | 18.0       | 79.4     |
 | BA      | BOTUPORÃ          | 7.687      | 1.381       | 18.0       | 78.2     |
+| CE      | JAGUARETAMA       | 13.085     | 2.351       | 18.0       | 79.4     |
 | BA      | BREJOLÂNDIA       | 6.452      | 1.145       | 17.7       | 67.6     |
 | BA      | CORIBE            | 9.916      | 1.745       | 17.6       | 70.0     |
 | PI      | SÃO JOÃO DA SERRA | 5.388      | 946         | 17.6       | 78.8     |
@@ -74,7 +74,7 @@ Municípios divididos em cinco grupos pela taxa de liberação:
 
 Cada log registra, para cada eleitor, como ele foi liberado e a hora do voto. Tipos: **biométrica** (digital reconhecida), **manual** (digital falhou 4 vezes; dado pessoal + digital do mesário), **sem biometria cadastrada** (eleitor sem digital no cadastro; ano de nascimento). Horário convertido para Brasília.
 
-- Logs lidos: 10.852 de 10.852. Conferência: liberações manuais no log = número do BU em 10.852 seções; votos no log = comparecimento em 10.852.
+- Logs lidos: 10.852 de 10.852 (10.809 urnas distintas; 43 seções da amostra aleatória também estão em outro grupo). Conferência: liberações manuais no log = número do BU em 10.852 seções; votos no log = comparecimento em 10.852.
 
 | grupo                        | secoes   | votos     | manuais   | votos_apos_17h   | manuais_apos_17h   | biometricas_apos_17h   | % manual (dia todo)   | % manual entre os votos após 17h   |
 |:-----------------------------|:---------|:----------|:----------|:-----------------|:-------------------|:-----------------------|:----------------------|:-----------------------------------|
@@ -88,7 +88,7 @@ Cada log registra, para cada eleitor, como ele foi liberado e a hora do voto. Ti
 
 ### Casos extremos: um mesário com 50 ou mais liberações na mesma seção
 
-16 das 10.852 seções lidas. Em 2 delas quase todos os eleitores foram liberados manualmente de manhã e a digital voltou a funcionar à tarde (leitor biométrico com defeito, depois consertado ou trocado). Nas demais, a taxa é alta o dia inteiro, sem pico em nenhum horário. Em 11 das 16 a % de Lula na seção ficou **abaixo** da % na zona eleitoral; em 2, mais de 2 p.p. acima.
+16 das 10.809 seções lidas. Em 2 delas quase todos os eleitores foram liberados manualmente de manhã e a digital voltou a funcionar à tarde (leitor biométrico com defeito, depois consertado ou trocado). Nas demais, a taxa é alta o dia inteiro, sem pico em nenhum horário. Em 11 das 16 a % de Lula na seção ficou **abaixo** da % na zona eleitoral; em 2, mais de 2 p.p. acima.
 
 | UF   | município      | zona   | seção   | votos   | liberações manuais   | pelo mesmo mesário   | % manual 8h–12h   | % manual 13h em diante   | % Lula na seção   | % Lula na zona   |
 |:-----|:---------------|:-------|:--------|:--------|:---------------------|:---------------------|:------------------|:-------------------------|:------------------|:-----------------|

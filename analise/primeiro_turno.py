@@ -25,7 +25,7 @@ def grupos_teste(m):
     seg_l = (m.ENC_LOCAL_2 - m.ENC_LOCAL_2.dt.normalize()).dt.total_seconds()
     return {
         "fechou às 19h ou depois (Brasília)": seg_b >= 19 * 3600,
-        "fechou até 17:00:59 (relógio local, corte do relatório)": seg_l < 17 * 3600 + 60,
+        "fechou até 17:00:59 (relógio local)": seg_l < 17 * 3600 + 60,
         "liberação manual ≥ 20% da seção (2º turno)": m.bio_2 >= 0.20,
     }
 
@@ -35,7 +35,7 @@ def main():
     t2 = carregar(turno=2)
     out("# 1º turno de 2026 e comparação com o 2º turno")
     out()
-    out("Fonte: BWeb de Presidente do 1º turno (05/10/2026) e do 2º turno (25/10/2026), extraídos dos .zip oficiais "
+    out("Fonte: BWeb de Presidente do 1º turno (04/10/2026) e do 2º turno (25/10/2026), extraídos dos .zip oficiais "
         "conferidos com o SHA-512 do TSE (`dados/tse/2026/presidente/`).")
     out()
 

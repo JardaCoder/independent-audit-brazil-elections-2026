@@ -1,5 +1,6 @@
-"""Confere, com os BUs oficiais do 2º turno de 2026, cada número do "Relatório Pericial Independente" que
-circulou nas redes, e testa cada conclusão dele. Gera analise/RESULTADOS.md.
+"""Confere, com os BUs oficiais do 2º turno de 2026, os números das suspeitas de fraude que circularam depois da
+eleição (horário de fechamento, seções das 19h, liberação manual, seções unânimes, Benford) e testa cada conclusão.
+Gera analise/RESULTADOS.md.
 
 Convenções: "% Lula" = Lula ÷ (Lula + Flávio). "Saldo" = votos de Lula − votos de Flávio num grupo de seções.
 Horário "local" = como gravado pela urna; "Brasília" = convertido pelo fuso de cada município (exterior fora)."""
@@ -39,12 +40,12 @@ def tabela_faixas(d, col):
 def secao_totais(d):
     global MARGEM
     MARGEM = int(d.V_13.sum() - d.V_22.sum())
-    out("# Verificação do \"Relatório Pericial Independente\" — 2º turno 2026")
+    out("# Horário de fechamento, seções das 19h, liberação manual, seções unânimes e Benford — 2º turno 2026")
     out()
     out("Fonte: BWeb de Presidente do 2º turno (`dados/tse/2026/presidente/2turno/`), extraídos dos .zip oficiais "
         "conferidos com o SHA-512 do TSE.")
     out()
-    out("## 0. Totais (conferem com o relatório e com o resultado oficial)")
+    out("## 0. Totais (conferem com o resultado oficial)")
     out()
     out(f"- Seções com voto: {fmt(len(d))} · comparecimento: {fmt(d.QT_COMPARECIMENTO.sum())}")
     out(f"- Lula: {fmt(d.V_13.sum())} ({pct(d):.2f}% dos válidos) · Flávio: {fmt(d.V_22.sum())} · margem: **{fmt(MARGEM)}**")
@@ -54,9 +55,9 @@ def secao_totais(d):
 
 
 def secao_replica(d, d22):
-    out("## 1. Réplica exata das tabelas do relatório (horário local da urna)")
+    out("## 1. Os números que circularam, recalculados com o horário local da urna")
     out()
-    out("O relatório usa o horário **como gravado pela urna** (local) e estas faixas. Todos os números dele se reproduzem:")
+    out("Com o horário como gravado pela urna (local) e estas faixas, os números que circularam se reproduzem:")
     out()
     for ano, x in [(2026, d), (2022, d22)]:
         t = tabela_faixas(x, "ENC_LOCAL")
@@ -65,9 +66,9 @@ def secao_replica(d, d22):
         out(md(t))
         out()
     tarde = d[d.ENC_LOCAL.dt.hour == 19]
-    out(f"- O relatório diz que \"mais de 2 milhões de eleitores\" votaram nas seções fechadas depois das 19h. Nessas "
+    out(f"- A afirmação de que \"mais de 2 milhões de eleitores\" votaram nas seções fechadas depois das 19h: nessas "
         f"{fmt(len(tarde))} seções havia {fmt(tarde.QT_APTOS.sum())} eleitores **aptos**, mas votaram "
-        f"{fmt(tarde.QT_COMPARECIMENTO.sum())}. O número do relatório só bate contando os aptos.")
+        f"{fmt(tarde.QT_COMPARECIMENTO.sum())}. O número só bate contando os aptos.")
     out()
 
 
@@ -170,7 +171,9 @@ def secao_tardias(d):
 def secao_biometria(d, d1):
     out("## 5. Eleitores liberados manualmente (\"sem biometria\")")
     out()
-    x = d[(d.V_13 + d.V_22) > 0].copy()
+    # Exterior fora da estimativa: lá não há biometria e a liberação é zero por definição. Seus votos voltam às margens.
+    x = d[((d.V_13 + d.V_22) > 0) & (d.SG_UF != "ZZ")].copy()
+    saldo_zz = int((d.V_13 - d.V_22)[d.SG_UF == "ZZ"].sum())
     x["v"] = x.V_13 + x.V_22
     x["p"] = x.V_13 / x.v
     x["bio"] = x.QT_BIOM_SEM_HAB / x.QT_COMPARECIMENTO
@@ -197,16 +200,16 @@ def secao_biometria(d, d1):
         for rot, bb in [("estimativa", b), ("limite de 95%", b + 1.96 * se)]:
             po = p - bb * f  # % de Lula entre os não liberados
             res[f"% Lula entre liberados ({rot})"] = round((po + bb) * 100, 1)
-            res[f"margem sem os liberados ({rot})"] = fmt((2 * po - 1) * V * (1 - f))
+            res[f"margem sem os liberados ({rot})"] = fmt((2 * po - 1) * V * (1 - f) + saldo_zz)
         linhas.append(res)
     out(md(pd.DataFrame(linhas), index=False))
     out()
-    pior = int((x.V_13 - np.minimum(x.V_13, x.QT_BIOM_SEM_HAB)).sum() - x.V_22.sum())
+    pior = int((x.V_13 - np.minimum(x.V_13, x.QT_BIOM_SEM_HAB)).sum() - x.V_22.sum()) + saldo_zz
     out(f"- **Pior caso aritmético** (todo liberado votou em Lula sempre que possível e é retirado): margem de {fmt(pior)}. "
         "Esse cenário exige que, em cada seção, os liberados tenham votado em Lula em bloco, o que contradiz os testes abaixo.")
     out("- Por que as linhas dão resultados tão diferentes: liberação manual e voto em Lula são ambos mais altos em certas "
         "regiões (Nordeste, interior). Comparar o país todo (ou o estado todo) mistura essas regiões e atribui à liberação "
-        "um efeito que é da geografia: é a clássica *falácia ecológica*. A comparação mais justa é entre seções da **mesma "
+        "um efeito que é da geografia: é a *falácia ecológica*. A comparação mais justa é entre seções da **mesma "
         "cidade**: aí a inclinação cai a quase zero, e mesmo no limite de 95% Lula mantém pelo menos 2,5 milhões de margem.")
     out("- Mesmo assim, estimativas com dados agregados nunca são definitivas. Por isso o teste mais forte é o do 1º turno (abaixo), "
         "que compara cada seção com ela mesma.")

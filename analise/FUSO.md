@@ -12,7 +12,7 @@ As urnas não têm internet. O relógio delas é acertado à mão durante a prep
 
 - BUs recebidos pelo TSE antes das 17h00 de Brasília: **0**.
 - Se as urnas do Acre estivessem no horário de Brasília, teriam aberto 2 horas antes do permitido e fechado às 15h de Brasília, e seus boletins chegariam ao TSE entre 15h e 17h. Nenhum chegou antes das 17h.
-- O menor intervalo entre "fechou" e "chegou" é exatamente o fuso de cada grupo (2h, 1h, 0h).
+- O menor intervalo entre "fechou" e "chegou" é o fuso de cada grupo (cerca de 2h, 1h e 0h).
 
 ## 3. O relógio é acertado à mão
 
