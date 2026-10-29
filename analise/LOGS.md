@@ -6,7 +6,7 @@ UFs auditadas: AC, RR, AP. Fonte: arquivos originais transmitidos para totaliza�
 |:--------------------------------------------------------------|------:|------:|------:|
 | seções (logs)                                                 |  2270 |  1519 |  1914 |
 | votos computados no log = comparecimento do BU                |  2270 |  1519 |  1914 |
-| habilitações biométricas: log = BU                            |  2255 |  1514 |  1907 |
+| habilitações biométricas: log = BU                            |  2270 |  1519 |  1914 |
 | liberações manuais (digital falhou): log = 'biográfica' do BU |  2270 |  1519 |  1914 |
 | sem biometria cadastrada (ano de nasc.): log = BU             |  2270 |  1519 |  1914 |
 | total de liberações manuais (log)                             | 22654 | 12646 | 19685 |
@@ -15,9 +15,10 @@ UFs auditadas: AC, RR, AP. Fonte: arquivos originais transmitidos para totaliza�
 | manuais com digital de mesário não associável a um nome       |  2898 |  1601 |  2712 |
 | manuais com digital do mesário capturada mas não encontrada   |  4076 |  1527 |  3198 |
 | manuais sem registro de mesário                               |     0 |     0 |     0 |
-| dado pessoal digitado errado e recusado pela urna             |   573 |   285 |   525 |
+| vezes em que o dado pessoal digitado foi recusado pela urna   |   573 |   285 |   525 |
+| …eleitores que, depois da recusa, saíram sem votar            |   149 |    67 |   122 |
 | habilitados e suspensos sem votar                             |    53 |    31 |    39 |
-| votos sem habilitação identificada no log                     |    15 |     5 |     7 |
+| votos sem habilitação identificada no log                     |     0 |     0 |     0 |
 | maior nº de liberações por um único mesário na seção          |    36 |    44 |    41 |
 | seções com voto registrado após o fechamento do BU            |     0 |     0 |     0 |
 

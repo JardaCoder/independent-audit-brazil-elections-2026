@@ -1,10 +1,10 @@
 # 1º turno de 2026 e comparação com o 2º turno
 
-Fonte: BWeb do 1º turno (05/10/2026) e do 2º turno (25/10/2026), conferidos com o SHA-512 do TSE. Cargo: Presidente.
+Fonte: BWeb de Presidente do 1º turno (05/10/2026) e do 2º turno (25/10/2026), extraídos dos .zip oficiais conferidos com o SHA-512 do TSE (`dados/tse/2026/presidente/`).
 
 ## 1. Resultado do 1º turno (soma dos BUs)
 
-Seções: 499.206 · comparecimento: 125.275.835 · válidos: 119.306.034 · brancos: 2.300.798 · nulos: 3.669.003
+Seções com voto: 499.206 · comparecimento: 125.275.835 · válidos: 119.300.788 · brancos: 2.300.798 · nulos na urna: 3.669.003 · nulos técnicos (nº 28, registro anulado): 5.246
 
 |       | votos      | % válidos   |
 |:------|:-----------|:------------|
@@ -17,78 +17,100 @@ Seções: 499.206 · comparecimento: 125.275.835 · válidos: 119.306.034 · bra
 | nº 80 | 122.911    | 0.1         |
 | nº 16 | 43.103     | 0.04        |
 
-## 2. Horário de fechamento e biometria nos dois turnos
+O TSE conta 499.207 seções em funcionamento. A diferença é a seção 91 de Ciudad Guayana (exterior, 72 aptos), que não aparece no BWeb do 1º turno (ninguém votou).
 
-| turno    | seções   | fechou até 17:00:59 (local)   | fechou 17:01–17:15 (local)   | fechou 17:16–18:59 (local)   | fechou 19h ou depois (local)   | fechou 19h+ (Brasília)   | liberação manual (biográfica)   | % do comparecimento   |
-|:---------|:---------|:------------------------------|:-----------------------------|:-----------------------------|:-------------------------------|:-------------------------|:--------------------------------|:----------------------|
-| 1º turno | 499.206  | 71.525                        | 309.816                      | 109.891                      | 7.944                          | 8.324                    | 8.342.249                       | 6.66                  |
-| 2º turno | 499.205  | 153.970                       | 336.394                      | 2.472                        | 6.342                          | 6.352                    | 8.632.488                       | 6.73                  |
+## 2. Horário de fechamento e liberação manual nos dois turnos
+
+Faixas pelo horário de **Brasília** (exterior fora: cada país tem seu fuso). % Lula = Lula ÷ (Lula + Flávio).
+
+| turno    | faixa (Brasília)   | seções   | % Lula   |
+|:---------|:-------------------|:---------|:---------|
+| 1º turno | até 17:00:59       | 42.172   | 40.8     |
+| 1º turno | 17:01 a 17:15:59   | 331.129  | 45.75    |
+| 1º turno | 17:16 a 18:59:59   | 116.228  | 57.48    |
+| 1º turno | 19:00 a 19:59:59   | 7.024    | 69.13    |
+| 1º turno | 20:00 ou depois    | 1.342    | 76.35    |
+| 2º turno | até 17:00:59       | 125.624  | 49.01    |
+| 2º turno | 17:01 a 17:15:59   | 363.428  | 52.61    |
+| 2º turno | 17:16 a 18:59:59   | 2.493    | 57.14    |
+| 2º turno | 19:00 a 19:59:59   | 6.350    | 55.18    |
+| 2º turno | 20:00 ou depois    | 2        | 43.04    |
+
+- 1º turno: fecharam no minuto 19:00 exato 237 seções; entre 18:50 e 19:10, 5.219; liberação manual: 8.342.249 (6.66% do comparecimento).
+- 2º turno: fecharam no minuto 19:00 exato 1.993 seções; entre 18:50 e 19:10, 6.676; liberação manual: 8.632.488 (6.73% do comparecimento).
+- No 1º turno houve **mais** seções fechando às 19h ou depois do que no 2º, mas como uma cauda contínua de filas (5 cargos para votar). O que só existe no 2º turno é o **pico concentrado às 19h00**.
 
 ## 3. As mesmas seções nos dois turnos
 
-- Seções presentes nos dois turnos: 499.205 (1º: 499.206, 2º: 499.205).
-- Aptos iguais nos dois turnos: 443.483 (88.8%). A diferença vem do voto em trânsito, que muda entre os turnos.
-- Das 6.352 seções que fecharam às 19h ou depois (Brasília) no 2º turno, 102 também fecharam às 19h ou depois no 1º turno.
-- Correlação, por seção, entre a taxa de liberação manual no 1º e no 2º turno: **0.82**. Se a taxa se repete, ela é uma característica da seção (eleitorado, leitor biométrico), não algo que apareceu no 2º turno.
+- Seções comparáveis: 499.205. Aptos iguais nos dois turnos: 88.8% (a diferença vem do voto em trânsito, que muda entre os turnos).
+- Seções que fecharam às 19h ou depois nos dois turnos: 98. Se não houvesse relação nenhuma, o esperado ao acaso seria 106. São outros locais.
+- Correlação, por seção, entre a taxa de liberação manual do 1º e do 2º turno: **0.82**. A taxa é uma característica estável da seção.
 
-## 4. Modelo de transferência de votos: o 2º turno é previsível pelo 1º?
+## 4. Modelo: o 2º turno é previsível pelo 1º?
 
-Variável prevista: % de Lula entre Lula e Flávio no 2º turno, por seção. Variáveis explicativas: votos de cada candidato do 1º turno, branco+nulo e abstenção, como fração dos aptos. Seções: 499.205.
+Para cada seção, prevemos a % de Lula (entre Lula e Flávio) no 2º turno usando só o 1º turno da mesma seção: fatia de cada candidato, de branco+nulo e de abstenção. Duas formas: **linear** (frações dos aptos) e **logit** (log da razão Lula/Flávio; frações do comparecimento + taxa de abstenção). "Dentro do município" = compara só seções da mesma cidade (efeito fixo), o que tira a diferença entre regiões.
 
-- **R² = 0.979**: o 1º turno explica 97.9% da variação do 2º turno entre seções.
-- Erro típico (desvio-padrão do resíduo): 2.48 pontos percentuais.
+| modelo                      | variação explicada (R²)   | erro típico (p.p.)   |
+|:----------------------------|:--------------------------|:---------------------|
+| linear, nacional            | 0.979                     | 2.48                 |
+| linear, nacional, ponderado | 0.98                      | 2.48                 |
+| linear, dentro da UF        | 0.958                     | 2.44                 |
+| linear, dentro do município | 0.916                     | 2.2                  |
+| logit, nacional             | 0.982                     | 2.37                 |
+| logit, dentro do município  | 0.914                     | 2.24                 |
 
-Pesos do modelo. São pesos de previsão, não taxas exatas de transferência: o que importa é o sinal e a ordem. Eleitor de Lula e de Augusto Cury (70) puxa para Lula; eleitor de Flávio puxa contra.
+- Só com a % de Lula entre Lula e Flávio no 1º turno (uma variável) o R² nacional já é 0.984. O número que importa é o **dentro do município** (~0,92): mesmo comparando seções da mesma cidade, o 1º turno explica mais de 90% das diferenças do 2º.
 
-|             | coeficiente   |
-|:------------|:--------------|
-| nº 22       | -0.157        |
-| nº 13       | 1.148         |
-| nº 70       | 0.704         |
-| nº 14       | 0.501         |
-| nº 55       | 0.422         |
-| nº 30       | 0.005         |
-| outros      | 0.962         |
-| branco+nulo | 0.864         |
-| abstenção   | 0.56          |
+## 5. Algum grupo de seções se desviou da previsão?
 
-### Resíduo por grupo de seções
+Resíduo = % real de Lula − % prevista, em pontos percentuais (p.p.). A tabela mostra a diferença média do resíduo entre o grupo e as demais seções, com o erro-padrão (EP) agrupado por município entre parênteses. Um valor positivo e grande indicaria Lula acima do esperado no grupo.
 
-Resíduo = % real de Lula no 2º turno menos o previsto pelo 1º turno, em pontos percentuais. Se a virada tivesse sido "fabricada" em algum grupo, o resíduo desse grupo seria claramente positivo. A coluna "dentro do município" compara só seções do mesmo município, o que neutraliza diferenças regionais.
+| grupo                                                   | seções   | linear, nacional   | linear, nacional, ponderado   | linear, dentro da UF   | linear, dentro do município   | logit, nacional   | logit, dentro do município   |
+|:--------------------------------------------------------|:---------|:-------------------|:------------------------------|:-----------------------|:------------------------------|:------------------|:-----------------------------|
+| fechou às 19h ou depois (Brasília)                      | 6.352    | +0.34 (0.13)       | +0.35 (0.12)                  | +0.07 (0.25)           | -0.20 (0.17)                  | +0.13 (0.28)      | +0.09 (0.26)                 |
+| fechou até 17:00:59 (relógio local, corte do relatório) | 150.771  | -0.15 (0.04)       | -0.15 (0.04)                  | -0.10 (0.03)           | -0.04 (0.01)                  | +0.03 (0.04)      | -0.02 (0.01)                 |
+| liberação manual ≥ 20% da seção (2º turno)              | 4.154    | -0.64 (0.07)       | -0.65 (0.07)                  | -0.53 (0.07)           | -0.33 (0.05)                  | -0.42 (0.07)      | -0.10 (0.06)                 |
 
-**fechamento 2º turno**
+- Seções tardias: o sinal muda conforme a especificação (positivo no nacional, negativo dentro do município). No pior caso (limite superior de 95% da especificação mais desfavorável, +0.68 p.p.), o efeito sobre a margem seria de no máximo **24.498 votos** (2 × 0.68% × 1.793.914 válidos).
+- Efeito no resíduo de +10 p.p. de **nível da liberação manual no 2º turno**: linear, dentro do município: -0.370 p.p. (EP 0.055); logit, dentro do município: -0.243 p.p. (EP 0.025).
+- Efeito no resíduo de +10 p.p. de **variação da liberação manual do 1º para o 2º turno**: linear, dentro do município: +0.012 p.p. (EP 0.017); logit, dentro do município: -0.020 p.p. (EP 0.015).
+- Se a liberação manual fosse usada para pôr votos em Lula, mais liberação deveria vir com resíduo positivo, sobretudo onde ela **aumentou** do 1º para o 2º turno. Não é o que aparece.
 
-| fechamento 2º turno   | secoes   | residuo_medio   | dentro_do_municipio   |
-|:----------------------|:---------|:----------------|:----------------------|
-| até 17:00:59          | 129.526  | -0.1            | -0.03                 |
-| 17:01–17:15           | 360.751  | 0.03            | 0.01                  |
-| 17:16–18:59           | 2.549    | 0.17            | -0.06                 |
-| 19h ou depois         | 6.352    | 0.34            | -0.17                 |
+## 6. Comparação simples: o grupo já votava diferente no 1º turno?
 
-**liberação manual 2º turno**
+| grupo                                                   | Lula 1º turno (grupo)   | Lula 2º turno (grupo)   | variação grupo   | Lula 1º (demais, mesmos municípios)   | Lula 2º (demais)   | variação demais   |
+|:--------------------------------------------------------|:------------------------|:------------------------|:-----------------|:--------------------------------------|:-------------------|:------------------|
+| fechou às 19h ou depois (Brasília)                      | 51.93                   | 55.18                   | 3.25             | 51.4                                  | 54.6               | 3.2               |
+| fechou até 17:00:59 (relógio local, corte do relatório) | 44.8                    | 47.61                   | 2.8              | 50.73                                 | 53.51              | 2.77              |
+| liberação manual ≥ 20% da seção (2º turno)              | 56.73                   | 58.22                   | 1.49             | 50.33                                 | 53.24              | 2.91              |
 
-| liberação manual 2º turno   | secoes   | residuo_medio   | dentro_do_municipio   |
-|:----------------------------|:---------|:----------------|:----------------------|
-| 0–5%                        | 177.011  | 0.15            | 0.12                  |
-| 5–10%                       | 237.829  | -0.02           | -0.03                 |
-| 10–20%                      | 80.331   | -0.25           | -0.16                 |
-| 20–30%                      | 3.686    | -0.67           | -0.3                  |
-| 30–100%                     | 348      | -0.32           | -0.18                 |
+Lula entre Lula e Flávio (somando os votos do grupo). Se a variação do grupo é igual à das demais seções dos mesmos municípios, o grupo não teve nada de especial no 2º turno: já votava diferente antes.
 
-**variação liberação manual 1º→2º**
+## 7. Seções muito fora do padrão
 
-| variação liberação manual 1º→2º   | secoes   | residuo_medio   | dentro_do_municipio   |
-|:----------------------------------|:---------|:----------------|:----------------------|
-| caiu >5 p.p.                      | 7.732    | -0.25           | -0.08                 |
-| estável (±5 p.p.)                 | 483.940  | 0.01            | 0.0                   |
-| subiu 5–10 p.p.                   | 7.243    | -0.15           | -0.13                 |
-| subiu >10 p.p.                    | 290      | -0.05           | -0.04                 |
+| critério                                      | k   | seções   | a favor de Lula   | a favor de Flávio   | efeito bruto a favor de Lula (votos)   | efeito líquido (votos)   |
+|:----------------------------------------------|:----|:---------|:------------------|:--------------------|:---------------------------------------|:-------------------------|
+| resíduo > k desvios                           | 2   | 23.039   | 11.574            | 11.465              | 274.058                                | 17.868                   |
+| resíduo padronizado pelo tamanho da seção > k | 2   | 6.986    | 2.719             | 4.267               | 81.305                                 | -17.442                  |
+| resíduo > k desvios                           | 3   | 3.354    | 1.683             | 1.671               | 45.654                                 | 2.799                    |
+| resíduo padronizado pelo tamanho da seção > k | 3   | 2.070    | 369               | 1.701               | 12.836                                 | -24.319                  |
+| resíduo > k desvios                           | 4   | 747      | 421               | 326                 | 11.896                                 | 3.487                    |
+| resíduo padronizado pelo tamanho da seção > k | 4   | 1.224    | 129               | 1.095               | 4.758                                  | -19.115                  |
+| resíduo > k desvios                           | 5   | 257      | 161               | 96                  | 4.841                                  | 2.142                    |
+| resíduo padronizado pelo tamanho da seção > k | 5   | 851      | 61                | 790                 | 2.335                                  | -15.937                  |
 
-- Seções com resíduo dentro do município acima de 4 desvios-padrão (8.8 p.p.): 747 (0.15%), sendo 421 a favor de Lula e 326 a favor de Flávio.
-- Mesmo atribuindo todo o resíduo dessas seções a manipulação, o efeito líquido na margem seria de 3.487 votos, contra uma margem de 4.430.191.
-- A lista dessas seções está em `secoes_fora_do_padrao_1t_2t.csv`.
+Efeito = quanto a margem mudaria se todo o desvio dessas seções fosse removido (2 × resíduo × válidos). "Bruto" soma só os desvios a favor de Lula, sem descontar os a favor de Flávio.
+- Lista (critério 4 desvios): `secoes_fora_do_padrao_1t_2t.csv`.
+- No modelo linear nacional, há um aglomerado de seções com Lula muito abaixo do previsto: 351 são do exterior (principalmente Boston, Nagóia, Miami, Tóquio), com abstenção média de 65% no 1º turno. O modelo linear trata parte da abstenção como voto futuro, o que não vale no exterior. É limitação do modelo, e o desvio é contra Lula.
 
-## 5. Do 1º para o 2º turno, por UF
+## 8. O que este teste não detecta
+
+- Manipulação **igual em todas as seções** do país (seria absorvida pelos coeficientes do modelo). Coberta por outro teste: a soma dos BUs bate com o resultado oficial e os BUs batem com os logs das urnas.
+- Manipulação que também tenha ocorrido no **1º turno** (fica embutida na previsão).
+- Manipulação do **município inteiro** (a coluna "dentro do município" não a vê; a nacional sim).
+- Os coeficientes do modelo não são taxas de transferência de votos e não devem ser interpretados um a um.
+
+## 9. Do 1º para o 2º turno, por UF
 
 | SG_UF   | Lula 1º (% válidos)   | Flávio 1º (% válidos)   | Lula 2º (% válidos)   | comparecimento 1º   | comparecimento 2º   | previsto pelo modelo   |
 |:--------|:----------------------|:------------------------|:----------------------|:--------------------|:--------------------|:-----------------------|
@@ -111,13 +133,13 @@ Resíduo = % real de Lula no 2º turno menos o previsto pelo 1º turno, em ponto
 | PI      | 71.0                  | 24.1                    | 75.9                  | 2.240.883           | 2.239.830           | 76.6                   |
 | PR      | 31.2                  | 59.9                    | 37.4                  | 6.841.457           | 7.059.339           | 37.8                   |
 | RJ      | 39.4                  | 53.0                    | 46.9                  | 9.859.802           | 10.077.449          | 46.2                   |
-| RN      | 59.7                  | 34.8                    | 65.7                  | 2.171.013           | 2.232.823           | 65.2                   |
-| RO      | 25.9                  | 67.4                    | 30.4                  | 991.080             | 988.489             | 31.2                   |
+| RN      | 59.8                  | 34.8                    | 65.7                  | 2.171.013           | 2.232.823           | 65.2                   |
+| RO      | 25.9                  | 67.5                    | 30.4                  | 991.080             | 988.489             | 31.2                   |
 | RR      | 22.9                  | 71.1                    | 27.5                  | 332.772             | 308.597             | 26.4                   |
 | RS      | 35.7                  | 55.6                    | 42.2                  | 6.702.903           | 6.889.638           | 42.2                   |
 | SC      | 25.0                  | 66.7                    | 30.6                  | 4.648.159           | 4.762.303           | 30.5                   |
 | SE      | 62.7                  | 30.6                    | 69.5                  | 1.439.082           | 1.466.659           | 69.0                   |
 | SP      | 38.2                  | 51.9                    | 46.2                  | 26.431.992          | 27.364.389          | 46.4                   |
 | TO      | 43.4                  | 50.4                    | 48.6                  | 965.196             | 954.763             | 48.3                   |
-| ZZ      | 47.5                  | 43.5                    | 53.9                  | 341.766             | 381.443             | 56.0                   |
+| ZZ      | 47.6                  | 43.5                    | 53.9                  | 341.766             | 381.443             | 56.0                   |
 

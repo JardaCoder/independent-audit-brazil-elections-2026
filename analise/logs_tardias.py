@@ -21,7 +21,7 @@ from concurrent.futures import ThreadPoolExecutor
 import pandas as pd
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from carregar import FUSO, RAIZ, carregar  # noqa: E402
+from carregar import FUSO, RAIZ, carregar, fuso  # noqa: E402
 from logs_urna import linhas_log  # noqa: E402
 
 URL = "https://cdn.tse.jus.br/estatistica/sead/eleicoes/eleicoes2026/arqurnatot/bu_imgbu_logjez_rdv_vscmr_2026_2t_{}.zip"
@@ -136,6 +136,7 @@ def selecionar(n_controle=1500, semente=2026):
     d.loc[viz.index, "grupo"] = "vizinha que fechou até 17h15"
     d = d[d.grupo.notna()]
     d = d[d.SG_UF != "ZZ"]
+    d["fuso"] = fuso(d)
     d["arquivo"] = ("o03221" + d.SG_UF.str.lower() + d.CD_MUNICIPIO.astype(int).map("{:05d}".format)
                     + d.NR_ZONA.astype(int).map("{:04d}".format) + d.NR_SECAO.astype(int).map("{:04d}".format) + "-log.jez")
     return d
@@ -155,7 +156,7 @@ def processar():
             if info is None:
                 return {"arquivo": row.arquivo, "erro": "log não encontrado"}
             try:
-                r = analisar_log(ler_membro(url, info), FUSO.get(uf, 0))
+                r = analisar_log(ler_membro(url, info), int(row.fuso))
             except Exception as e:  # registra e segue
                 return {"arquivo": row.arquivo, "erro": repr(e)[:200]}
             r["arquivo"] = row.arquivo
@@ -174,7 +175,30 @@ def fmt(n):
     return f"{n:,.0f}".replace(",", ".")
 
 
+def corrigir_fuso(res):
+    """O cache pode ter sido gerado com o fuso por UF (versão antiga). Recalcula grupo e contagens com o fuso por
+    município (oeste do AM em UTC-5, Fernando de Noronha em UTC-2) a partir dos votos por minuto."""
+    if "fuso" in res and res.fuso.notna().all():
+        return res
+    res = res.copy()
+    novo = fuso(res)
+    antigo = res.SG_UF.map(FUSO).fillna(0)
+    enc = pd.to_datetime(res.DT_ENCERRAMENTO, format="mixed") + pd.to_timedelta(novo, unit="h")
+    seg = (enc - enc.dt.normalize()).dt.total_seconds()
+    res.loc[(res.grupo == "fechou 19h ou depois") & (seg < 19 * 3600), "grupo"] = "deixou de ser tardia com o fuso corrigido"
+    for i in res.index[novo != antigo]:
+        desloc = int((novo[i] - antigo[i]) * 60)
+        mins = {int(k) + desloc: int(v) for k, v in (kv.split(":") for kv in str(res.at[i, "por_minuto"]).split(";") if ":" in kv)}
+        for col, t in [("votos_apos_17h00", 1020), ("votos_apos_17h15", 1035), ("votos_apos_17h30", 1050),
+                       ("votos_apos_18h00", 1080), ("votos_apos_18h30", 1110)]:
+            res.at[i, col] = sum(v for k, v in mins.items() if k >= t)
+        res.at[i, "por_minuto"] = ";".join(f"{k}:{v}" for k, v in sorted(mins.items()) if k >= 1020)
+    res["fuso"] = novo
+    return res[res.grupo != "deixou de ser tardia com o fuso corrigido"]
+
+
 def relatorio(res):
+    res = corrigir_fuso(res)
     L = ["# Votos depois das 17h nas seções que fecharam às 19h (2º turno 2026)", "",
          "Fonte: log de cada urna (`logd.dat`), lido direto do pacote oficial \"arquivos transmitidos para totalização\" "
          "do TSE por download parcial. O horário foi convertido para Brasília. Grupo de controle: amostra aleatória "
@@ -193,6 +217,11 @@ def relatorio(res):
     tard = ok[ok.grupo == "fechou 19h ou depois"]
     L.append(f"- Log = comparecimento do BU: {fmt((ok.votos_log == ok.QT_COMPARECIMENTO).sum())} de {fmt(len(ok))} seções.")
     L.append(f"- Seções tardias **sem nenhum voto** depois das 17h15: {fmt((tard.votos_apos_17h15 == 0).sum())} de {fmt(len(tard))}.")
+    L.append(f"- Votos dados depois das 17h00 nas seções tardias: **{fmt(tard.votos_apos_17h00.sum())}** de {fmt(tard.votos_log.sum())} "
+             f"({tard.votos_apos_17h00.sum() / tard.votos_log.sum() * 100:.2f}%). Mesmo que **todos** fossem ilegítimos e todos de "
+             f"Lula, o efeito máximo sobre a margem de 4.430.191 seria de {fmt(tard.votos_apos_17h00.sum())} votos "
+             f"({tard.votos_apos_17h00.sum() / 4430191 * 100:.2f}%).")
+    L.append("- Votos entre 17h00 e 17h15 são normais: é quem estava na fila às 17h. As vizinhas de controle também os têm.")
     L.append(f"- Seções tardias com mais de 10% dos votos depois das 17h15: {fmt((tard.votos_apos_17h15 > 0.1 * tard.votos_log).sum())}.")
     # Lula/Flávio nas tardias por intensidade de voto tardio
     tard = tard.assign(frac=tard.votos_apos_17h15 / tard.votos_log)

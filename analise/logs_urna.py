@@ -30,14 +30,15 @@ def linhas_log(jez):
 
 def eventos_secao(log_jez):
     """Percorre o log do dia da eleição eleitor a eleitor e classifica cada habilitação."""
-    linhas = sorted(dict.fromkeys(linhas_log(log_jez)), key=lambda ln: (ln[:19][6:10], ln[:19][3:5], ln[:19][:2], ln[11:19]))
+    # Cada logd.dat é lido na ordem original do arquivo; logs de urnas substituídas vêm em sequência (não se sobrepõem).
+    linhas = linhas_log(log_jez)
     r = Counter()
     votos_hora = Counter()
     manuais_hora = Counter()
     mesarios = Counter()
     erros = Counter()
     ultimo_voto = None
-    tipo, mesario, habilitado = None, None, None
+    tipo, mesario, habilitado, recusou, votou = None, None, False, False, False
     for ln in linhas:
         if not ln.startswith(DIA):
             continue
@@ -46,13 +47,16 @@ def eventos_secao(log_jez):
             continue
         hora, nivel, msg = partes[0][11:], partes[1], partes[4]
         if msg.startswith("Aguardando digitação do identificador do eleitor"):
-            tipo, mesario, habilitado = None, None, None
+            if recusou and not votou:
+                r["sessoes_recusadas_sem_voto"] += 1
+            tipo, mesario, habilitado, recusou, votou = None, None, False, False, False
         elif msg.startswith("Tipo de habilitação do eleitor [biométrica]"):
             tipo = "biometrica"
         elif msg.startswith("Solicitação de dado pessoal do eleitor para habilitação manual"):
             tipo = "manual"
         elif msg.startswith("Dado digitado não confere"):
             r["dado_pessoal_recusado"] += 1
+            recusou = True
         elif msg.startswith("Ano de nascimento digitado é igual ao do cadastro"):
             tipo = "sem_biometria"
         elif msg.startswith("Mesário") and msg.endswith("habilitou o eleitor"):
@@ -62,12 +66,14 @@ def eventos_secao(log_jez):
         elif msg.startswith("Não encontrou digital coletada em nenhum dos arquivos"):
             mesario = "nao_encontrada"
         elif msg == "Eleitor foi habilitado":
-            habilitado = tipo or "outro"
+            habilitado = True
         elif msg.startswith("Eleitor foi suspenso e não confirmou nenhum voto"):
             r["habilitado_e_suspenso_sem_votar"] += 1
-            habilitado = None
+            habilitado = False
         elif msg == "O voto do eleitor foi computado":
-            r["hab_" + (habilitado or "outro")] += 1
+            # Classifica pela sessão inteira do eleitor: o "tipo" pode vir logo depois de "habilitado", no mesmo segundo.
+            habilitado = tipo or "outro"
+            r["hab_" + habilitado] += 1
             if habilitado == "manual":
                 manuais_hora[hora[:2]] += 1
                 if mesario in ("nao_associavel", "nao_encontrada"):
@@ -77,7 +83,7 @@ def eventos_secao(log_jez):
                     mesarios[mesario] += 1
                 else:
                     r["manual_sem_registro_de_mesario"] += 1
-            habilitado = None
+            habilitado, tipo, votou = False, None, True
             r["votos_log"] += 1
             votos_hora[hora[:2]] += 1
             ultimo_voto = hora
@@ -114,7 +120,7 @@ def resumo(uf):
     df, horas, manuais, erros = auditar(uf)
     for c in ["hab_biometrica", "hab_manual", "hab_sem_biometria", "hab_outro", "manual_mesario_identificado",
               "manual_mesario_nao_associavel", "manual_mesario_nao_encontrada", "manual_sem_registro_de_mesario",
-              "dado_pessoal_recusado", "habilitado_e_suspenso_sem_votar"]:
+              "dado_pessoal_recusado", "habilitado_e_suspenso_sem_votar", "sessoes_recusadas_sem_voto"]:
         if c not in df:
             df[c] = 0
     ok = lambda a, b: int((df[a] == df[b]).sum())  # noqa: E731
@@ -130,11 +136,13 @@ def resumo(uf):
         "  manuais com digital de mesário não associável a um nome": int(df.manual_mesario_nao_associavel.sum()),
         "  manuais com digital do mesário capturada mas não encontrada": int(df.manual_mesario_nao_encontrada.sum()),
         "  manuais sem registro de mesário": int(df.manual_sem_registro_de_mesario.sum()),
-        "dado pessoal digitado errado e recusado pela urna": int(df.dado_pessoal_recusado.sum()),
+        "vezes em que o dado pessoal digitado foi recusado pela urna": int(df.dado_pessoal_recusado.sum()),
+        "  …eleitores que, depois da recusa, saíram sem votar": int(df.sessoes_recusadas_sem_voto.sum()),
         "habilitados e suspensos sem votar": int(df.habilitado_e_suspenso_sem_votar.sum()),
         "votos sem habilitação identificada no log": int(df.hab_outro.sum()),
         "maior nº de liberações por um único mesário na seção": int(df.max_por_mesario.max()),
-        "seções com voto registrado após o fechamento do BU": int((df.ultimo_voto.astype(str) > df.fechamento_bu.astype(str)).sum()),
+        "seções com voto registrado após o fechamento do BU": int((df.ultimo_voto.notna() & df.fechamento_bu.notna()
+                                                                   & (df.ultimo_voto.astype(str) > df.fechamento_bu.astype(str))).sum()),
     }
     return s, horas, manuais, erros, df
 

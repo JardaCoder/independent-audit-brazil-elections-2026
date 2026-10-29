@@ -12,9 +12,32 @@ RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PASTA_BU = os.path.join(RAIZ, "dados", "tse", "2026", "boletim_urna", "2turno")
 CACHE = os.path.join(RAIZ, "dados", "derivados", "secoes_presidente_2t_2026.csv.gz")
 
-# Fuso local da urna em relação a Brasília (horas a somar para obter horário de Brasília).
-# DT_ABERTURA/DT_ENCERRAMENTO são gravados no relógio local da urna.
+# Fuso local da urna em relação a Brasília (horas a SOMAR ao relógio da urna para obter Brasília).
+# DT_ABERTURA/DT_ENCERRAMENTO são gravados no relógio local da urna. Conferido pela hora de abertura:
+# todas as urnas abrem às 8h de Brasília, então abrem às 7h locais em UTC-4, às 6h em UTC-5 e às 9h em UTC-2.
 FUSO = {"AC": 2, "AM": 1, "MT": 1, "MS": 1, "RO": 1, "RR": 1}
+# Municípios do oeste do Amazonas em UTC-5 (Lei 11.662/2008) e Fernando de Noronha (UTC-2).
+FUSO_MUNICIPIO = {("AM", m): 2 for m in ["AMATURÁ", "ATALAIA DO NORTE", "BENJAMIN CONSTANT", "EIRUNEPÉ", "ENVIRA",
+                                          "GUAJARÁ", "IPIXUNA", "ITAMARATI", "JUTAÍ", "SÃO PAULO DE OLIVENÇA", "TABATINGA"]}
+FUSO_MUNICIPIO[("PE", "FERNANDO DE NORONHA")] = -1
+
+# Faixas de horário de encerramento usadas em todas as análises (início incluso, fim excluso).
+FAIXAS_SEG = [0, 17 * 3600 + 60, 17 * 3600 + 16 * 60, 19 * 3600, 20 * 3600, 86400]
+FAIXAS_ROTULO = ["até 17:00:59", "17:01 a 17:15:59", "17:16 a 18:59:59", "19:00 a 19:59:59", "20:00 ou depois"]
+
+
+def fuso(df):
+    """Horas a somar ao relógio da urna; NaN para o exterior (cada país tem seu fuso)."""
+    f = df["SG_UF"].map(FUSO).fillna(0)
+    chave = list(zip(df["SG_UF"], df["NM_MUNICIPIO"]))
+    f = f.where([k not in FUSO_MUNICIPIO for k in chave], [FUSO_MUNICIPIO.get(k, 0) for k in chave])
+    return f.where(df["SG_UF"] != "ZZ")
+
+
+def faixa_horario(horario):
+    """Classifica uma série de datetimes nas FAIXAS (pelo horário do dia)."""
+    seg = (horario - horario.dt.normalize()).dt.total_seconds()
+    return pd.cut(seg, FAIXAS_SEG, right=False, labels=FAIXAS_ROTULO)
 
 COLS = ["SG_UF", "CD_MUNICIPIO", "NM_MUNICIPIO", "NR_ZONA", "NR_SECAO", "CD_CARGO_PERGUNTA",
         "QT_APTOS", "QT_COMPARECIMENTO", "DS_TIPO_URNA", "DS_TIPO_VOTAVEL", "NR_VOTAVEL", "QT_VOTOS",
@@ -68,7 +91,7 @@ def carregar(usar_cache=True, ano=2026, turno=2):
         os.makedirs(os.path.dirname(cache), exist_ok=True)
         df.to_csv(cache, index=False, compression="gzip")
     df["ENC_LOCAL"] = pd.to_datetime(df["DT_ENCERRAMENTO"], errors="coerce", format="mixed", dayfirst=True)
-    df["ENC_BRASILIA"] = df["ENC_LOCAL"] + pd.to_timedelta(df["SG_UF"].map(FUSO).fillna(0), unit="h")
+    df["ENC_BRASILIA"] = df["ENC_LOCAL"] + pd.to_timedelta(fuso(df), unit="h")
     return df
 
 

@@ -44,7 +44,8 @@ def ler_pdf(turno):
     for uf, ls in regs.items():
         t = "\n".join(ls)
         pega = lambda rot: num(re.search(rot + r"[^\n]*?([\d.]+)\s*$", t, re.M).group(1))  # noqa: E731
-        r = {"UF": uf, "comparecimento": pega(r"2\.3 Comparecimento"),
+        r = {"UF": uf, "comparecimento": pega(r"2\.3 Comparecimento"), "aptos": pega(r"2\.2\.2 Aptos nas seções que funcionaram"),
+             "seções": pega(r"2\.1 Seções que funcionaram"),
              "nulos na urna": pega(r"Votos nulos na urna"), "brancos": pega(r"[cd]\) Votos em branco"),
              "nulos técnicos": pega(r"Votos nulos técnico"), "seções no Sistema de Apuração": pega(r"Apuração \(SA\)\s")}
         for n, v in re.findall(r"^\*?(\d{2}) - [^\n]+?\s{2,}([\d.]+)\s+[\d,]+%\s+Válido", t, re.M):
@@ -55,9 +56,11 @@ def ler_pdf(turno):
 
 def soma_bu(turno):
     d = carregar(turno=turno)
-    g = d.groupby("SG_UF")[["QT_COMPARECIMENTO"] + [c for c in d if c.startswith("V_")]].sum()
+    g = d.groupby("SG_UF")[["QT_COMPARECIMENTO", "QT_APTOS"] + [c for c in d if c.startswith("V_")]].sum()
+    g["seções"] = d.groupby("SG_UF").size()
     g.loc["BR"] = g.sum()
-    return g.rename(columns={"QT_COMPARECIMENTO": "comparecimento", "V_NULO": "nulos na urna", "V_BRANCO": "brancos"})
+    return g.rename(columns={"QT_COMPARECIMENTO": "comparecimento", "QT_APTOS": "aptos", "V_NULO": "nulos na urna",
+                             "V_BRANCO": "brancos"})
 
 
 def main():
@@ -71,13 +74,16 @@ def main():
         dif = (bu.loc[of.index, cols] - of[cols].fillna(0)).astype(int)
         nao_bate = dif[(dif != 0).any(axis=1)]
         L += [f"## {turno}º turno", "",
-              f"- Regiões comparadas: {len(of)} (27 UFs + exterior + Brasil). Colunas: comparecimento, brancos, nulos na urna e votos de cada candidato.",
+              f"- Regiões comparadas: {len(of)} (27 UFs + exterior + Brasil). Colunas: seções, aptos, comparecimento, brancos, nulos na urna e votos de cada candidato.",
               f"- Regiões em que **tudo bate exatamente**: {len(of) - len(nao_bate)} de {len(of)}.",
               f"- Seções apuradas pelo Sistema de Apuração (cédula, sem urna eletrônica): {of.loc['BR', 'seções no Sistema de Apuração']}.",
               f"- Votos nulos técnicos (votos dados a candidato cujo registro foi anulado depois): {of.loc['BR', 'nulos técnicos']:,}.".replace(",", ".")]
         if len(nao_bate):
             L += ["", "Diferenças (soma dos BUs − oficial):", "",
                   nao_bate.loc[:, (nao_bate != 0).any()].to_markdown(), ""]
+        if len(nao_bate):
+            L.append("- As diferenças de seções e aptos são seções do exterior em que **ninguém votou**: elas não aparecem na "
+                     "planilha de votos (BWeb), mas o TSE as conta como \"em funcionamento\". Votos e comparecimento batem.")
         if True:
             # Os votos nominais que não aparecem no oficial viram "nulo técnico".
             sem_oficial = [c for c in bu.columns if c.startswith("V_") and c not in of.columns and c not in ("V_NULO", "V_BRANCO")]

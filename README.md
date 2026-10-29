@@ -1,556 +1,504 @@
 # Auditoria independente da eleição presidencial de 2026
 
-Este repositório confere, com os dados públicos do TSE, um "Relatório Pericial Independente" que
-circulou nas redes depois do 2º turno de 2026. Também faz uma auditoria própria dos dados da eleição.
+Este repositório confere, com os dados públicos do TSE, o "Relatório Pericial Independente" que circulou
+nas redes depois do 2º turno de 2026 (25/10/2026, Lula × Flávio Bolsonaro) e faz uma auditoria própria
+dos dados da eleição.
 
-Tudo aqui pode ser refeito por qualquer pessoa: os dados estão no repositório (ou podem ser baixados
-com um comando), e cada número vem de um script que você pode ler e rodar.
+Tudo pode ser refeito por qualquer pessoa. Os dados estão no repositório (ou são baixados com um comando)
+e cada número vem de um script que você pode ler e rodar. O trabalho foi conferido por **cinco revisões
+independentes** que recalcularam os números sem usar o nosso código; os erros que elas acharam foram
+corrigidos (ver [seção 5](#5-problemas-encontrados-e-erros-corrigidos)).
 
 ---
 
 ## Sumário
 
-1. [Resumo em 30 segundos](#1-resumo-em-30-segundos)
-2. [Contexto: o que o relatório diz](#2-contexto-o-que-o-relatório-diz)
-3. [Glossário: as palavras que aparecem aqui](#3-glossário-as-palavras-que-aparecem-aqui)
+1. [Veredito sobre o 2º turno](#1-veredito-sobre-o-2º-turno)
+2. [O que o relatório afirma](#2-o-que-o-relatório-afirma)
+3. [Glossário](#3-glossário)
 4. [De onde veio cada dado](#4-de-onde-veio-cada-dado)
-5. [Problemas que encontrei nos dados (e como resolvi)](#5-problemas-que-encontrei-nos-dados-e-como-resolvi)
+5. [Problemas encontrados e erros corrigidos](#5-problemas-encontrados-e-erros-corrigidos)
 6. [As verificações, uma por uma](#6-as-verificações-uma-por-uma)
-   - [6.1 Os arquivos são os originais do TSE?](#61-os-arquivos-são-os-originais-do-tse)
-   - [6.2 A soma dos boletins bate com o resultado oficial?](#62-a-soma-dos-boletins-bate-com-o-resultado-oficial)
-   - [6.3 Cada boletim de urna faz sentido sozinho?](#63-cada-boletim-de-urna-faz-sentido-sozinho)
-   - [6.4 O que a urna gravou bate com o boletim?](#64-o-que-a-urna-gravou-bate-com-o-boletim)
-   - [6.5 As urnas usadas eram as previstas antes da eleição?](#65-as-urnas-usadas-eram-as-previstas-antes-da-eleição)
-   - [6.6 Réplica do relatório: "duas eleições" antes e depois das 17h](#66-réplica-do-relatório-duas-eleições-antes-e-depois-das-17h)
-   - [6.7 As seções que fecharam às 19h](#67-as-seções-que-fecharam-às-19h)
-   - [6.8 Eleitores liberados sem biometria](#68-eleitores-liberados-sem-biometria)
-   - [6.9 Seções quase unânimes](#69-seções-quase-unânimes)
-   - [6.10 Lei de Benford](#610-lei-de-benford)
-   - [6.11 1º turno × 2º turno, seção por seção](#611-1º-turno--2º-turno-seção-por-seção)
-   - [6.12 "Dados escondidos por 72 horas"](#612-dados-escondidos-por-72-horas)
-7. [Juntando tudo: quanto cada suspeita pesa na margem](#7-juntando-tudo-quanto-cada-suspeita-pesa-na-margem)
-8. [O que esta auditoria NÃO prova](#8-o-que-esta-auditoria-não-prova)
-9. [Como rodar tudo você mesmo](#9-como-rodar-tudo-você-mesmo)
+7. [Quanto cada suspeita pesa na margem](#7-quanto-cada-suspeita-pesa-na-margem)
+8. [O que esta auditoria não prova](#8-o-que-esta-auditoria-não-prova)
+9. [Como rodar tudo](#9-como-rodar-tudo)
 10. [Mapa do repositório](#10-mapa-do-repositório)
 
 ---
 
-## 1. Resumo em 30 segundos
+## 1. Veredito sobre o 2º turno
 
-- **Os números do relatório estão certos.** Consegui reproduzir cada tabela dele, número por número.
-- **As conclusões do relatório estão erradas.** Ele mistura fuso horário com fraude, e o mesmo
-  "padrão suspeito" aparece na eleição de 2022.
-- **A soma dos 499.205 boletins de urna bate 100% com o resultado oficial do TSE**, em todas as UFs e
-  nos dois turnos.
-- **Os registros internos de 5.703 urnas (AC, RR e AP) batem 100% com os boletins impressos.**
-- **O 1º turno prevê o 2º turno seção por seção com 97,9% de precisão.** Nenhum grupo de seções
-  (fechadas tarde, com muita liberação manual) se desviou a favor de Lula.
-- **Sobraram 168 seções que pedem documentação** (urna diferente da lista prévia). Somam 4.835 votos de
-  saldo, 0,1% da margem.
-- **Uma coisa real:** no 2º turno, 6.352 seções fecharam perto das 19h, um pico que não existe no 1º turno
-  nem em 2022. Os dados mostram que isso aconteceu, mas não por quê. O peso delas é de cerca de 187 mil
-  votos de saldo, 4% da margem, e elas votaram como já tinham votado no 1º turno.
+**Os dados públicos do TSE não mostram nenhum sinal de que o resultado do 2º turno tenha sido
+fabricado ou alterado.** Lula venceu por 4.430.191 votos. Nenhuma das suspeitas levantadas pelo
+relatório, nem as que esta auditoria procurou por conta própria, chega perto de explicar essa margem.
 
-![Mesmo no pior caso, cada suspeita explica uma fração pequena da margem](docs/graficos/08_suspeitas_vs_margem.png)
+Em linguagem direta:
+
+| Pergunta | Resposta | Onde ver |
+|---|---|---|
+| O resultado oficial é a soma dos boletins de urna? | **Sim, exatamente**, em todas as UFs, nos dois turnos. | [6.2](#62-a-soma-dos-boletins-bate-com-o-resultado-oficial) |
+| Os boletins batem com o que a urna gravou? | **Sim.** Recontando voto a voto o registro digital de cada urna (RDV): {{RDV_RESUMO}} | [6.4](#64-recontagem-voto-a-voto-e-logs-das-urnas) |
+| As urnas usadas eram as previstas antes da eleição? | 99,4% exatamente as previstas. As trocas têm registro. Só **17 seções** (4.563 votos) não têm explicação nos dados. | [6.5](#65-as-urnas-usadas-eram-as-previstas) |
+| Houve "duas eleições", antes e depois das 17h? | **Não.** O padrão vem do fuso horário e da geografia, aparece em 2022 e já existia no 1º turno nas mesmas seções. | [6.6](#66-réplica-do-relatório-duas-eleições-antes-e-depois-das-17h) |
+| As urnas que ficaram abertas até 19h "fabricaram" votos? | **Não.** O fechamento às 19h é real (6.352 seções), mas os logs mostram que só **4.492 votos** (0,24%) foram dados depois das 17h nessas urnas. Elas votaram igual às vizinhas que fecharam às 17h. | [6.7](#67-as-seções-que-fecharam-às-19h) |
+| Os 8,6 milhões liberados sem digital decidiram a eleição? | **Não.** A liberação é uma característica estável de cada seção e não empurra votos para Lula; onde ela é maior, Lula foi até um pouco **pior** do que o 1º turno previa. | [6.8](#68-eleitores-liberados-sem-digital) |
+| O 2º turno destoa do 1º? | **Não.** O 1º turno explica 92% das diferenças entre seções da mesma cidade no 2º turno, e nenhum grupo "suspeito" se desvia. | [6.11](#611-1º-turno--2º-turno-seção-por-seção) |
+
+**O que fica em aberto** (e não muda o resultado):
+- **Por que** cerca de 1.100 locais de votação ficaram abertos até as 19h no 2º turno. Os dados mostram
+  que aconteceu, mas não mostram a decisão. Isso se resolve com os atos dos TREs.
+- As **17 seções** com urna sem explicação nos dados, que se resolvem com as atas dessas seções.
+- **Assinaturas digitais** das urnas não foram verificadas criptograficamente.
+
+![Quanto da margem cada suspeita poderia explicar](docs/graficos/08_suspeitas_vs_margem.png)
 
 ---
 
-## 2. Contexto: o que o relatório diz
+## 2. O que o relatório afirma
 
 O "Relatório Pericial Independente — Eleições 2026" (8 páginas, compartilhado no Instagram) afirma:
 
-| # | Afirmação |
-|---|---|
-| 1 | As urnas que fecharam **até 17h** deram vitória a Flávio Bolsonaro (52,39%). A virada de Lula viria **só das urnas fechadas depois das 17h**, por uma "prorrogação". |
-| 2 | Mais de 2 milhões de eleitores votaram em seções que fecharam **depois das 19h**, com votação "avassaladora" para Lula. |
-| 3 | **8.632.488** eleitores foram liberados **sem biometria**, quase o dobro da margem de Lula (4.430.191). |
-| 4 | Há **106 seções com 100% para Lula** contra **4 para Flávio**, uma "anomalia". |
-| 5 | Teste da **Lei de Benford** (sem mostrar o resultado). |
-| 6 | Os microdados ficaram **"trancados" por 72 horas**. |
-| 7 | Afirmações políticas e jurídicas (decisões de ministros, passaportes, PF, reações internacionais). |
-
-Os itens 1 a 6 podem ser testados com os dados do TSE, e foi o que fiz. O item 7 não está nos dados (ver [seção 8](#8-o-que-esta-auditoria-não-prova)).
+| # | Afirmação | Resultado da checagem |
+|---|---|---|
+| 1 | Nas urnas fechadas **até 17h**, Flávio venceu (52,39%); a virada veio **só depois das 17h**. | Número correto, conclusão errada ([6.6](#66-réplica-do-relatório-duas-eleições-antes-e-depois-das-17h)) |
+| 2 | "Mais de 2 milhões de eleitores" votaram em seções fechadas **depois das 19h**. | Havia 2,3 milhões de **aptos**; votaram 1,86 milhão, e só 4.492 depois das 17h ([6.7](#67-as-seções-que-fecharam-às-19h)) |
+| 3 | **8.632.488** liberados **sem biometria**, quase o dobro da margem. | Número correto, conclusão não se sustenta ([6.8](#68-eleitores-liberados-sem-digital)) |
+| 4 | **106 seções com 100% para Lula** contra **4 para Flávio**. | Número correto; é voto regional, como em 2022 ([6.9](#69-seções-quase-unânimes)) |
+| 5 | Teste da **Lei de Benford** (resultado não mostrado). | Os dois candidatos se comportam igual a uma eleição honesta simulada ([6.10](#610-lei-de-benford)) |
+| 6 | Dados "**trancados**" por 72 horas. | Parcialmente: os arquivos estavam no servidor em ~1 dia, mas o catálogo os listou só em 27/10 ([6.12](#612-dados-trancados-por-72-horas)) |
+| 7 | Afirmações políticas e jurídicas (decisões de ministros, passaportes, PF, reações internacionais). | Não estão nos dados; não avaliadas |
 
 ---
 
-## 3. Glossário: as palavras que aparecem aqui
+## 3. Glossário
 
 | Termo | O que significa |
 |---|---|
 | **Seção** | Uma "mesa" de votação: uma sala, uma urna, algumas centenas de eleitores. O Brasil tem cerca de 499 mil. |
-| **BU (Boletim de Urna)** | O papel que a urna imprime ao final da votação com o total de votos de cada candidato. Ele é afixado na porta da seção e também enviado ao TSE. |
-| **BWeb** | A planilha que o TSE publica com o conteúdo de **todos** os BUs, uma linha por candidato por seção. |
-| **Aptos** | Eleitores que podiam votar naquela seção. |
-| **Comparecimento** | Quantos votaram de fato. |
-| **Votos válidos** | Votos em candidatos (sem contar brancos e nulos). As porcentagens oficiais são sobre os válidos. |
-| **Margem** | Votos de Lula menos votos de Flávio no 2º turno: **4.430.191**. |
-| **Liberação manual / "habilitação biográfica"** | Quando a digital do eleitor falha 4 vezes, o mesário libera a votação por outro caminho. É o número que o relatório chama de "sem biometria". |
-| **Log da urna** | Um diário que a urna grava sozinha, com horário de cada evento: eleitor liberado, voto computado, erro, etc. |
-| **Urna de contingência** | Urna reserva, preparada antes, que substitui uma urna que quebrou. |
-| **Correspondência esperada** | Lista que o TSE publica **antes** da eleição dizendo qual urna (número de série e código de carga) vai em cada seção. |
-| **Hash SHA-512** | Uma "impressão digital" de um arquivo. Se um único byte mudar, o hash muda completamente. Serve para provar que o arquivo é o mesmo que o TSE publicou. |
-| **Correlação** | Número de −1 a 1 que diz se duas coisas sobem juntas. Perto de 0 quer dizer que uma não tem relação com a outra. |
-| **p.p. (pontos percentuais)** | Diferença entre porcentagens. De 50% para 52% são 2 p.p. |
+| **Local de votação** | O prédio (geralmente uma escola) onde ficam várias seções. |
+| **BU (Boletim de Urna)** | O resultado que a urna imprime e grava ao final da votação, com o total de cada candidato. |
+| **BWeb** | A planilha do TSE com o conteúdo de **todos** os BUs. |
+| **RDV (Registro Digital do Voto)** | Arquivo da urna com **cada voto** digitado, embaralhado (sem dizer quem votou). Permite recontar. |
+| **Log da urna** | Diário automático da urna, com hora de cada evento (eleitor liberado, voto computado, erro…). |
+| **Aptos / comparecimento** | Quem podia votar / quem votou. |
+| **% Lula** | Neste trabalho, salvo aviso: votos de Lula ÷ (Lula + Flávio). |
+| **Margem** | Votos de Lula − votos de Flávio: **4.430.191**. |
+| **Saldo** | Votos de Lula − votos de Flávio **dentro de um grupo** de seções. |
+| **Liberação manual** | Quando a digital do eleitor falha 4 vezes e o mesário libera por outro caminho. É o número que o relatório chama de "sem biometria" (8,6 milhões). Não confundir com quem **não tem** biometria cadastrada (outra linha do BU). |
+| **Urna de contingência** | Urna reserva, preparada antes, que substitui uma urna com defeito. |
+| **Correspondência esperada** | Lista publicada pelo TSE na véspera dizendo qual urna (e qual "carga" de software) vai em cada seção. |
+| **Hash SHA-512** | "Impressão digital" de um arquivo: se um byte muda, o hash muda. Prova que o arquivo é o mesmo que foi publicado. |
+| **Horário local × Brasília** | A urna grava a hora no fuso **do lugar**. No Acre, 17h de Brasília aparece como 15h. |
+| **p.p. (pontos percentuais)** | Diferença entre porcentagens: de 50% para 52% são 2 p.p. |
+| **Resíduo** | Diferença entre o resultado real de uma seção e o que se previa para ela a partir do 1º turno. |
+| **Comparar "dentro do município"** | Comparar só seções da mesma cidade, para que diferenças entre regiões não confundam o resultado. |
+| **Margem de erro de 95% / EP** | Faixa onde o valor verdadeiro provavelmente está. EP = erro-padrão; ±1,96 EP dá a margem de 95%. |
 
 ---
 
 ## 4. De onde veio cada dado
 
-Todos os dados vêm do **Portal de Dados Abertos do TSE** (<https://dadosabertos.tse.jus.br>) ou do
-servidor de arquivos do TSE (`cdn.tse.jus.br`). Baixei tudo em 29/10/2026.
+Tudo vem do **Portal de Dados Abertos do TSE** (<https://dadosabertos.tse.jus.br>) e do servidor de
+arquivos do TSE (`cdn.tse.jus.br`). Baixado em 29/10/2026.
 
-| # | Dado | O que tem dentro | Link de origem | No repositório | Tamanho | Como conferi |
+| # | Dado | Conteúdo | Origem | No repositório | Tamanho | Conferência |
 |---|---|---|---|---|---|---|
-| A | **Boletins de urna do 2º turno 2026** (BWeb) | Todas as 499.205 seções, todos os votos, horário de abertura e fechamento, liberações manuais | [Resultados 2026 – Boletim de Urna](https://dadosabertos.tse.jus.br/dataset/resultados-2026-boletim-de-urna) | `dados/tse/2026/boletim_urna/2turno/` | 138 MB | `.sha512` oficial: 28/28 ✅ |
-| B | **Boletins de urna do 1º turno 2026** | O mesmo, para o 1º turno (todos os cargos) | Mesmo link | **Só os hashes** em `dados/tse/2026/boletim_urna/1turno/`; a tabela já processada está em `dados/derivados/` | 4,8 GB | `.sha512` oficial: 28/28 ✅ |
-| C | **Boletins de urna do 2º turno 2022** | Grupo de controle (Lula × Jair Bolsonaro) | [Resultados 2022 – Boletim de Urna](https://dadosabertos.tse.jus.br/dataset/resultados-2022-boletim-de-urna) | `dados/tse/2022/boletim_urna/2turno/` | 67 MB | `.sha512` oficial: 28/28 ✅ |
-| D | **Correspondências esperadas do 2º turno** | Urna e código de carga previstos para cada seção, gerados em 24/10/2026 (véspera) | [Correspondências esperadas e efetivadas – 2º turno](https://dadosabertos.tse.jus.br/dataset/resultados-2026-correspondencias-esperadas-e-efetivadas-2-turno) | `dados/tse/2026/correspondencias/2turno/` | 36 MB | `.sha512` oficial: 28/28 ✅ |
-| E | **Arquivos originais das urnas** de AC, RR e AP | Para cada urna: BU, imagem do BU impresso, log, RDV (registro digital do voto) e assinatura digital | [Arquivos transmitidos para totalização](https://dadosabertos.tse.jus.br/dataset/resultados-2026-arquivos-transmitidos-para-totalizacao) | `dados/tse/2026/arquivos_urna/2turno/partes/` (em pedaços de 90 MB) | 1,2 GB | O TSE **não** publica hash; registrei o meu em `MANIFESTO.csv` ⚠️ |
-| F | **Relatório Resultado da Totalização** | O resultado oficial assinado, Brasil e cada UF, 1º e 2º turnos (PDF) | `cdn.tse.jus.br/.../Relatorio_Resultado_Totalizacao_2026_BR.zip` | `dados/tse/2026/totalizacao/` | 0,5 MB | Sem hash oficial ⚠️ |
-| G | **Tabelas por seção** (geradas por mim) | Uma linha por seção com votos de Presidente; 1º e 2º turno de 2026 e 2º turno de 2022 | Gerada por `analise/carregar.py` a partir de A, B e C | `dados/derivados/` | 30 MB | Regenerável |
+| A | **BUs do 2º turno 2026** (BWeb, todos os cargos) | Todas as seções: votos, horários, liberações | [Resultados 2026 – Boletim de Urna](https://dadosabertos.tse.jus.br/dataset/resultados-2026-boletim-de-urna) | `dados/tse/2026/boletim_urna/2turno/` | 138 MB | `.sha512` oficial 28/28 ✅ |
+| B | **BUs do 1º turno 2026** (todos os cargos) | Idem, 1º turno | mesmo link | só os `.sha512` (os .zip têm 4,8 GB) | — | `.sha512` oficial 28/28 ✅ |
+| C | **Só as linhas de Presidente**, 1º e 2º turno 2026 e 2º turno 2022 | Extraídas byte a byte de A, B e E | `scripts/extrair_presidente.py` | `dados/tse/2026/presidente/`, `dados/tse/2022/presidente/` | 406 MB | `MANIFESTO.csv` liga cada arquivo ao .zip oficial e ao hash do TSE ✅ |
+| D | **Correspondências esperadas**, 2º turno | Urna e carga previstas por seção + urnas de contingência, geradas em 24/10/2026 às 12:31 | [Correspondências esperadas](https://dadosabertos.tse.jus.br/dataset/resultados-2026-correspondencias-esperadas-e-efetivadas-2-turno) | `dados/tse/2026/correspondencias/2turno/` | 36 MB | `.sha512` oficial 28/28 ✅ |
+| E | **BUs do 2º turno 2022** | Grupo de controle | [Resultados 2022 – Boletim de Urna](https://dadosabertos.tse.jus.br/dataset/resultados-2022-boletim-de-urna) | `dados/tse/2022/boletim_urna/2turno/` | 67 MB | `.sha512` oficial 28/28 ✅ |
+| F | **Arquivos originais das urnas** de AC, RR e AP | Por urna: BU digital, imagem do BU impresso, RDV, log, assinatura | [Arquivos transmitidos para totalização](https://dadosabertos.tse.jus.br/dataset/resultados-2026-arquivos-transmitidos-para-totalizacao) | `dados/tse/2026/arquivos_urna/2turno/partes/` (pedaços de 90 MB) | 1,2 GB | sem hash oficial; `MANIFESTO.csv` próprio ⚠️ |
+| G | **RDV e logs das demais UFs** | Lidos direto do servidor, sem baixar o pacote inteiro (download parcial) | mesmo link de F | resultados em `dados/derivados/` | — | conferidos contra a BWeb |
+| H | **Resultado oficial** (Relatório Resultado da Totalização) | PDF assinado, Brasil e cada UF, 1º e 2º turnos | `cdn.tse.jus.br/.../Relatorio_Resultado_Totalizacao_2026_BR.zip` | `dados/tse/2026/totalizacao/` | 0,5 MB | sem hash oficial ⚠️ |
+| I | **Tabelas prontas** | Uma linha por seção, logs das seções tardias, recontagem RDV, locais de votação | geradas pelos scripts | `dados/derivados/` | ~40 MB | regeneráveis |
 
-**Dados que existem no TSE mas não usei:** votação por município, perfil do eleitorado, mesários,
-prestação de contas, logs do sistema de preparação das urnas (Gedai) e os arquivos originais das urnas das
-outras 24 UFs (mais de 100 GB). O script `scripts/baixar_dados_tse.py` baixa qualquer um deles.
+Também registramos o que o servidor informa sobre a data dos arquivos (`SERVIDOR.csv`) e quando
+o catálogo do portal os listou (`CATALOGO.csv`), em `dados/tse/2026/boletim_urna/2turno/`.
 
 ---
 
-## 5. Problemas que encontrei nos dados (e como resolvi)
+## 5. Problemas encontrados e erros corrigidos
 
-Nenhum problema abaixo afeta o resultado. Eles estão aqui porque quem for refazer a análise vai topar com eles.
+### Problemas nos dados
 
-| # | Problema | Onde | Como resolvi |
-|---|---|---|---|
-| 1 | O BU do 2º turno de **Roraima** não aparece no catálogo do portal; só o `.sha512` dele aparece | Dado A | Baixei pela URL direta, que segue o padrão das outras UFs. O hash bateu. |
-| 2 | O download de **SP do 1º turno** (1,4 GB) caiu no meio ("connection reset") | Dado B | Baixei de novo. O hash bateu. |
-| 3 | Os **arquivos originais das urnas do 2º turno** não aparecem no catálogo (só os do 1º) e **não têm hash oficial** | Dado E | Baixei pela URL direta e registrei tamanho, SHA-512, data e ETag do servidor no `MANIFESTO.csv`. |
-| 4 | O GitHub não aceita arquivos acima de 100 MB | Dado E | Dividi os pacotes em partes de 90 MB. O script `scripts/remontar_arquivos_urna.sh` junta as partes e confere o hash. |
-| 5 | **O horário de fechamento está no relógio local da urna**, não no de Brasília. No Acre, 17h de Brasília aparece como 15h. | Dado A | Converti para Brasília somando 1h (AM, MT, MS, RO, RR) ou 2h (AC). **Esta é a origem do principal erro do relatório** (ver 6.6). |
-| 6 | Em 2022 o campo de biometria tem outro nome (`QT_ELEITORES_BIOMETRIA_NH`) e as datas vêm em outro formato | Dado C | O leitor aceita os dois formatos. |
-| 7 | O código de carga da urna vem **partido em duas colunas** no BU, e a lista esperada **perde zeros à esquerda** | Dados A e D | Juntei as duas colunas e completei com zeros até 24 dígitos. |
-| 8 | O "leia-me" diz que o log vem em formato 7z, mas na verdade é **zip**. Urnas substituídas trazem o log da urna anterior **dentro** de outro zip. | Dado E | O leitor abre os dois níveis. |
-| 9 | O resultado oficial só existe em **PDF**; a API de resultados (`resultados.tse.jus.br`) respondeu 404 nos endereços que testei | Dado F | Extraí o texto do PDF com `pdftotext` e li os números com expressões regulares. |
-| 10 | 2 seções do exterior (Ciudad Guayana e Trípoli) aparecem no BU sem linha de Presidente | Dado A | Ninguém votou nelas (comparecimento zero). Por isso a planilha tem 499.205 seções com voto e o TSE conta 499.207 em funcionamento. |
-| 11 | 29 seções do exterior não têm horário de abertura nem de fechamento e compartilham dois números de "urna" | Dado A | São as seções apuradas pelo **Sistema de Apuração** (cédula de papel). O relatório oficial confirma: "29 seções apuradas pelo SA". |
-| 12 | No 1º turno, o candidato nº 28 teve 5.246 votos nas urnas que não aparecem no resultado oficial | Dados B e F | O relatório oficial lista exatamente **5.246 "votos nulos técnicos"**: o registro do candidato foi anulado e os votos dele viraram nulos. |
+| # | Problema | Como resolvi |
+|---|---|---|
+| 1 | O horário de fechamento está no **relógio local** da urna. No Acre e no oeste do Amazonas, 17h de Brasília aparece como 15h; em MT, MS, RO, RR e no resto do AM, como 16h; em Fernando de Noronha, como 18h. | Converti por município (o fuso foi conferido pela hora de abertura: todas as urnas abrem às 8h de Brasília). O exterior ficou fora da conversão. **É a origem do principal erro do relatório.** |
+| 2 | O BU do 2º turno de **Roraima** não aparecia no catálogo; só o `.sha512`. | Baixei pela URL direta. Hash conferido. |
+| 3 | Os **BUs do 2º turno sumiram do catálogo** entre a 1ª e a 2ª consulta (29/10). Os arquivos continuam no servidor, iguais. | Registrado em `CATALOGO.csv`. Não sabemos o motivo. |
+| 4 | Os **arquivos originais das urnas** do 2º turno não estão no catálogo e não têm hash oficial. | Baixei pela URL padrão e registrei tamanho, SHA-512, data e ETag em `MANIFESTO.csv`. |
+| 5 | GitHub não aceita arquivos acima de 100 MB. | Pacotes das urnas em partes de 90 MB (`scripts/remontar_arquivos_urna.sh` remonta e confere). BUs do 1º turno: versionadas só as linhas de Presidente. |
+| 6 | Em 2022 o campo de biometria tem outro nome e o código do cargo vem entre aspas. | Leitor aceita os dois formatos. |
+| 7 | O código de carga vem **partido em duas colunas** no BU; a lista prévia **perde zeros à esquerda**. | Juntei e completei para 24 dígitos. |
+| 8 | O "leia-me" diz que o log é 7z; é **zip**. Urnas substituídas trazem o log anterior **dentro** de outro zip. | O leitor abre os dois níveis. |
+| 9 | O resultado oficial só existe em **PDF**. | Extraído com `pdftotext`. |
+| 10 | Seções do exterior sem eleitores presentes não aparecem na BWeb (2 no 2º turno, 1 no 1º). | Explica 499.205 seções com voto × 499.207 em funcionamento no oficial. |
+| 11 | 29 seções do exterior não têm horário: foram apuradas em **cédula** (Sistema de Apuração). | O relatório oficial confirma: "29 seções apuradas pelo SA". |
+| 12 | No 1º turno, o nº 28 teve 5.246 votos que não aparecem no resultado oficial. | São exatamente os 5.246 "votos nulos técnicos" do oficial (registro anulado). |
 
-**Erros que eu mesmo cometi e corrigi** (para transparência):
-- No começo achei que o número "sem biometria" do relatório correspondia a outra linha do BU. Conferindo com
-  o BU impresso e com o log, vi que corresponde à **"habilitação biográfica"**, exatamente como o relatório
-  diz. Corrigi o texto.
-- A primeira versão do leitor de logs não abria o log de urnas substituídas e contava eleitores que
-  desistiram de votar. Depois de corrigir, a conferência passou de ~98% para 100%.
-- Na primeira versão do modelo 1º→2º turno, os pesos não podiam ser interpretados (colinearidade).
-  Corrigi tirando o intercepto. A previsão (R²) não mudou.
+### Erros meus que os revisores encontraram e que foram corrigidos
+
+Pedi a cinco revisores independentes (recontagem do zero, estatística, código dos logs, leitura adversária
+e investigação das seções das 19h) que tentassem derrubar o trabalho. O que acharam:
+
+| Erro | Correção |
+|---|---|
+| Fuso do **oeste do Amazonas** (UTC−5) e de **Fernando de Noronha** (UTC−2) ignorados; criava 556 seções "fechadas antes das 17h" que não existiam. | Fuso por município. |
+| Faixa "até 17:00:59" com erro de 1 segundo num script (3.199 seções na faixa errada). | Uma função única de faixas para todos os scripts. |
+| Biometria: eu usava "correlação ≈ 0" como prova de "sem relação". Correlação baixa não prova efeito pequeno. | Agora: inclinação com margem de erro, pior caso aritmético e testes contra o 1º turno ([6.8](#68-eleitores-liberados-sem-digital)). |
+| Seções das 19h: eu citava só a comparação favorável (−0,17 p.p.); na nacional é +0,34 p.p. | Todas as formas lado a lado, limite máximo de efeito, logs dos votos depois das 17h ([6.7](#67-as-seções-que-fecharam-às-19h)). |
+| Chamei de "pior caso" valores que não eram pior caso (efeito líquido, saldo). | Gráfico 8 refeito, todos os valores calculados pelo código. |
+| Atribuí o grupo "até 17h" a "seções menores"; o tamanho quase não explica. | Decomposição por estado e município + comparação com o 1º turno ([6.6](#66-réplica-do-relatório-duas-eleições-antes-e-depois-das-17h)). |
+| O leitor de logs dependia da ordem de eventos no mesmo segundo (27 falsas divergências). | Classificação pela sessão inteira do eleitor: 100% de concordância. |
+| 120 urnas "sem registro prévio" exageradas: a maioria foi carregada **depois** que a lista foi gerada. | Categorias separadas; sobram 17 sem explicação ([6.5](#65-as-urnas-usadas-eram-as-previstas)). |
+| Comparação da biometria com 2022 usava um campo com definição possivelmente diferente. | Retirada. |
+| "R² = 97,9% de precisão": R² não é precisão, e a maior parte vem da diferença entre regiões. | Agora o número principal é o de dentro do município (~0,92). |
 
 ---
 
 ## 6. As verificações, uma por uma
 
-Cada verificação traz **a pergunta**, **como foi calculado**, **o resultado** e **onde está o detalhe**.
+Cada verificação traz **a pergunta**, **como foi calculado** e **o resultado**. Os detalhes completos
+estão nos arquivos `analise/*.md` indicados.
 
 ### 6.1 Os arquivos são os originais do TSE?
 
-**Como calculei:** para cada arquivo que o TSE publica com um `.sha512` ao lado, calculei o SHA-512 do
-arquivo baixado (`sha512sum arquivo.zip`) e comparei com o publicado.
-
-**Resultado:** 112 de 112 arquivos conferem (BU 2026 dos dois turnos, BU 2022 e correspondências).
-
----
+**Como:** calculei o SHA-512 de cada arquivo baixado e comparei com o `.sha512` publicado pelo TSE.
+**Resultado:** 112 de 112 conferem. (Limite: o hash vem do mesmo servidor; prova que o download está
+íntegro, não que o servidor é confiável. A conferência com o PDF oficial e com os arquivos das urnas,
+abaixo, cobre isso de outra forma.)
 
 ### 6.2 A soma dos boletins bate com o resultado oficial?
 
-**A pergunta:** se eu somar à mão todos os boletins de urna, chego ao mesmo resultado que o TSE anunciou?
+**Como** (`analise/totalizacao.py`): somei, de todos os BUs, seções, aptos, comparecimento, brancos, nulos
+e votos de cada candidato, por UF e no Brasil, e comparei com o PDF oficial do TSE.
 
-**Como calculei** (`analise/totalizacao.py`):
-1. Somei, de todos os BUs, os votos de cada candidato, brancos, nulos e comparecimento, por UF e no Brasil.
-2. Li os mesmos números do **Relatório Resultado da Totalização** oficial (PDF).
-3. Subtraí um do outro, região por região.
+**Resultado:** votos, brancos, nulos e comparecimento batem **exatamente** em 29 de 29 regiões (27 UFs +
+exterior + Brasil), nos dois turnos. As únicas diferenças são 1–2 seções do exterior sem nenhum votante
+(problema 10). Resultado oficial do 2º turno: Lula **64.256.232**, Flávio **59.826.041**, assinado às
+**23h28 do dia 25/10**. Detalhe: [`analise/TOTALIZACAO.md`](analise/TOTALIZACAO.md).
 
-**Resultado:**
+### 6.3 Cada boletim faz sentido sozinho?
 
-| | Regiões comparadas | Batem exatamente |
-|---|---|---|
-| 1º turno | 27 UFs + exterior + Brasil | **29 de 29** |
-| 2º turno | 27 UFs + exterior + Brasil | **29 de 29** |
-
-Resultado oficial do 2º turno: Lula **64.256.232**, Flávio **59.826.041**. A soma dos BUs dá **exatamente** isso.
-O relatório oficial foi gerado às **23h28 do próprio dia 25/10**.
-
-Detalhe: [`analise/TOTALIZACAO.md`](analise/TOTALIZACAO.md)
-
----
-
-### 6.3 Cada boletim de urna faz sentido sozinho?
-
-**A pergunta:** algum BU tem conta que não fecha, como mais votos que eleitores?
-
-**Como calculei** (`analise/consistencia.py`): para cada um dos 499.205 BUs, testei estas regras:
+**Como** (`analise/consistencia.py`): regras aplicadas a cada um dos 499.205 BUs (538.946 pares seção ×
+cargo).
 
 | Regra | Violações |
 |---|---|
-| aptos = comparecimento + abstenções | **0** |
-| comparecimento ≤ aptos | **0** |
-| soma de todos os votos = comparecimento | **0** |
-| liberados sem biometria ≤ comparecimento | **0** |
-| uma única urna por seção | **0** |
-| BU recebido pelo TSE depois de impresso | **0** |
-| urna abriu no dia da eleição | 29 exceções (as seções com cédula, ver problema 11) |
-| urna foi preparada (carga) antes do dia da eleição | 5 exceções (urnas substituídas antes da abertura) |
+| aptos = comparecimento + abstenções | 0 |
+| comparecimento ≤ aptos | 0 |
+| soma de todos os votos = comparecimento | 0 |
+| liberados ≤ comparecimento | 0 |
+| abertura < encerramento ≤ impressão do BU | 0 (fora as 29 seções de cédula, sem horário) |
+| urna abriu no dia da eleição | 0 |
+| comparecimento de Presidente **menor** que o de Governador | 0 (é sempre maior ou igual: quem vota em trânsito só vota para Presidente) |
+| BU recebido pelo TSE antes de impresso pela urna | 8 seções, diferença de no máximo 52 segundos (relógio da urna levemente adiantado) |
+| urna preparada no dia da eleição | 5 (urnas substituídas antes da abertura; abriram atrasadas) |
 
-Também conferi que, onde houve 2º turno para governador, o comparecimento para Presidente é **sempre
-maior ou igual**, nunca menor. A diferença é o voto em trânsito: quem vota fora do seu estado só vota para Presidente.
+Detalhe: [`analise/CONSISTENCIA.md`](analise/CONSISTENCIA.md).
 
-Detalhe: [`analise/CONSISTENCIA.md`](analise/CONSISTENCIA.md)
-
----
-
-### 6.4 O que a urna gravou bate com o boletim?
+### 6.4 Recontagem voto a voto e logs das urnas
 
 **A pergunta:** a planilha do TSE é fiel ao que cada urna registrou?
 
-**O que usei:** para AC, RR e AP (5.703 urnas), os arquivos originais de cada urna:
-- `imgbu.dat`: a "imagem" do BU impresso, em texto;
-- `logd.dat`: o diário da urna, com cada evento e o horário.
+**Recontagem pelo RDV** (`analise/recontagem_rdv.py` e `recontagem_rdv_nacional.py`): o RDV guarda cada voto
+digitado. Escrevemos um leitor do formato da urna (ASN.1/DER), contamos os votos de Presidente um a um e
+comparamos com a planilha. Para AC, RR e AP também conferimos o BU digital (`bu.dat`) e o código de
+carga gravado nele.
 
-**Como calculei** (`analise/imagem_bu.py` e `analise/logs_urna.py`):
-1. Do BU impresso, li votos por candidato, comparecimento e os três tipos de liberação de eleitor.
-2. No log, percorri **eleitor por eleitor**: identificação → tentativas de digital → tipo de liberação → voto computado.
-3. Contei e comparei com o BU e com a planilha.
+{{RDV_TABELA}}
 
-**Resultado:**
+**Logs e BU impresso de AC, RR e AP** (`analise/logs_urna.py`, `analise/imagem_bu.py`; 5.703 urnas):
 
 | Verificação | AC | RR | AP |
 |---|---|---|---|
-| BU impresso = planilha do TSE (votos de cada candidato) | 2270/2270 | 1519/1519 | 1914/1914 |
-| Votos no log = comparecimento do BU | 2270/2270 | 1519/1519 | 1914/1914 |
-| Liberações manuais no log = número do BU | 2270/2270 | 1519/1519 | 1914/1914 |
-| Voto registrado depois do fechamento da urna | 0 | 0 | 0 |
+| BU impresso = planilha (votos, brancos, nulos, aptos, totais) | 2270/2270 | 1519/1519 | 1914/1914 |
+| Votos no log = comparecimento | 2270/2270 | 1519/1519 | 1914/1914 |
+| Liberações (digital, manual, sem biometria cadastrada) no log = BU | 2270/2270 | 1519/1519 | 1914/1914 |
+| Voto registrado depois do fechamento | 0 | 0 | 0 |
 
-**Como funciona a "liberação sem biometria", segundo o log:**
-1. A urna pede a digital do eleitor e tenta **4 vezes**.
-2. Se falhar, pede um **dado pessoal** do eleitor ao mesário. Se o dado não confere, **a urna recusa**: houve 1.383 recusas só nesses 3 estados.
-3. Depois a urna exige a **digital do mesário** e grava **qual mesário** liberou.
+**Como funciona a liberação manual, segundo os logs:** a digital do eleitor falha 4 vezes → a urna pede um
+dado pessoal → se não confere, recusa (1.383 recusas; 338 eleitores saíram sem votar depois disso) → a urna
+pede a digital do mesário. Em 71% das liberações o mesário é identificado pelo nome; nas demais, a digital
+do mesário é capturada mas não associada a um nome. Não é "simples digitação do ano de nascimento" (isso é
+o caminho de quem **não tem** biometria cadastrada, outra linha do BU).
 
-Ou seja, não é a "simples digitação do ano de nascimento" que o relatório descreve.
+![Liberação manual por hora](docs/graficos/07_logs_liberacao_manual_por_hora.png)
 
-![Taxa de liberação manual por hora](docs/graficos/07_logs_liberacao_manual_por_hora.png)
+Detalhes: [`RECONTAGEM_RDV.md`](analise/RECONTAGEM_RDV.md), [`RECONTAGEM_RDV_NACIONAL.md`](analise/RECONTAGEM_RDV_NACIONAL.md),
+[`LOGS.md`](analise/LOGS.md), [`IMAGEM_BU.md`](analise/IMAGEM_BU.md).
 
-A taxa de liberação manual é mais alta de manhã e cai ao longo do dia. **Não há pico no fim da votação**,
-que é onde uma fraude desse tipo deixaria marca.
+### 6.5 As urnas usadas eram as previstas?
 
-Detalhe: [`analise/LOGS.md`](analise/LOGS.md)
+**Como** (`analise/correspondencia.py`): para cada seção, comparei a urna e o código de carga do BU com a
+lista publicada em 24/10 às 12:31. Datas de carga convertidas para Brasília. Cada seção cai em uma categoria:
 
----
+| Categoria | Seções | Votos | Saldo de Lula |
+|---|---|---|---|
+| 1. urna e carga exatamente as previstas | 496.138 | 127.447.547 | +4.401.710 |
+| 2. urna prevista, carga diferente da lista | 9 | 2.467 | −55 |
+| 3. urna de contingência da lista, com a carga da lista | 2.641 | 686.899 | +21.744 |
+| 4. urna de contingência da lista, recarregada | 258 | 63.989 | +1.902 |
+| 5. urna fora das listas, carregada **depois** que a lista foi gerada | 45 | 12.032 | +1.968 |
+| 6. urna fora das listas, mesmo cartão de carga da urna prevista | 59 | 15.027 | +2.230 |
+| **7. urna fora das listas, sem explicação nos dados** | **16** | **4.275** | **−19** |
+| 8. seção fora da lista: exterior, apurada em cédula | 27 | 831 | +92 |
+| 9. seção fora da lista, urna de contingência da lista | 11 | 2.719 | +558 |
+| **10. seção fora da lista, urna fora das listas** | **1** | **288** | **+61** |
 
-### 6.5 As urnas usadas eram as previstas antes da eleição?
-
-**A pergunta:** alguma urna "apareceu do nada"?
-
-**Como calculei** (`analise/correspondencia.py`): para cada seção, comparei a urna e o código de carga que
-aparecem no BU com a lista que o TSE publicou em **24/10**, a véspera da eleição.
-
-**Resultado:**
-
-| | Seções |
-|---|---|
-| Usou exatamente a urna prevista | 496.147 (99,4%) |
-| …e também o código de carga previsto | 496.138 |
-| Urna trocada por **urna de contingência que já estava na lista** | 2.899 |
-| **Pedem documentação** (urna fora da lista, carga diferente ou seção fora da lista) | **168** |
-
-As 168 seções somam 37.639 votos, com saldo líquido de **4.835 votos para Lula (0,1% da margem)**. 97 delas
-usaram urnas preparadas em 24/10, o mesmo dia em que a lista foi gerada, então são provavelmente trocas
-feitas depois da lista. Para fechar essa ponta, o próximo passo é pedir as atas dessas seções aos TREs.
-Lista completa: [`analise/secoes_para_documentar.csv`](analise/secoes_para_documentar.csv).
-
-Detalhe: [`analise/CORRESPONDENCIA.md`](analise/CORRESPONDENCIA.md)
-
----
+As categorias 2, 4, 5, 6 e 9 têm explicação provável nos próprios dados, mas pedem confirmação nas atas.
+**Sem explicação: 17 seções, 4.563 votos, saldo de +42 para Lula.** Lista: [`secoes_para_documentar.csv`](analise/secoes_para_documentar.csv).
+Detalhe: [`analise/CORRESPONDENCIA.md`](analise/CORRESPONDENCIA.md).
 
 ### 6.6 Réplica do relatório: "duas eleições" antes e depois das 17h
 
-**O que o relatório diz:** nas urnas fechadas até 17h, Flávio venceu com 52,39%. A vitória de Lula viria
-das urnas fechadas depois.
+**Como** (`analise/verificar_relatorio.py`): separei as seções pelo horário de fechamento **como gravado pela
+urna** (relógio local), nas faixas do relatório, e somei os votos.
 
-**Como replicei** (`analise/verificar_relatorio.py`): separei as seções pelo horário de fechamento **como
-está gravado no arquivo** (relógio local) nas faixas: até 17:00:59, 17:01–17:15, 17:16–18:59, 19h ou depois.
-Somei os votos de cada faixa.
-
-**Resultado: os números do relatório saem exatos.** Na faixa 17:01–17:15 são 339.593 seções, 88.071.750
-eleitores e 53,46% para Lula, como no relatório. Até 17:00:59, Flávio tem 52,39%.
+**Os números do relatório saem exatos:** até 17:00:59, 150.771 seções e Flávio com 52,39%; de 17:01 a
+17:15, 339.593 seções, 88.071.750 eleitores e 53,46% para Lula.
 
 **Por que a conclusão está errada:**
 
-**1. O mesmo "padrão" aparece em 2022.** Apliquei exatamente o mesmo corte à eleição de 2022:
+1. **O mesmo corte dá "duas eleições" em 2022** (Bolsonaro +1,0 mi "até 17h", Lula vira depois):
 
 ![O mesmo corte em 2026 e 2022](docs/graficos/01_duas_eleicoes_2026_vs_2022.png)
 
-Em 2022 Bolsonaro também "venceu até as 17h" (por 1,0 milhão) e Lula também "virou depois". Se isso fosse
-sinal de fraude em 2026, seria em 2022 também. Na verdade não é sinal de nada.
+2. **É geografia, não horário.** Os estados a oeste (relógio marca 15h/16h quando são 17h em Brasília) são
+   21% das seções do grupo e 83% da vantagem de Flávio nele. Comparando só seções do mesmo estado, a
+   diferença cai de −5,9 para −1,4 p.p.; do mesmo município, para −0,2 p.p. E **as mesmas seções já votavam
+   assim no 1º turno** (−5,95 p.p.):
 
-**2. O grupo "até 17h" é diferente por causa do fuso horário.** As urnas de AC, AM, MT, MS, RO e RR
-fecham às 17h de Brasília, mas o relógio delas marca 15h ou 16h. Por isso **todas** caem no grupo
-"até 17h". São estados onde Flávio é muito forte:
+![Decomposição do grupo até 17h](docs/graficos/02_grupo_ate_17h_decomposicao.png)
 
-![Composição do grupo até 17h](docs/graficos/02_grupo_ate_17h_composicao.png)
-
-Além disso, fecham no primeiro minuto as seções **menores e sem fila**. As maiores, nas cidades grandes,
-têm fila às 17h e fecham alguns minutos depois.
-
-**3. A faixa 17:01–17:15 não é "prorrogação".** Pela regra, quem está na fila às 17h vota, e a urna fecha
-depois do último eleitor. Essa faixa tem **68% de todas as seções do país**. É o fechamento normal.
-
----
+3. **17:01–17:15 não é prorrogação.** Quem está na fila às 17h vota; a urna fecha depois do último. Essa
+   faixa tem 68% das seções do país (73% em horário de Brasília).
 
 ### 6.7 As seções que fecharam às 19h
 
-**O que o relatório diz:** mais de 2 milhões de eleitores votaram em seções que fecharam depois das 19h,
-com votação "avassaladora" para Lula.
+**O que é real:** no 2º turno, **6.352 seções** (em horário de Brasília) fecharam às 19h ou pouco depois: 1.993
+no minuto 19:00 exato e 6.319 entre 19:00 e 19:15. O formato é o de um horário-limite marcado (não de fila),
+e elas se concentram em **1.131 locais de votação**, 313 deles inteiros, sobretudo nas capitais (Rio 1.978,
+São Paulo 1.481, Salvador 730). Isso não aparece no 1º turno (que teve fechamentos tardios espalhados,
+por fila) nem em 2022.
 
-**Como calculei:** contei as seções pelo horário de fechamento (convertido para Brasília), minuto a minuto,
-no 1º turno de 2026, no 2º turno de 2026 e no 2º turno de 2022.
+![Fechamentos minuto a minuto](docs/graficos/03_horario_fechamento_por_minuto.png)
 
-![Horário de fechamento minuto a minuto](docs/graficos/03_horario_fechamento_por_minuto.png)
+**O que os dados mostram sobre os votos dessas seções:**
 
-**O que é real:** no 2º turno de 2026 há um **pico de fechamentos exatamente às 19h00** (6.352 seções), que
-não existe no 1º turno nem em 2022. Isso é compatível com uma extensão de horário em locais específicos,
-como o relatório menciona. Os dados não dizem quem decidiu nem por quê.
+- **Quase ninguém votou no horário extra.** Lendo o log de cada uma das 6.352 urnas (direto do servidor do
+  TSE), só **4.492 de 1.861.259 votos (0,24%)** foram computados depois das 17h; 3.885 urnas não tiveram
+  nenhum voto depois das 17h15. O total de votos no log bate com o BU em 100% das urnas.
 
-**O que não se sustenta:**
-- Essas seções deram a Lula um saldo de **187 mil votos, 4% da margem**. Tirando **todas** as seções fechadas
-  depois das 17h15, Lula ainda vence por **4,1 milhões**.
-- No RJ, que tem mais seções tardias que qualquer outro estado, **Flávio** venceu nelas.
-- Elas votaram **como já tinham votado no 1º turno** (ver 6.11): a diferença entre o resultado real e o
-  previsto foi de −0,17 p.p., ou seja, levemente **menos** Lula do que o esperado.
-- Das 6.352 seções tardias do 2º turno, só 102 também fecharam tarde no 1º. São outras seções, não "as
-  mesmas urnas de sempre".
+![Votos depois das 17h](docs/graficos/04_votos_depois_das_17h_nas_secoes_tardias.png)
 
----
+- **Votaram como as vizinhas.** Comparando com seções **do mesmo local de votação** que fecharam às 17h:
+  diferença de −0,06 p.p. na % de Lula e +0,03 p.p. no comparecimento. Comparecimento delas: 80,6%
+  (país: 80,8%).
+- **Votaram como no próprio 1º turno.** Lula subiu +3,25 p.p. nelas e +3,20 p.p. nas demais seções das mesmas
+  cidades. No pior cenário estatístico, o desvio vale no máximo **24.498 votos** (0,6% da margem).
+- **Mesmo anulando todas** essas seções, Lula venceria por 4.244.467 votos. No RJ, que tem mais seções
+  tardias, Flávio venceu nelas (45,8% Lula).
+- O "mais de 2 milhões de eleitores" do relatório só bate contando os **aptos** (2,31 mi); votaram 1,86 mi.
 
-### 6.8 Eleitores liberados sem biometria
+**O que os dados não dizem:** por que esses locais ficaram abertos até as 19h. Detalhe:
+[`LOGS_TARDIAS.md`](analise/LOGS_TARDIAS.md), [`RESULTADOS.md`](analise/RESULTADOS.md) seção 4.
 
-**O que o relatório diz:** 8.632.488 eleitores liberados sem biometria, quase o dobro da margem.
+### 6.8 Eleitores liberados sem digital
 
-**O número confere.** Mas comparar com a margem só faria sentido se **todos** esses eleitores tivessem
-votado no mesmo candidato. Testei isso de três formas:
+**O número confere:** 8.632.488 (6,73% do comparecimento). Comparar com a margem só faria sentido se esses
+eleitores tivessem votado em bloco num candidato. Testei de quatro formas:
 
-**1. Correlação por seção** (`analise/verificar_relatorio.py`): para cada seção, calculei a % de
-eleitores liberados manualmente e a % de Lula, e medi se uma acompanha a outra.
+**1. Pior caso aritmético:** se em cada seção todo liberado tivesse votado em Lula e fosse retirado, Flávio
+venceria por 4,19 milhões. Esse cenário exige um comportamento que os testes abaixo descartam.
 
-![Liberação manual × voto em Lula](docs/graficos/04_biometria_vs_voto.png)
+**2. Inclinação** (quanto a % de Lula muda quando a liberação muda), estimando como votaram os liberados:
 
-Correlação de **0,07** no país e **0,01** entre seções do mesmo município. Na prática, nenhuma relação.
+| Comparando… | % de Lula entre os liberados (estimativa) | Margem sem os liberados (limite de 95%) |
+|---|---|---|
+| o país todo | 78% | −2,68 mi |
+| dentro do estado | 68% | −0,23 mi |
+| **dentro do município** | **54%** | **+2,55 mi** |
 
-**2. Retirada:** tirei todos os eleitores liberados manualmente, supondo que votaram como o resto da
-própria seção. Lula ainda vence por **4,0 milhões**.
+Liberação e voto em Lula são ambos maiores em certas regiões (Nordeste, interior). Comparar o país todo
+atribui à liberação um efeito que é da geografia (a "falácia ecológica"). A comparação justa é entre seções
+da mesma cidade: aí os liberados votam quase como os demais.
 
-**3. Comparação com 2022:** o campo mais próximo em 2022 somou 10 milhões, **4,7 vezes** a margem daquele
-ano. Se a razão entre liberações e margem fosse indício de fraude, 2022 estaria pior.
+**3. Contra o 1º turno (o teste mais forte):** dado como a própria seção votou no 1º turno, **mais
+liberação vem com menos Lula** do que o previsto (−0,37 p.p. a cada 10 p.p. de liberação), e o **aumento**
+da liberação entre os turnos não tem efeito (+0,01 p.p., margem de erro ±0,03). Se a liberação fosse usada
+para pôr votos em Lula, apareceria o contrário.
 
-Também: a taxa de liberação manual de cada seção **se repete** entre o 1º e o 2º turno (correlação 0,82).
-Ou seja, é uma característica da seção (por exemplo, eleitorado mais velho, digitais gastas ou um
-leitor biométrico pior), não algo que surgiu no 2º turno.
-
----
+**4. Estabilidade:** a taxa de cada seção se repete entre os turnos (correlação 0,82) e é parecida no
+Nordeste (7,2%) e no resto do país (6,6%). É característica da seção (idade do eleitorado, digitais
+gastas, leitor biométrico), não algo que surgiu no 2º turno.
 
 ### 6.9 Seções quase unânimes
 
-**Como calculei:** contei as seções em que um candidato teve 100% (ou mais de 90%) dos votos válidos.
+| Eleição | 100% Lula | 100% adversário | >90% Lula | >90% adversário |
+|---|---|---|---|---|
+| 2º turno 2026 | 106 | 4 | 6.816 | 378 |
+| 1º turno 2026 | 81 | 8 | 6.005 | 713 |
+| 2º turno 2022 | 143 | 4 | 9.433 | 213 |
 
-| | Lula | Flávio/Bolsonaro |
-|---|---|---|
-| 100% dos válidos, 2026 | 106 | 4 |
-| 100% dos válidos, 2022 | 143 | 4 |
-| Mais de 90%, 2026 | 6.816 | 378 |
-
-**Confere com o relatório**, e em 2022 foi parecido. As seções com mais de 90% para Lula estão no
-Maranhão, Bahia, Piauí, Pernambuco e Ceará, onde Lula teve cerca de 69%. Quando a média de uma região é
-70%, é natural que existam muitas seções acima de 90%. O voto no Brasil é muito regional, e a distribuição
-nacional não precisa ser "simétrica em torno de 50%".
-
----
+Os números do relatório conferem. 75% das seções com mais de 90% para Lula estão em MA, BA, PI, PE e CE,
+onde ele teve ~69%. Quando a média de uma região é 70%, é natural ter muitas seções acima de 90%.
 
 ### 6.10 Lei de Benford
 
-**O que é:** em muitos conjuntos de números naturais, o primeiro dígito é "1" em cerca de 30% dos casos.
-O teste vê se os números seguem essa curva.
-
-**Como calculei:** peguei o primeiro dígito dos votos de cada candidato em cada seção e comparei com a curva.
-
-| 1º dígito | Esperado (Benford) | Lula | Flávio |
-|---|---|---|---|
-| 1 | 30,1% | 60,8% | 61,9% |
-| 2 | 17,6% | 9,3% | 7,2% |
-| 3 | 12,5% | 0,9% | 2,8% |
-
-**Os dois candidatos "falham" do mesmo jeito**, e isso é esperado. Uma seção tem no máximo uns 400
-eleitores, então o voto de um candidato numa seção cai quase sempre entre 100 e 199, e o "1" domina. A
-literatura (Deckert, Myagkov & Ordeshook, 2011) mostra que esse teste **não serve** para votos por seção.
-O relatório disse que fez o teste, mas não mostrou o resultado.
-
----
+| Teste | Resultado |
+|---|---|
+| 1º dígito | Lula e Flávio "falham" igual (dígito 1 em ~61%). Esperado: o voto de um candidato numa seção fica entre 100 e 199 em 61% dos casos. Inadequado para votos por seção (Deckert, Myagkov & Ordeshook, 2011). |
+| 2º dígito | Real: média 3,86 (Lula) e 3,97 (Flávio). **Simulação de uma eleição honesta** com o mesmo tamanho de seção: 3,87. O real é igual ao honesto. |
+| Último dígito (Beber & Scacco) | Uniforme para os dois (qui-quadrado 5,0 e 12,4; limite 16,9). Nenhum sinal de números "inventados". |
 
 ### 6.11 1º turno × 2º turno, seção por seção
 
-**A ideia:** é o teste mais forte. A **mesma seção**, com os **mesmos eleitores**, votou duas vezes com três
-semanas de intervalo. Se alguém tivesse mexido nas urnas do 2º turno, essas seções fugiriam do padrão
-que o 1º turno indicava.
+**A ideia:** a mesma seção, com os mesmos eleitores, votou duas vezes em três semanas. Se urnas tivessem
+sido manipuladas no 2º turno, essas seções fugiriam do padrão que o 1º turno indicava.
 
-**Como calculei** (`analise/primeiro_turno.py`):
-1. Para cada seção, peguei a fatia de eleitores de cada candidato do 1º turno, mais brancos/nulos e abstenção.
-2. Ajustei um modelo (regressão linear) que tenta **prever** a % de Lula no 2º turno a partir do 1º.
-3. Para cada seção, calculei o **resíduo**: % real menos % prevista.
-4. Comparei o resíduo médio entre grupos de seções: as que fecharam tarde, as com muita liberação manual etc.
-   Fiz isso também "dentro do município", comparando só seções da mesma cidade.
-
-**Resultado:**
+**Como** (`analise/primeiro_turno.py`): para cada seção, um modelo prevê a % de Lula no 2º turno a partir dos
+votos de cada candidato, brancos/nulos e abstenção do 1º turno. Seis formas do modelo (linear e logit;
+nacional, por estado, por município; com e sem peso pelo tamanho). Depois, compara-se o desvio médio
+entre grupos de seções, com margem de erro agrupada por município.
 
 ![Previsto × real](docs/graficos/05_previsto_vs_real.png)
 
-O 1º turno explica **97,9%** da variação do 2º turno entre seções (R² = 0,979). O erro típico é de 2,5 p.p.
+O 1º turno explica 97,9% das diferenças entre seções no país e **91,6% comparando só seções da mesma
+cidade**. Erro típico: 2,2 a 2,5 p.p.
 
-![Resíduo por grupo](docs/graficos/06_residuo_por_grupo.png)
+![Desvio por grupo](docs/graficos/06_desvio_por_grupo.png)
 
-**Nenhum grupo suspeito se desviou a favor de Lula.** As seções que fecharam às 19h e as com muita
-liberação manual tiveram resíduo **negativo**, ou seja, um pouco **menos** Lula do que o 1º turno previa.
+Nenhum grupo "suspeito" se desvia de forma relevante. As seções das 19h variam entre −0,20 e +0,35 p.p.
+conforme a forma do modelo; as de muita liberação manual ficam **abaixo** do previsto para Lula em todas
+as formas. Seções muito fora do padrão (mais de 4 desvios): 747, divididas entre os dois lados; somando só
+os desvios a favor de Lula, 11.896 votos.
 
-Seções muito fora do padrão (mais de 4 desvios-padrão): 747 (0,15%), sendo 421 a favor de Lula e 326 a
-favor de Flávio. Mesmo se **todas** fossem fraude, o efeito líquido seria de **3.487 votos**. Lista:
-[`analise/secoes_fora_do_padrao_1t_2t.csv`](analise/secoes_fora_do_padrao_1t_2t.csv).
+**Limites deste teste** (por isso ele não é o único): não detecta manipulação igual em todas as seções
+(coberta pela soma oficial e pelo RDV), nem manipulação que tenha ocorrido também no 1º turno, nem de um
+município inteiro na comparação "dentro do município" (a nacional pega). Detalhe:
+[`PRIMEIRO_TURNO.md`](analise/PRIMEIRO_TURNO.md).
 
-> **Nota:** no gráfico há um pequeno aglomerado abaixo da diagonal (Lula bem abaixo do previsto). São 269
-> seções do **exterior** (Boston, Nagóia, Miami, Tóquio) com abstenção de 65%. O modelo supõe que parte de
-> quem se absteve no 1º turno vota no 2º, e isso não vale fora do país. É uma limitação do modelo, não uma
-> anomalia, e vai contra Lula, não a favor.
+Resultado do 1º turno (soma dos BUs = oficial): Flávio 47,03%, Lula 45,16%, Augusto Cury 2,89%, Renan
+Santos 2,24%, Ronaldo Caiado 2,18%.
 
-**Resultado do 1º turno** (soma dos BUs, igual ao oficial): Flávio 47,03%, Lula 45,16%, Augusto Cury
-2,89%, Renan Santos 2,24%, Ronaldo Caiado 2,18%.
+### 6.12 "Dados trancados por 72 horas"
 
-Detalhe: [`analise/PRIMEIRO_TURNO.md`](analise/PRIMEIRO_TURNO.md)
-
----
-
-### 6.12 "Dados escondidos por 72 horas"
-
-**O que o relatório diz:** os arquivos ficaram "trancados" até a manhã de quarta-feira, 28/10.
-
-**Como verifiquei:** olhei a data que o próprio servidor do TSE informa para cada arquivo (cabeçalho
-`Last-Modified`) e as datas dentro dos arquivos.
-
-| Arquivo | Data |
+| Evento | Quando |
 |---|---|
 | Resultado oficial assinado (totalização) | 25/10, 23h28 |
 | Planilha BWeb gerada | 26/10, 07h42 |
-| BWeb no servidor | 26/10, 09h00 (Brasília) |
-| Arquivos originais das urnas no servidor | 26/10, entre 15h e 17h (Brasília) |
+| BWeb no servidor (`Last-Modified`) | 26/10, ~09h00 de Brasília (`SERVIDOR.csv`) |
+| Arquivos originais das urnas no servidor | 26/10, entre 15h26 e 17h01 de Brasília (`MANIFESTO.csv`) |
+| BWeb listada no catálogo do portal | 27/10, ~19h, no relógio do catálogo, sem fuso informado (`CATALOGO.csv`) |
 
-Ou seja, cerca de 1 dia depois, não 3. Além disso, cada seção afixa o BU impresso na porta ao final da votação.
+Os arquivos existiam no servidor cerca de 1 dia depois da eleição, mas só apareceram no catálogo (onde as
+pessoas procuram) cerca de 2 dias depois, e em 29/10 tinham saído do catálogo de novo. A crítica de que os
+dados demoraram a ficar **acessíveis** tem algum fundamento; a de que estavam escondidos para alterá-los
+não: o BU de cada urna é impresso e afixado na seção na noite da eleição, e os arquivos batem com o
+resultado assinado às 23h28 do próprio dia 25.
 
 ---
 
-## 7. Juntando tudo: quanto cada suspeita pesa na margem
+## 7. Quanto cada suspeita pesa na margem
 
-| Suspeita | Pior caso: votos que poderia explicar | % da margem de 4.430.191 |
+Todos os valores abaixo são calculados pelo código (`analise/graficos.py`, gráfico 8).
+
+| Suspeita | Pior caso | % da margem |
 |---|---|---|
-| Seções que fecharam às 19h ou depois (saldo de Lula nelas) | 186.954 | 4,2% |
-| Seções com urna/carga fora da lista prévia | 4.835 | 0,1% |
-| Seções fora do padrão 1º→2º turno | 3.487 | 0,1% |
-| Eleitores liberados sem biometria | Sem relação com o voto (correlação 0,01); retirá-los mantém Lula +4,0 mi | — |
-
-Mesmo somando os piores casos, não se chega perto da margem.
-
----
-
-## 8. O que esta auditoria NÃO prova
-
-Para ser honesto sobre os limites:
-
-- **Assinatura digital das urnas:** não verifiquei criptograficamente as assinaturas (`*.vsc`). Isso
-  provaria que os arquivos foram gerados pela urna oficial. É o próximo passo técnico.
-- **Recontagem voto a voto (RDV):** o arquivo com cada voto individual (`*rdv.dat`) ainda não foi decodificado.
-- **Só 3 estados nos logs:** os logs foram conferidos em AC, RR e AP. Os outros 24 estados somam mais de 100 GB;
-  o script já funciona para eles.
-- **O software da urna:** nenhuma análise de dados prova que o software da urna é honesto. Isso é feito
-  pelos testes públicos de segurança e pela fiscalização de partidos, que não são cobertos aqui.
-- **Fuso do oeste do Amazonas:** alguns municípios do AM ficam em UTC-5, e usei UTC-4 para o estado todo. Isso
-  move poucas seções de faixa e não muda nenhuma conclusão.
-- **Afirmações políticas e jurídicas do relatório** (decisões de ministros, passaportes, PF, Banco Master,
-  reações internacionais): não estão nos dados do TSE e não foram avaliadas.
-- **Por que houve fechamentos às 19h no 2º turno:** os dados mostram que aconteceu, mas não explicam a
-  causa. Isso exige as decisões e as atas dos TREs.
+| Anular todas as seções que fecharam às 19h | 185.724 votos | 4,2% |
+| Seções das 19h: maior desvio estatístico plausível vs. 1º turno | 24.498 | 0,6% |
+| Seções das 19h: todos os votos dados depois das 17h | 4.492 | 0,1% |
+| Seções muito fora do padrão 1º→2º turno (só desvios pró-Lula) | 11.896 | 0,3% |
+| Seções com urna sem explicação nos dados (todos os votos) | 4.563 | 0,1% |
+| Liberação manual (limite de 95%, comparando dentro do município) | a margem cairia para 2,55 mi | — |
 
 ---
 
-## 9. Como rodar tudo você mesmo
+## 8. O que esta auditoria não prova
 
-Você precisa de Python 3 e de `pdftotext` (pacote `poppler-utils`).
+- **Assinaturas digitais** das urnas (`*.vsc`) não foram verificadas criptograficamente. Elas provariam
+  que os arquivos foram gerados por urnas oficiais. É o próximo passo técnico.
+- **Logs e BU impresso** foram lidos para AC, RR, AP e para todas as seções das 19h; não para todas as urnas.
+- **Nenhuma análise de dados prova que o software da urna é honesto.** Isso cabe aos testes públicos de
+  segurança e à fiscalização. O que os dados mostram é que BU, RDV, logs e resultado oficial contam a
+  mesma história.
+- **Por que** houve fechamento às 19h e o que explica as 17 urnas sem registro: exige atos dos TREs e atas.
+- As **afirmações políticas e jurídicas** do relatório (Capítulo 6) não estão nos dados do TSE.
+- Os testes estatísticos estimam efeitos com margem de erro; os testes de contagem (soma oficial, RDV,
+  logs) são exatos.
+
+---
+
+## 9. Como rodar tudo
+
+Precisa de Python 3 e `pdftotext` (pacote `poppler-utils`).
 
 ```bash
 git clone https://github.com/JardaCoder/elections-brazil.git
 cd elections-brazil
-pip install pandas tabulate matplotlib
+pip install pandas numpy tabulate matplotlib
 
-# 1. Juntar os pacotes das urnas (AC, RR, AP) que estão em partes
-scripts/remontar_arquivos_urna.sh
+scripts/remontar_arquivos_urna.sh       # junta os pacotes das urnas de AC, RR e AP
 
-# 2. (Opcional) Baixar os BUs do 1º turno, 4,8 GB. Sem isso, os scripts usam a tabela já pronta em dados/derivados/
-python3 scripts/baixar_dados_tse.py bu_1t
-
-# 3. Rodar as análises. Cada uma gera um .md em analise/
 cd analise
-python3 totalizacao.py          # 6.2  soma dos BUs × resultado oficial
-python3 consistencia.py         # 6.3  consistência de cada BU
-python3 logs_urna.py AC RR AP   # 6.4  log da urna × BU
-python3 correspondencia.py      # 6.5  urnas usadas × lista prévia
-python3 verificar_relatorio.py  # 6.6–6.10  réplica do relatório
-python3 primeiro_turno.py       # 6.11 1º × 2º turno
-python3 graficos.py             # gráficos em docs/graficos/
+python3 totalizacao.py                  # 6.2  soma dos BUs × resultado oficial
+python3 consistencia.py                 # 6.3  regras em cada BU
+python3 recontagem_rdv.py AC RR AP      # 6.4  recontagem voto a voto (local)
+python3 imagem_bu.py AC RR AP           # 6.4  BU impresso × planilha
+python3 logs_urna.py AC RR AP           # 6.4  log da urna × BU
+python3 correspondencia.py              # 6.5  urnas usadas × previstas
+python3 verificar_relatorio.py          # 6.6–6.10 réplica e testes do relatório
+python3 primeiro_turno.py               # 6.11 1º × 2º turno
+python3 graficos.py                     # gráficos em docs/graficos/
+
+# Leem direto do servidor do TSE (download parcial; demoram):
+python3 logs_tardias.py --refazer       # 6.7  logs das 6.352 seções das 19h (~20 min)
+python3 recontagem_rdv_nacional.py      # 6.4  RDV de todas as seções do país (~2 h)
 ```
 
-Tempo total: uns 2 minutos, ou cerca de 7 se precisar reprocessar o 1º turno a partir dos BUs brutos.
-
-Para baixar outros dados do TSE:
-
-```bash
-python3 scripts/baixar_dados_tse.py                          # lista os conjuntos disponíveis
-python3 scripts/baixar_dados_tse.py arquivos_urna_2t SP MG   # arquivos originais das urnas de outros estados
-```
+Para baixar outros dados: `python3 scripts/baixar_dados_tse.py` lista os conjuntos.
+Para refazer a extração de Presidente a partir dos .zip oficiais: `python3 scripts/extrair_presidente.py`.
 
 ---
 
 ## 10. Mapa do repositório
 
 ```
-README.md                         este arquivo
+README.md                          este arquivo
 analise/
-  AUDITORIA.md                    resumo técnico da auditoria
-  TOTALIZACAO.md                  6.2 — soma dos BUs × resultado oficial
-  CONSISTENCIA.md                 6.3 — regras de consistência
-  LOGS.md                         6.4 — logs das urnas
-  CORRESPONDENCIA.md              6.5 — urnas usadas × previstas
-  RESULTADOS.md                   6.6 a 6.10 — réplica do relatório
-  PRIMEIRO_TURNO.md               6.11 — 1º × 2º turno
-  secoes_para_documentar.csv      168 seções com urna fora da lista prévia
-  secoes_fora_do_padrao_1t_2t.csv 747 seções fora do padrão entre turnos
-  carregar.py                     lê os BUs e monta a tabela por seção
-  totalizacao.py, consistencia.py, imagem_bu.py, logs_urna.py,
-  correspondencia.py, verificar_relatorio.py, primeiro_turno.py, graficos.py
+  RESULTADOS.md                    réplica e testes do relatório (6.6 a 6.10)
+  PRIMEIRO_TURNO.md                1º × 2º turno (6.11)
+  TOTALIZACAO.md                   soma dos BUs × oficial (6.2)
+  CONSISTENCIA.md                  regras por BU (6.3)
+  RECONTAGEM_RDV.md                recontagem voto a voto AC/RR/AP (6.4)
+  RECONTAGEM_RDV_NACIONAL.md       recontagem voto a voto, Brasil (6.4)
+  IMAGEM_BU.md, LOGS.md            BU impresso e logs × planilha (6.4)
+  CORRESPONDENCIA.md               urnas usadas × previstas (6.5)
+  LOGS_TARDIAS.md                  votos depois das 17h nas seções das 19h (6.7)
+  secoes_para_documentar.csv       seções com urna/carga fora da lista
+  secoes_fora_do_padrao_1t_2t.csv  seções muito fora do padrão entre turnos
+  carregar.py                      lê os dados; fuso por município; faixas de horário
+  estatistica.py                   modelos, comparações e margem de erro
+  *.py                             um script por verificação (ver seção 9)
 scripts/
-  baixar_dados_tse.py             baixa dados do TSE e confere o hash
-  remontar_arquivos_urna.sh       junta as partes dos pacotes das urnas
-docs/graficos/                    gráficos deste README
+  baixar_dados_tse.py              baixa dados do TSE e confere o hash
+  extrair_presidente.py            separa as linhas de Presidente dos .zip oficiais
+  remontar_arquivos_urna.sh        junta as partes dos pacotes das urnas
+docs/graficos/                     gráficos deste README
 dados/
-  tse/2026/boletim_urna/2turno/   BUs 2º turno 2026 (+ .sha512)
-  tse/2026/boletim_urna/1turno/   só os .sha512 do 1º turno (os .zip: baixar)
-  tse/2026/correspondencias/      urnas previstas por seção (véspera)
-  tse/2026/arquivos_urna/2turno/  arquivos originais das urnas AC/RR/AP (partes + MANIFESTO.csv)
-  tse/2026/totalizacao/           resultado oficial (PDF)
-  tse/2022/boletim_urna/2turno/   BUs 2º turno 2022 (controle)
-  derivados/                      tabelas por seção já processadas
+  tse/2026/boletim_urna/2turno/    BWeb 2º turno (todos os cargos) + SERVIDOR.csv + CATALOGO.csv
+  tse/2026/boletim_urna/1turno/    só os .sha512 (os .zip: baixar)
+  tse/2026/presidente/             linhas de Presidente, 1º e 2º turno, + MANIFESTO.csv
+  tse/2026/correspondencias/       urnas previstas por seção
+  tse/2026/arquivos_urna/2turno/   arquivos originais das urnas AC/RR/AP (partes + MANIFESTO.csv)
+  tse/2026/totalizacao/            resultado oficial (PDF)
+  tse/2022/                        2º turno 2022 (controle)
+  derivados/                       tabelas prontas geradas pelos scripts
 ```
 
 ---
 
-*Análise independente, sem vínculo com o TSE, com partidos ou com os autores do relatório. Achou um erro?
-Abra uma issue com o script e o resultado, porque a ideia é justamente que qualquer pessoa possa conferir.*
+*Análise independente, sem vínculo com o TSE, partidos ou autores do relatório. Achou um erro? Abra uma
+issue com o script e o resultado: a ideia é justamente que qualquer pessoa possa conferir.*

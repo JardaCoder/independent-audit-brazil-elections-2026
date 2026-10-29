@@ -1,169 +1,400 @@
-SG_UF,CD_MUNICIPIO,NR_ZONA,NR_SECAO,NR_URNA_EFETIVADA,DS_SECOES_AGREGADAS,motivo,NR_URNA_ESPERADA,DT_CARGA_URNA_ESPERADA,DT_CARGA_URNA_EFETIVADA,NM_MUNICIPIO,QT_COMPARECIMENTO,V_13,V_22
-AC,1015,2,93,2293878,#NULO#,BU de seção fora da lista esperada,,,,CAPIXABA,174,46,118
-MG,40932,270,175,2080741,#NULO#,BU de seção fora da lista esperada,,,,ATALÉIA,229,137,89
-MT,90670,51,270,1666122,#NULO#,BU de seção fora da lista esperada,,,,CUIABÁ,281,151,123
-RJ,59153,195,303,2434147,#NULO#,BU de seção fora da lista esperada,,,,TERESÓPOLIS,258,102,145
-RJ,60011,185,50,1672065,#NULO#,BU de seção fora da lista esperada,,,,RIO DE JANEIRO,299,163,124
-RN,16055,18,46,2031546,#NULO#,BU de seção fora da lista esperada,,,,AFONSO BEZERRA,240,167,64
-RN,18538,27,71,2063812,#NULO#,BU de seção fora da lista esperada,,,,SÃO RAFAEL,256,173,62
-SE,31054,2,592,1774945,#NULO#,BU de seção fora da lista esperada,,,,ARACAJU,288,169,108
-SE,32239,31,42,2045938,#NULO#,BU de seção fora da lista esperada,,,,SALGADO,257,191,64
-SE,32336,21,264,2309435,#NULO#,BU de seção fora da lista esperada,,,,SÃO CRISTÓVÃO,289,173,107
-SE,32417,22,39,2274550,#NULO#,BU de seção fora da lista esperada,,,,SIMÃO DIAS,239,151,83
-SE,32417,22,133,2401645,#NULO#,BU de seção fora da lista esperada,,,,SIMÃO DIAS,197,134,51
-ZZ,29173,1,494,1808076,#NULO#,BU de seção fora da lista esperada,,,,KATMANDU,13,1,12
-ZZ,29254,1,1,1762246,#NULO#,BU de seção fora da lista esperada,,,,ABIDJÃ,53,31,22
-ZZ,29270,1,3,1808076,#NULO#,BU de seção fora da lista esperada,,,,ACCRA,14,8,5
-ZZ,29297,1,495,1808076,#NULO#,BU de seção fora da lista esperada,,,,ANCARA,39,29,8
-ZZ,29300,1,6,1762246,#NULO#,BU de seção fora da lista esperada,,,,ARGEL,29,23,3
-ZZ,29394,1,28,1762246,#NULO#,BU de seção fora da lista esperada,,,,BISSAU,41,19,22
-ZZ,29580,1,96,1808076,#NULO#,BU de seção fora da lista esperada,,,,CONCEPCIÓN,31,3,28
-ZZ,29645,1,380,1808076,#NULO#,BU de seção fora da lista esperada,,,,DÍLI,52,18,33
-ZZ,29750,1,1703,1762246,#NULO#,BU de seção fora da lista esperada,,,,HANÓI,34,15,17
-ZZ,29777,1,127,1808076,#NULO#,BU de seção fora da lista esperada,,,,HAVANA,45,43,1
-ZZ,29858,1,1183,1762246,#NULO#,BU de seção fora da lista esperada,,,,KIEV,21,3,16
-ZZ,29912,1,150,1808076,#NULO#,BU de seção fora da lista esperada,,,,LAGOS,37,32,5
-ZZ,30163,1,647,1762246,#NULO#,BU de seção fora da lista esperada,,,,MOSCOU,97,60,33
-ZZ,30171,1,1340,1762246,#NULO#,BU de seção fora da lista esperada,,,,MUMBAI,10,8,1
-ZZ,30295,1,348,1808076,#NULO#,BU de seção fora da lista esperada,,,,PASO LOS LIBRES,7,4,3
-ZZ,30325,1,352,1808076,#NULO#,BU de seção fora da lista esperada,,,,PORT OF SPAIN,24,9,12
-ZZ,30333,1,353,1808076,#NULO#,BU de seção fora da lista esperada,,,,PORTO PRÍNCIPE,8,6,2
-ZZ,30430,1,384,1808076,3468,BU de seção fora da lista esperada,,,,RIO BRANCO,23,8,12
-ZZ,30546,1,1764,1808076,#NULO#,BU de seção fora da lista esperada,,,,SÓFIA,55,40,13
-ZZ,30597,1,1182,1808076,#NULO#,BU de seção fora da lista esperada,,,,TEERÃ,28,16,11
-ZZ,30708,1,444,1762246,#NULO#,BU de seção fora da lista esperada,,,,TUNIS,23,16,7
-ZZ,30821,1,1524,1762246,#NULO#,BU de seção fora da lista esperada,,,,WINDHOEK,12,8,4
-ZZ,38962,1,558,1808076,#NULO#,BU de seção fora da lista esperada,,,,DAR ES SALAAM,17,11,6
-ZZ,39102,1,712,1808076,#NULO#,BU de seção fora da lista esperada,,,,MASCATE,34,10,22
-ZZ,99155,1,1504,1808076,#NULO#,BU de seção fora da lista esperada,,,,PUERTO IGUAZÚ,20,7,13
-ZZ,99180,1,1228,1808076,#NULO#,BU de seção fora da lista esperada,,,,NASSAU,22,6,14
-ZZ,99473,1,1327,1808076,#NULO#,BU de seção fora da lista esperada,,,,BAREIN,42,11,28
-AM,2011,34,12,2456949,,urna trocada por urna fora da lista de contingência,2460665,2026-09-26 09:54:00,2026-10-24 10:56:00,NOVO AIRÃO,234,120,106
-AM,2232,23,80,2340769,,urna trocada por urna fora da lista de contingência,2345158,2026-09-30 15:41:00,2026-10-24 10:09:00,CAREIRO,182,105,72
-AM,2410,3,162,2342812,,urna trocada por urna fora da lista de contingência,2350260,2026-09-29 09:26:00,2026-10-24 10:00:00,ITACOATIARA,284,172,102
-AM,2437,24,3,2040426,,urna trocada por urna fora da lista de contingência,2350798,2026-09-21 20:49:00,2026-10-24 10:30:00,ITAPIRANGA,290,161,124
-AM,2437,24,30,2355841,,urna trocada por urna fora da lista de contingência,2338973,2026-09-21 20:55:00,2026-10-24 10:00:00,ITAPIRANGA,263,160,97
-AM,2534,6,54,2330486,,urna trocada por urna fora da lista de contingência,2460788,2026-09-28 15:09:00,2026-10-24 10:19:00,MANACAPURU,299,153,137
-AM,2550,1,778,1828410,,urna trocada por urna fora da lista de contingência,1789291,2026-10-03 12:28:00,2026-10-24 12:17:00,MANAUS,245,106,134
-AM,2550,2,755,1831445,,urna trocada por urna fora da lista de contingência,1789537,2026-09-23 09:20:00,2026-10-24 12:20:00,MANAUS,236,105,123
-AM,2550,31,577,1760106,,urna trocada por urna fora da lista de contingência,1789757,2026-09-23 15:58:00,2026-10-24 12:19:00,MANAUS,300,167,117
-AM,2550,37,606,1773434,,urna trocada por urna fora da lista de contingência,1789731,2026-09-28 08:53:00,2026-10-24 12:20:00,MANAUS,316,116,186
-AM,2550,40,626,2125171,,urna trocada por urna fora da lista de contingência,2084595,2026-09-24 15:39:00,2026-10-24 12:10:00,MANAUS,243,100,136
-AM,2550,58,876,1761229,,urna trocada por urna fora da lista de contingência,1786997,2026-10-01 10:08:00,2026-10-24 12:14:00,MANAUS,323,123,193
-AM,2550,59,792,1842731,,urna trocada por urna fora da lista de contingência,1787400,2026-09-24 10:31:00,2026-10-24 12:17:00,MANAUS,309,178,119
-AM,2550,62,605,2018306,,urna trocada por urna fora da lista de contingência,2088081,2026-09-28 15:35:00,2026-10-24 12:09:00,MANAUS,303,151,138
-AM,2550,63,688,2018190,,urna trocada por urna fora da lista de contingência,2086473,2026-10-01 15:00:00,2026-10-24 12:14:00,MANAUS,320,126,188
-AM,2550,65,383,2086225,,urna trocada por urna fora da lista de contingência,2040420,2026-09-29 09:44:00,2026-10-24 12:09:00,MANAUS,346,112,224
-AM,2550,68,520,2088328,,urna trocada por urna fora da lista de contingência,2040310,2026-09-25 10:36:00,2026-10-24 12:10:00,MANAUS,330,156,160
-AM,2550,70,784,1839558,,urna trocada por urna fora da lista de contingência,1789086,2026-09-30 08:40:00,2026-10-24 12:13:00,MANAUS,316,120,186
-AM,98353,56,34,2039387,,urna trocada por urna fora da lista de contingência,2040639,2026-09-29 14:47:00,2026-10-24 11:25:00,IRANDUBA,125,86,37
-AM,98418,51,78,2357659,,urna trocada por urna fora da lista de contingência,2350654,2026-09-24 16:11:00,2026-10-24 12:37:00,PRESIDENTE FIGUEIREDO,190,85,101
-AP,6092,4,24,2019093,,urna trocada por urna fora da lista de contingência,2015963,2026-10-01 10:05:00,2026-10-24 14:01:00,OIAPOQUE,182,103,72
-AP,6092,4,86,2017582,,urna trocada por urna fora da lista de contingência,2014545,2026-10-01 09:59:00,2026-10-24 14:01:00,OIAPOQUE,224,211,12
-BA,33391,90,208,2308311,,urna trocada por urna fora da lista de contingência,2309813,2026-10-01 13:36:00,2026-10-24 09:57:00,ARACATU,270,220,41
-BA,33774,71,150,1843885,,urna trocada por urna fora da lista de contingência,1780000,2026-09-21 12:13:00,2026-10-21 10:50:00,BOM JESUS DA LAPA,288,266,14
-BA,37818,84,382,1753327,,urna trocada por urna fora da lista de contingência,1767664,2026-09-28 10:24:00,2026-10-24 16:04:00,PAULO AFONSO,258,210,40
-BA,37877,105,145,2303690,,urna trocada por urna fora da lista de contingência,2306347,2026-10-01 14:19:00,2026-10-24 14:37:00,PIATÃ,300,217,66
-BA,39144,71,170,1844077,,urna trocada por urna fora da lista de contingência,1771106,2026-09-21 16:44:00,2026-10-21 11:12:00,SÍTIO DO MATO,300,241,51
-BA,39934,183,320,2386005,,urna trocada por urna fora da lista de contingência,2251166,2026-09-23 21:13:00,2026-10-24 09:49:00,TEIXEIRA DE FREITAS,231,92,130
-CE,13234,67,34,2322962,,urna trocada por urna fora da lista de contingência,2227027,2026-10-20 11:15:00,2026-10-24 11:09:00,ARACOIABA,255,207,45
-CE,14818,79,214,1671949,,urna trocada por urna fora da lista de contingência,1794159,2026-09-22 16:14:00,2026-10-24 13:33:00,MUCAMBO,253,178,70
-CE,14818,79,241,1819939,,urna trocada por urna fora da lista de contingência,1766001,2026-09-22 17:52:00,2026-10-24 13:50:00,MUCAMBO,239,183,45
-CE,15318,29,240,1767281,,urna trocada por urna fora da lista de contingência,1750675,2026-09-28 08:40:00,2026-10-24 12:13:00,QUIXERÉ,193,120,59
-DF,97012,1,9,2026554,,urna trocada por urna fora da lista de contingência,2013159,2026-09-29 08:46:00,2026-10-24 09:54:00,BRASÍLIA,204,99,99
-DF,97012,2,270,2102557,,urna trocada por urna fora da lista de contingência,2465687,2026-09-30 09:23:00,2026-10-24 11:14:00,BRASÍLIA,304,150,148
-DF,97012,3,418,2103108,,urna trocada por urna fora da lista de contingência,2014078,2026-09-24 09:55:00,2026-10-24 10:45:00,BRASÍLIA,311,137,160
-DF,97012,5,36,2026141,,urna trocada por urna fora da lista de contingência,2454210,2026-09-27 09:50:00,2026-10-24 11:15:00,BRASÍLIA,277,120,152
-DF,97012,6,200,2011531,,urna trocada por urna fora da lista de contingência,2456865,2026-09-28 09:39:00,2026-10-24 10:46:00,BRASÍLIA,204,83,114
-DF,97012,8,626,2013313,,urna trocada por urna fora da lista de contingência,2226731,2026-09-25 11:41:00,2026-10-24 11:16:00,BRASÍLIA,206,95,103
-DF,97012,9,360,2229518,,urna trocada por urna fora da lista de contingência,2012410,2026-09-28 09:36:00,2026-10-24 10:23:00,BRASÍLIA,236,118,108
-DF,97012,11,229,2010261,,urna trocada por urna fora da lista de contingência,2026114,2026-09-30 08:52:00,2026-10-24 09:50:00,BRASÍLIA,316,157,145
-DF,97012,15,318,2233101,,urna trocada por urna fora da lista de contingência,2230344,2026-09-26 08:48:00,2026-10-24 10:49:00,BRASÍLIA,290,123,158
-DF,97012,16,480,2026817,,urna trocada por urna fora da lista de contingência,2028374,2026-10-15 13:42:00,2026-10-24 10:44:00,BRASÍLIA,232,90,136
-ES,57916,7,146,2353106,,urna trocada por urna fora da lista de contingência,2361908,2026-09-22 08:14:00,2026-10-24 10:19:00,LARANJA DA TERRA,284,104,170
-GO,95818,66,107,2030569,,urna trocada por urna fora da lista de contingência,2202617,2026-09-25 13:21:00,2026-10-24 12:02:00,SANTA HELENA DE GOIÁS,244,129,106
-MA,7110,99,27,2023064,,urna trocada por urna fora da lista de contingência,2126133,2026-09-30 11:44:00,2026-10-24 17:16:00,AMARANTE DO MARANHÃO,260,116,142
-MA,7137,109,1,1761446,,urna trocada por urna fora da lista de contingência,1766364,2026-09-23 09:17:00,2026-10-24 09:29:00,ANAJATUBA,180,130,45
-MA,9210,1,124,1813889,,urna trocada por urna fora da lista de contingência,1656375,2026-10-03 15:08:00,2026-09-28 09:00:00,SÃO LUÍS,297,216,75
-MA,9210,1,125,1813386,,urna trocada por urna fora da lista de contingência,1651908,2026-10-03 15:19:00,2026-09-28 09:10:00,SÃO LUÍS,306,218,79
-MG,40690,16,263,2091501,,urna trocada por urna fora da lista de contingência,2061473,2026-09-19 15:42:00,2026-10-24 16:00:00,ARAGUARI,265,123,141
-MG,41238,331,1,2441970,,urna trocada por urna fora da lista de contingência,2465586,2026-09-20 08:30:00,2026-10-13 10:51:00,BELO HORIZONTE,374,169,192
-MG,41238,331,197,2474562,,urna trocada por urna fora da lista de contingência,2282675,2026-09-20 11:08:00,2026-10-13 10:00:00,BELO HORIZONTE,327,167,158
-MG,45730,125,119,2065232,,urna trocada por urna fora da lista de contingência,2089070,2026-09-21 10:36:00,2026-10-24 15:22:00,GUAXUPÉ,303,138,159
-MG,47554,159,71,2007867,,urna trocada por urna fora da lista de contingência,2090990,2026-09-26 16:26:00,2026-10-24 16:26:00,LAMBARI,293,109,174
-MG,48658,184,163,2011733,,urna trocada por urna fora da lista de contingência,2089910,2026-09-22 11:34:00,2026-10-24 14:20:00,MONTES CLAROS,265,135,122
-MT,90670,39,376,2473230,,urna trocada por urna fora da lista de contingência,2447087,2026-09-23 14:49:00,2026-10-24 10:00:00,CUIABÁ,284,106,171
-MT,90670,55,192,1839518,,urna trocada por urna fora da lista de contingência,1762405,2026-09-25 11:31:00,2026-10-24 10:03:00,CUIABÁ,350,125,212
-MT,91294,4,44,2468615,,urna trocada por urna fora da lista de contingência,2448226,2026-09-23 11:23:00,2026-10-24 09:57:00,POCONÉ,255,145,103
-MT,91855,19,39,2445672,,urna trocada por urna fora da lista de contingência,2011066,2026-09-22 15:17:00,2026-10-24 10:18:00,TANGARÁ DA SERRA,241,57,181
-PA,4278,30,295,2148509,,urna trocada por urna fora da lista de contingência,2155867,2026-09-26 08:49:00,2026-10-24 10:43:00,BELÉM,277,160,113
-PA,4278,73,802,2200024,,urna trocada por urna fora da lista de contingência,2187333,2026-10-03 11:06:00,2026-10-24 10:44:00,BELÉM,336,166,160
-PA,4278,73,807,2178916,,urna trocada por urna fora da lista de contingência,2185033,2026-09-23 11:46:00,2026-10-24 10:38:00,BELÉM,335,187,142
-PA,4952,19,58,1804671,,urna trocada por urna fora da lista de contingência,1794410,2026-10-24 10:23:00,2026-09-24 09:20:00,MONTE ALEGRE,159,63,95
-PA,4995,33,12,2329864,,urna trocada por urna fora da lista de contingência,2432058,2026-09-25 09:38:00,2026-10-24 09:49:00,NOVA TIMBOTEUA,299,192,105
-PA,5355,104,93,2324636,,urna trocada por urna fora da lista de contingência,2403815,2026-09-23 09:05:00,2026-10-03 13:24:00,SANTARÉM,293,123,162
-PB,19798,29,2,2382503,,urna trocada por urna fora da lista de contingência,2451140,2026-09-23 08:10:00,2026-10-24 12:52:00,CAMALAÚ,311,276,31
-PB,20974,75,76,2242188,,urna trocada por urna fora da lista de contingência,2077320,2026-09-21 10:03:00,2026-10-24 12:53:00,MULUNGU,249,179,65
-PB,21350,47,101,2337177,,urna trocada por urna fora da lista de contingência,2450901,2026-09-23 10:18:00,2026-10-24 12:47:00,PILÕEZINHOS,176,135,35
-PB,22330,34,209,2463474,,urna trocada por urna fora da lista de contingência,2372437,2026-09-23 12:22:00,2026-10-24 11:46:00,TAVARES,188,157,28
-PB,22411,18,110,2169702,,urna trocada por urna fora da lista de contingência,2205726,2026-09-23 15:57:00,2026-10-24 11:36:00,UMBUZEIRO,260,206,44
-PE,23094,64,184,1774396,,urna trocada por urna fora da lista de contingência,1819158,2026-09-25 08:32:00,2026-10-24 15:08:00,ÁGUAS BELAS,216,156,53
-PE,23264,89,71,2321401,,urna trocada por urna fora da lista de contingência,2349385,2026-09-25 09:46:00,2026-10-24 14:09:00,JATOBÁ,202,162,34
-PE,23272,42,90,1769537,,urna trocada por urna fora da lista de contingência,1774508,2026-09-26 10:28:00,2026-10-24 12:25:00,BARREIROS,280,190,81
-PE,23450,39,51,1821759,,urna trocada por urna fora da lista de contingência,1814993,2026-09-21 10:08:00,2026-10-24 12:45:00,BONITO,332,206,111
-PE,24236,25,18,2173687,,urna trocada por urna fora da lista de contingência,2161251,2026-09-28 10:07:00,2026-10-24 14:12:00,GOIANA,333,203,121
-PE,24775,24,94,2041752,,urna trocada por urna fora da lista de contingência,2195341,2026-09-24 08:43:00,2026-10-24 13:04:00,LIMOEIRO,273,179,89
-PE,25135,114,230,2173609,,urna trocada por urna fora da lista de contingência,2218332,2026-09-24 08:58:00,2026-10-24 13:47:00,PAULISTA,336,195,130
-PE,25313,8,244,2337587,,urna trocada por urna fora da lista de contingência,2370523,2026-09-24 08:14:00,2026-10-24 13:38:00,RECIFE,338,183,151
-PE,25313,8,246,2374681,,urna trocada por urna fora da lista de contingência,2313795,2026-09-24 08:30:00,2026-10-24 13:43:00,RECIFE,337,194,138
-PE,25313,149,63,2348464,,urna trocada por urna fora da lista de contingência,2389731,2026-09-25 10:55:00,2026-10-24 11:22:00,RECIFE,237,117,112
-PE,25518,81,164,2339247,,urna trocada por urna fora da lista de contingência,2339852,2026-09-24 08:34:00,2026-10-24 11:56:00,SANTA MARIA DA BOA VISTA,105,90,13
-PE,25836,26,127,1767268,,urna trocada por urna fora da lista de contingência,1775106,2026-09-23 10:16:00,2026-10-24 12:49:00,SIRINHAÉM,315,216,89
-PE,25852,79,158,2312082,,urna trocada por urna fora da lista de contingência,2320627,2026-09-26 09:54:00,2026-10-24 12:20:00,MOREILÂNDIA,75,58,15
-PE,26298,138,81,2378984,,urna trocada por urna fora da lista de contingência,2360779,2026-09-26 09:02:00,2026-10-24 11:47:00,CAMARAGIBE,341,189,145
-PI,10430,7,240,1847816,,urna trocada por urna fora da lista de contingência,1801290,2026-10-01 13:28:00,2026-10-24 12:44:00,CAMPO MAIOR,267,221,40
-PI,11398,5,331,2196269,,urna trocada por urna fora da lista de contingência,2219050,2026-09-30 09:58:00,2026-10-24 10:29:00,OEIRAS,205,158,43
-RJ,60011,185,158,1793722,,urna trocada por urna fora da lista de contingência,1793140,2026-09-28 13:28:00,2026-10-24 11:55:00,RIO DE JANEIRO,330,143,174
-RN,16217,32,79,2103133,,urna trocada por urna fora da lista de contingência,2360738,2026-09-22 13:26:00,2026-10-24 13:02:00,AREIA BRANCA,268,183,72
-RN,16390,25,67,2385427,,urna trocada por urna fora da lista de contingência,2385116,2026-09-23 10:51:00,2026-10-24 11:46:00,CAICÓ,274,180,80
-RN,16519,6,57,2049069,,urna trocada por urna fora da lista de contingência,2058738,2026-09-23 10:40:00,2026-10-24 12:51:00,CEARÁ-MIRIM,279,233,35
-RN,16977,68,30,2048996,,urna trocada por urna fora da lista de contingência,2059397,2026-09-24 15:56:00,2026-10-24 10:00:00,JAÇANÃ,298,211,79
-RN,17612,2,326,1787619,,urna trocada por urna fora da lista de contingência,1762667,2026-09-18 18:19:00,2026-10-24 11:23:00,NATAL,331,150,175
-RN,17612,2,366,1793619,,urna trocada por urna fora da lista de contingência,1784469,2026-09-18 17:38:00,2026-10-24 10:17:00,NATAL,300,82,213
-RN,17736,54,135,2344809,,urna trocada por urna fora da lista de contingência,2365646,2026-09-21 15:49:00,2026-10-24 08:23:00,PARAÚ,176,122,46
-RN,18473,43,47,2062688,,urna trocada por urna fora da lista de contingência,2339209,2026-09-24 09:12:00,2026-10-24 13:09:00,SÃO MIGUEL,150,113,34
-RN,18910,13,98,2236419,,urna trocada por urna fora da lista de contingência,2236939,2026-09-22 16:38:00,2026-10-24 12:25:00,VÁRZEA,170,121,47
-RS,88013,159,150,2408580,,urna trocada por urna fora da lista de contingência,2412839,2026-10-03 15:13:00,2026-10-24 14:48:00,PORTO ALEGRE,180,107,71
-RS,88013,159,166,2409009,,urna trocada por urna fora da lista de contingência,2472482,2026-09-18 10:01:00,2026-10-24 15:00:00,PORTO ALEGRE,188,101,85
-RS,88013,159,170,2428555,,urna trocada por urna fora da lista de contingência,2427392,2026-10-03 15:31:00,2026-10-24 14:58:00,PORTO ALEGRE,174,96,76
-SC,80454,2,192,2122428,,urna trocada por urna fora da lista de contingência,2190373,2026-09-26 12:04:00,2026-10-18 14:53:00,BIGUAÇU,290,90,192
-SC,82210,106,19,1681441,,urna trocada por urna fora da lista de contingência,1678471,2026-09-21 11:41:00,2026-10-24 14:18:00,NAVEGANTES,243,66,171
-SC,82210,106,92,1677014,,urna trocada por urna fora da lista de contingência,1777510,2026-09-21 14:17:00,2026-10-24 14:36:00,NAVEGANTES,246,58,183
-SC,83275,84,99,2472827,,urna trocada por urna fora da lista de contingência,2454868,2026-09-21 10:34:00,2026-10-24 10:13:00,SÃO JOSÉ,239,85,150
-SE,31054,2,60,1766766,,urna trocada por urna fora da lista de contingência,1785934,2026-09-28 08:21:00,2026-10-19 08:13:00,ARACAJU,227,129,89
-SE,31054,2,87,1767744,,urna trocada por urna fora da lista de contingência,1790675,2026-09-26 14:36:00,2026-10-19 09:51:00,ARACAJU,226,125,95
-SE,31054,2,345,1791305,,urna trocada por urna fora da lista de contingência,1771913,2026-09-26 15:31:00,2026-10-19 08:15:00,ARACAJU,283,132,145
-SE,31054,2,524,1791181,,urna trocada por urna fora da lista de contingência,1676696,2026-09-26 10:09:00,2026-10-19 14:17:00,ARACAJU,230,139,87
-SE,31054,2,535,1789920,,urna trocada por urna fora da lista de contingência,1784380,2026-09-28 08:43:00,2026-10-19 13:01:00,ARACAJU,277,152,115
-SE,31054,2,551,1796060,,urna trocada por urna fora da lista de contingência,1768680,2026-09-26 14:42:00,2026-10-19 09:27:00,ARACAJU,245,154,80
-SE,31690,12,87,2351482,,urna trocada por urna fora da lista de contingência,2302312,2026-10-03 09:26:00,2026-09-19 15:57:00,LAGARTO,183,141,36
-SE,31712,13,82,2048848,,urna trocada por urna fora da lista de contingência,2175982,2026-10-03 08:08:00,2026-09-21 07:22:00,LARANJEIRAS,192,129,59
-SE,31755,5,143,2283497,,urna trocada por urna fora da lista de contingência,2294017,2026-10-03 09:27:00,2026-09-18 13:08:00,MALHADA DOS BOIS,174,123,50
-SE,32476,23,118,2286014,,urna trocada por urna fora da lista de contingência,2354969,2026-10-03 08:52:00,2026-09-22 13:23:00,TOBIAS BARRETO,279,179,89
-SE,32514,35,57,2312114,,urna trocada por urna fora da lista de contingência,2174458,2026-10-03 09:45:00,2026-09-24 13:30:00,UMBAÚBA,263,179,73
-SP,68314,323,75,1842471,,urna trocada por urna fora da lista de contingência,1830007,2026-09-28 09:05:00,2026-10-24 11:05:00,PAULÍNIA,291,113,170
-SP,69051,135,332,2181097,,urna trocada por urna fora da lista de contingência,2394607,2026-09-24 09:18:00,2026-10-24 09:45:00,PONTAL,241,98,137
-SP,69213,317,270,2144351,,urna trocada por urna fora da lista de contingência,2307183,2026-09-26 10:54:00,2026-10-15 15:24:00,PRAIA GRANDE,298,138,147
-SP,69213,317,294,2376839,,urna trocada por urna fora da lista de contingência,2144530,2026-09-26 14:59:00,2026-10-15 15:17:00,PRAIA GRANDE,284,99,178
-SP,71072,422,222,1830519,,urna trocada por urna fora da lista de contingência,1830833,2026-09-28 10:19:00,2026-10-01 10:57:00,SÃO PAULO,265,131,121
-TO,73440,29,95,2029919,,urna trocada por urna fora da lista de contingência,2151792,2026-09-24 11:28:00,2026-10-24 10:22:00,PALMAS,299,121,167
-TO,73440,29,115,2454581,,urna trocada por urna fora da lista de contingência,2151414,2026-09-24 11:35:00,2026-10-24 10:28:00,PALMAS,311,115,185
-MT,90123,29,50,2024154,,"mesma urna, código de carga diferente do esperado",,2026-10-24 10:42:00,2026-10-24 11:41:00,NOVA MARINGÁ,216,63,146
-PA,4154,107,161,2165420,,"mesma urna, código de carga diferente do esperado",,2026-09-22 09:56:00,2026-10-15 09:11:00,ANANINDEUA,272,159,109
-PA,4154,107,278,2182404,,"mesma urna, código de carga diferente do esperado",,2026-09-22 09:26:00,2026-10-15 09:51:00,ANANINDEUA,264,139,118
-PA,4154,107,296,2148988,,"mesma urna, código de carga diferente do esperado",,2026-09-22 09:26:00,2026-10-15 08:56:00,ANANINDEUA,273,148,122
-PA,4154,107,341,2156728,,"mesma urna, código de carga diferente do esperado",,2026-09-22 10:05:00,2026-10-15 09:29:00,ANANINDEUA,336,175,152
-PA,4332,13,428,2384148,,"mesma urna, código de carga diferente do esperado",,2026-09-24 17:27:00,2026-10-16 08:32:00,BRAGANÇA,250,179,66
-PR,74322,144,130,2021153,,"mesma urna, código de carga diferente do esperado",,2026-09-23 14:53:00,2026-10-24 09:43:00,FAZENDA RIO GRANDE,314,110,191
-PR,74322,144,387,2022305,,"mesma urna, código de carga diferente do esperado",,2026-09-24 13:24:00,2026-10-24 08:42:00,FAZENDA RIO GRANDE,304,107,189
-TO,95532,26,1,2257259,,"mesma urna, código de carga diferente do esperado",,2026-10-24 10:06:00,2026-10-24 11:22:00,PONTE ALTA DO TOCANTINS,238,92,134
+SG_UF,CD_MUNICIPIO,NR_ZONA,NR_SECAO,NM_MUNICIPIO,categoria,NR_URNA_ESPERADA,NR_URNA_EFETIVADA,DT_CARGA_URNA_ESPERADA,DT_CARGA_URNA_EFETIVADA,carga_brasilia,lista_gerada_em,QT_COMPARECIMENTO,V_13,V_22
+SE,31054,2,592,ARACAJU,"10. seção fora da lista, urna fora das listas",,1774945,,2026-10-19 14:27:00,2026-10-19 14:27:00,2026-10-24 12:31:34,288,169,108
+MT,90123,29,50,NOVA MARINGÁ,"2. urna prevista, carga diferente da lista",2024154,2024154,2026-10-24 10:42:00,2026-10-24 11:41:00,2026-10-24 12:41:00,2026-10-24 12:31:34,216,63,146
+PA,4154,107,161,ANANINDEUA,"2. urna prevista, carga diferente da lista",2165420,2165420,2026-09-22 09:56:00,2026-10-15 09:11:00,2026-10-15 09:11:00,2026-10-24 12:31:34,272,159,109
+PA,4154,107,278,ANANINDEUA,"2. urna prevista, carga diferente da lista",2182404,2182404,2026-09-22 09:26:00,2026-10-15 09:51:00,2026-10-15 09:51:00,2026-10-24 12:31:34,264,139,118
+PA,4154,107,296,ANANINDEUA,"2. urna prevista, carga diferente da lista",2148988,2148988,2026-09-22 09:26:00,2026-10-15 08:56:00,2026-10-15 08:56:00,2026-10-24 12:31:34,273,148,122
+PA,4154,107,341,ANANINDEUA,"2. urna prevista, carga diferente da lista",2156728,2156728,2026-09-22 10:05:00,2026-10-15 09:29:00,2026-10-15 09:29:00,2026-10-24 12:31:34,336,175,152
+PA,4332,13,428,BRAGANÇA,"2. urna prevista, carga diferente da lista",2384148,2384148,2026-09-24 17:27:00,2026-10-16 08:32:00,2026-10-16 08:32:00,2026-10-24 12:31:34,250,179,66
+PR,74322,144,130,FAZENDA RIO GRANDE,"2. urna prevista, carga diferente da lista",2021153,2021153,2026-09-23 14:53:00,2026-10-24 09:43:00,2026-10-24 09:43:00,2026-10-24 12:31:34,314,110,191
+PR,74322,144,387,FAZENDA RIO GRANDE,"2. urna prevista, carga diferente da lista",2022305,2022305,2026-09-24 13:24:00,2026-10-24 08:42:00,2026-10-24 08:42:00,2026-10-24 12:31:34,304,107,189
+TO,95532,26,1,PONTE ALTA DO TOCANTINS,"2. urna prevista, carga diferente da lista",2257259,2257259,2026-10-24 10:06:00,2026-10-24 11:22:00,2026-10-24 11:22:00,2026-10-24 12:31:34,238,92,134
+AC,1120,8,72,ACRELÂNDIA,"4. urna de contingência da lista, recarregada (carga fora da lista)",2046562,2045984,2026-09-23 10:15:00,2026-10-24 09:17:00,2026-10-24 11:17:00,2026-10-24 12:31:34,173,40,128
+AC,1392,1,97,RIO BRANCO,"4. urna de contingência da lista, recarregada (carga fora da lista)",2046072,2047971,2026-09-25 14:30:00,2026-10-24 10:08:00,2026-10-24 12:08:00,2026-10-24 12:31:34,173,57,110
+AC,1392,1,685,RIO BRANCO,"4. urna de contingência da lista, recarregada (carga fora da lista)",2046249,2044917,2026-09-25 14:53:00,2026-10-24 10:12:00,2026-10-24 12:12:00,2026-10-24 12:31:34,261,91,154
+AC,1392,1,770,RIO BRANCO,"4. urna de contingência da lista, recarregada (carga fora da lista)",2043646,2276503,2026-09-25 17:51:00,2026-10-24 10:13:00,2026-10-24 12:13:00,2026-10-24 12:31:34,214,71,135
+AC,1392,9,308,RIO BRANCO,"4. urna de contingência da lista, recarregada (carga fora da lista)",2256811,2267969,2026-09-27 10:43:00,2026-10-24 10:19:00,2026-10-24 12:19:00,2026-10-24 12:31:34,293,97,181
+AC,1392,9,403,RIO BRANCO,"4. urna de contingência da lista, recarregada (carga fora da lista)",2285598,2048119,2026-09-27 11:31:00,2026-10-24 10:20:00,2026-10-24 12:20:00,2026-10-24 12:31:34,280,98,174
+AC,1457,3,8,SENA MADUREIRA,"4. urna de contingência da lista, recarregada (carga fora da lista)",2045000,2044863,2026-09-23 10:02:00,2026-10-24 11:22:00,2026-10-24 13:22:00,2026-10-24 12:31:34,210,63,130
+AC,1473,5,10,TARAUACÁ,"4. urna de contingência da lista, recarregada (carga fora da lista)",2278738,2279736,2026-09-23 12:15:00,2026-10-24 09:50:00,2026-10-24 11:50:00,2026-10-24 12:31:34,174,61,102
+AC,1473,5,15,TARAUACÁ,"4. urna de contingência da lista, recarregada (carga fora da lista)",2262995,2283919,2026-09-23 12:41:00,2026-10-24 09:56:00,2026-10-24 11:56:00,2026-10-24 12:31:34,204,78,117
+AC,1554,3,126,MANOEL URBANO,"4. urna de contingência da lista, recarregada (carga fora da lista)",2044764,2046493,2026-09-24 09:12:00,2026-10-24 11:00:00,2026-10-24 13:00:00,2026-10-24 12:31:34,181,74,96
+AL,27219,9,12,BRANQUINHA,"4. urna de contingência da lista, recarregada (carga fora da lista)",2446211,2472023,2026-09-24 09:16:00,2026-10-24 10:46:00,2026-10-24 10:46:00,2026-10-24 12:31:34,270,190,70
+AL,27510,49,80,FEIRA GRANDE,"4. urna de contingência da lista, recarregada (carga fora da lista)",2071772,2072405,2026-09-20 13:33:00,2026-10-24 12:57:00,2026-10-24 12:57:00,2026-10-24 12:31:34,287,218,57
+AL,27634,37,187,IGREJA NOVA,"4. urna de contingência da lista, recarregada (carga fora da lista)",2072071,2072891,2026-09-21 09:57:00,2026-10-24 12:47:00,2026-10-24 12:47:00,2026-10-24 12:31:34,154,131,18
+AL,27758,53,5,JOAQUIM GOMES,"4. urna de contingência da lista, recarregada (carga fora da lista)",2457092,2435074,2026-09-24 08:15:00,2026-10-24 11:12:00,2026-10-24 11:12:00,2026-10-24 12:31:34,191,134,53
+AL,27855,2,355,MACEIÓ,"4. urna de contingência da lista, recarregada (carga fora da lista)",2030860,2036514,2026-09-27 11:28:00,2026-10-24 11:14:00,2026-10-24 11:14:00,2026-10-24 12:31:34,331,143,180
+AL,27855,2,365,MACEIÓ,"4. urna de contingência da lista, recarregada (carga fora da lista)",2014749,2036027,2026-09-27 08:42:00,2026-10-24 11:20:00,2026-10-24 11:20:00,2026-10-24 12:31:34,298,145,143
+AL,28070,29,76,MONTEIRÓPOLIS,"4. urna de contingência da lista, recarregada (carga fora da lista)",2036781,2435862,2026-09-20 14:57:00,2026-10-24 11:59:00,2026-10-24 11:59:00,2026-10-24 12:31:34,280,207,62
+AL,28274,11,15,PÃO DE AÇÚCAR,"4. urna de contingência da lista, recarregada (carga fora da lista)",1772288,1670592,2026-09-19 14:20:00,2026-10-24 11:43:00,2026-10-24 11:43:00,2026-10-24 12:31:34,134,98,33
+AL,28436,50,37,POÇO DAS TRINCHEIRAS,"4. urna de contingência da lista, recarregada (carga fora da lista)",1807867,1674280,2026-09-18 14:25:00,2026-10-24 12:09:00,2026-10-24 12:09:00,2026-10-24 12:31:34,250,194,50
+AL,28592,19,234,SANTANA DO IPANEMA,"4. urna de contingência da lista, recarregada (carga fora da lista)",1769015,1672429,2026-09-19 13:34:00,2026-10-24 10:49:00,2026-10-24 10:49:00,2026-10-24 12:31:34,233,162,62
+AP,6017,1,18,AMAPÁ,"4. urna de contingência da lista, recarregada (carga fora da lista)",2016181,2016368,2026-10-01 10:15:00,2026-10-24 10:54:00,2026-10-24 10:54:00,2026-10-24 12:31:34,179,112,65
+AP,6025,12,31,PORTO GRANDE,"4. urna de contingência da lista, recarregada (carga fora da lista)",2469754,2341853,2026-10-01 13:39:00,2026-10-24 09:08:00,2026-10-24 09:08:00,2026-10-24 12:31:34,267,135,129
+AP,6033,1,59,CALÇOENE,"4. urna de contingência da lista, recarregada (carga fora da lista)",2019743,2016483,2026-10-01 10:13:00,2026-10-24 10:56:00,2026-10-24 10:56:00,2026-10-24 12:31:34,182,122,58
+AP,6050,2,900,MACAPÁ,"4. urna de contingência da lista, recarregada (carga fora da lista)",2357822,2358708,2026-10-03 13:00:00,2026-10-24 10:47:00,2026-10-24 10:47:00,2026-10-24 12:31:34,233,98,129
+AP,6050,2,904,MACAPÁ,"4. urna de contingência da lista, recarregada (carga fora da lista)",2342744,2341274,2026-09-21 10:46:00,2026-10-24 10:56:00,2026-10-24 10:56:00,2026-10-24 12:31:34,218,108,108
+AP,6050,10,151,MACAPÁ,"4. urna de contingência da lista, recarregada (carga fora da lista)",2358606,2341072,2026-09-23 14:43:00,2026-10-24 11:03:00,2026-10-24 11:03:00,2026-10-24 12:31:34,304,143,153
+AP,6050,14,371,MACAPÁ,"4. urna de contingência da lista, recarregada (carga fora da lista)",2342667,2342888,2026-09-25 16:20:00,2026-10-24 10:33:00,2026-10-24 10:33:00,2026-10-24 12:31:34,147,84,61
+AP,6050,14,379,MACAPÁ,"4. urna de contingência da lista, recarregada (carga fora da lista)",2443652,2341268,2026-09-25 17:26:00,2026-10-24 10:40:00,2026-10-24 10:40:00,2026-10-24 12:31:34,162,88,73
+AP,6068,10,416,CUTIAS,"4. urna de contingência da lista, recarregada (carga fora da lista)",2358864,2358613,2026-09-23 11:25:00,2026-10-24 11:06:00,2026-10-24 11:06:00,2026-10-24 12:31:34,129,63,65
+AP,6076,5,27,MAZAGÃO,"4. urna de contingência da lista, recarregada (carga fora da lista)",2242362,2031338,2026-10-01 11:22:00,2026-10-24 09:49:00,2026-10-24 09:49:00,2026-10-24 12:31:34,189,112,73
+AP,6076,5,64,MAZAGÃO,"4. urna de contingência da lista, recarregada (carga fora da lista)",2241170,2240534,2026-10-01 11:55:00,2026-10-24 09:11:00,2026-10-24 09:11:00,2026-10-24 12:31:34,228,161,65
+AP,6084,11,37,PEDRA BRANCA DO AMAPARI,"4. urna de contingência da lista, recarregada (carga fora da lista)",2032264,2242659,2026-10-01 11:30:00,2026-10-24 09:37:00,2026-10-24 09:37:00,2026-10-24 12:31:34,198,96,97
+AP,6114,12,51,FERREIRA GOMES,"4. urna de contingência da lista, recarregada (carga fora da lista)",2355396,2353998,2026-10-01 16:33:00,2026-10-24 09:09:00,2026-10-24 09:09:00,2026-10-24 12:31:34,211,89,116
+AP,6122,7,164,VITÓRIA DO JARI,"4. urna de contingência da lista, recarregada (carga fora da lista)",2019795,2019470,2026-10-01 17:34:00,2026-10-24 09:59:00,2026-10-24 09:59:00,2026-10-24 12:31:34,138,86,52
+AP,6130,7,19,LARANJAL DO JARI,"4. urna de contingência da lista, recarregada (carga fora da lista)",2019951,2019172,2026-10-01 10:36:00,2026-10-24 10:00:00,2026-10-24 10:00:00,2026-10-24 12:31:34,238,129,104
+AP,6157,6,23,SANTANA,"4. urna de contingência da lista, recarregada (carga fora da lista)",2019427,2019027,2026-10-01 09:23:00,2026-10-24 10:46:00,2026-10-24 10:46:00,2026-10-24 12:31:34,246,107,136
+AP,6157,6,218,SANTANA,"4. urna de contingência da lista, recarregada (carga fora da lista)",2016185,2020093,2026-10-02 09:18:00,2026-10-24 10:46:00,2026-10-24 10:46:00,2026-10-24 12:31:34,187,79,105
+BA,34258,116,202,CANAVIEIRAS,"4. urna de contingência da lista, recarregada (carga fora da lista)",2169397,2170397,2026-09-29 17:42:00,2026-10-24 14:44:00,2026-10-24 14:44:00,2026-10-24 12:31:34,190,130,53
+BA,34290,127,83,CANDEIAS,"4. urna de contingência da lista, recarregada (carga fora da lista)",1675512,1656010,2026-10-01 14:54:00,2026-10-24 12:56:00,2026-10-24 12:56:00,2026-10-24 12:31:34,325,264,48
+BA,35157,155,11,FEIRA DE SANTANA,"4. urna de contingência da lista, recarregada (carga fora da lista)",1755622,1752805,2026-09-25 08:51:00,2026-10-24 10:20:00,2026-10-24 10:20:00,2026-10-24 12:31:34,227,133,85
+BA,35157,155,186,FEIRA DE SANTANA,"4. urna de contingência da lista, recarregada (carga fora da lista)",1766992,1767327,2026-10-16 12:44:00,2026-10-24 11:00:00,2026-10-24 11:00:00,2026-10-24 12:31:34,342,195,132
+BA,35157,157,379,FEIRA DE SANTANA,"4. urna de contingência da lista, recarregada (carga fora da lista)",1800383,1815408,2026-09-30 15:28:00,2026-10-24 11:45:00,2026-10-24 11:45:00,2026-10-24 12:31:34,321,212,98
+BA,35637,104,268,IBITITÁ,"4. urna de contingência da lista, recarregada (carga fora da lista)",2309263,2339304,2026-10-01 10:56:00,2026-10-24 15:01:00,2026-10-24 15:01:00,2026-10-24 12:31:34,253,202,47
+BA,35734,26,390,ILHÉUS,"4. urna de contingência da lista, recarregada (carga fora da lista)",2175776,2177302,2026-09-28 11:39:00,2026-10-24 12:02:00,2026-10-24 12:02:00,2026-10-24 12:31:34,304,195,97
+BA,38059,200,75,POJUCA,"4. urna de contingência da lista, recarregada (carga fora da lista)",2208913,2155195,2026-09-23 14:22:00,2026-10-24 15:20:00,2026-10-24 15:20:00,2026-10-24 12:31:34,324,258,45
+BA,38075,121,260,PORTO SEGURO,"4. urna de contingência da lista, recarregada (carga fora da lista)",2219455,2051124,2026-09-24 09:37:00,2026-10-24 13:37:00,2026-10-24 13:37:00,2026-10-24 12:31:34,271,118,149
+BA,38490,1,283,SALVADOR,"4. urna de contingência da lista, recarregada (carga fora da lista)",2343827,2424963,2026-09-29 09:52:00,2026-10-24 11:29:00,2026-10-24 11:29:00,2026-10-24 12:31:34,217,127,80
+BA,38490,6,524,SALVADOR,"4. urna de contingência da lista, recarregada (carga fora da lista)",2414030,2424675,2026-09-28 09:42:00,2026-10-24 10:40:00,2026-10-24 10:40:00,2026-10-24 12:31:34,334,191,132
+BA,38490,8,432,SALVADOR,"4. urna de contingência da lista, recarregada (carga fora da lista)",2414120,2208418,2026-09-22 11:09:00,2026-10-24 10:03:00,2026-10-24 10:03:00,2026-10-24 12:31:34,189,142,41
+BA,38490,8,606,SALVADOR,"4. urna de contingência da lista, recarregada (carga fora da lista)",2391278,2424785,2026-09-22 11:38:00,2026-10-24 11:02:00,2026-10-24 11:02:00,2026-10-24 12:31:34,360,260,82
+BA,38490,13,72,SALVADOR,"4. urna de contingência da lista, recarregada (carga fora da lista)",2392961,2380185,2026-09-28 08:47:00,2026-10-24 12:28:00,2026-10-24 12:28:00,2026-10-24 12:31:34,335,168,154
+BA,38490,19,832,SALVADOR,"4. urna de contingência da lista, recarregada (carga fora da lista)",2425228,2339468,2026-09-22 13:07:00,2026-10-24 12:31:00,2026-10-24 12:31:00,2026-10-24 12:31:34,157,106,48
+BA,38512,160,20,SANTA BÁRBARA,"4. urna de contingência da lista, recarregada (carga fora da lista)",1658231,1667854,2026-09-21 14:33:00,2026-10-24 13:50:00,2026-10-24 13:50:00,2026-10-24 12:31:34,320,232,74
+BA,38512,160,72,SANTA BÁRBARA,"4. urna de contingência da lista, recarregada (carga fora da lista)",1825184,1650912,2026-09-21 11:11:00,2026-10-24 12:12:00,2026-10-24 12:12:00,2026-10-24 12:31:34,294,239,40
+BA,38814,184,89,SÃO FELIPE,"4. urna de contingência da lista, recarregada (carga fora da lista)",2000525,2048397,2026-10-01 09:51:00,2026-10-24 12:41:00,2026-10-24 12:41:00,2026-10-24 12:31:34,243,159,76
+CE,13072,101,23,AIUABA,"4. urna de contingência da lista, recarregada (carga fora da lista)",2243658,2243741,2026-09-22 11:23:00,2026-10-24 12:41:00,2026-10-24 12:41:00,2026-10-24 12:31:34,225,188,32
+CE,13773,108,89,CHAVAL,"4. urna de contingência da lista, recarregada (carga fora da lista)",1771729,1652500,2026-09-30 13:30:00,2026-10-24 12:12:00,2026-10-24 12:12:00,2026-10-24 12:31:34,124,100,22
+CE,13854,27,1,CRATO,"4. urna de contingência da lista, recarregada (carga fora da lista)",2243060,2247291,2026-09-21 09:36:00,2026-10-24 12:33:00,2026-10-24 12:33:00,2026-10-24 12:31:34,286,208,72
+CE,13897,1,792,FORTALEZA,"4. urna de contingência da lista, recarregada (carga fora da lista)",2308858,2314214,2026-09-23 10:31:00,2026-10-24 11:40:00,2026-10-24 11:40:00,2026-10-24 12:31:34,349,171,173
+CE,13897,2,736,FORTALEZA,"4. urna de contingência da lista, recarregada (carga fora da lista)",2446385,2318030,2026-09-24 11:29:00,2026-10-24 11:17:00,2026-10-24 11:17:00,2026-10-24 12:31:34,300,181,111
+CE,13897,83,784,FORTALEZA,"4. urna de contingência da lista, recarregada (carga fora da lista)",2394966,2282732,2026-09-25 15:35:00,2026-10-24 11:30:00,2026-10-24 11:30:00,2026-10-24 12:31:34,341,226,106
+CE,13897,93,306,FORTALEZA,"4. urna de contingência da lista, recarregada (carga fora da lista)",2311237,2333181,2026-09-25 10:37:00,2026-10-24 12:36:00,2026-10-24 12:36:00,2026-10-24 12:31:34,113,68,43
+CE,13897,112,428,FORTALEZA,"4. urna de contingência da lista, recarregada (carga fora da lista)",2412404,2323097,2026-09-21 13:38:00,2026-10-24 10:47:00,2026-10-24 10:47:00,2026-10-24 12:31:34,273,137,128
+CE,13897,112,441,FORTALEZA,"4. urna de contingência da lista, recarregada (carga fora da lista)",2452676,2455265,2026-09-21 15:09:00,2026-10-24 10:51:00,2026-10-24 10:51:00,2026-10-24 12:31:34,277,129,143
+CE,13897,115,337,FORTALEZA,"4. urna de contingência da lista, recarregada (carga fora da lista)",2282453,2336825,2026-09-21 16:08:00,2026-10-24 11:58:00,2026-10-24 11:58:00,2026-10-24 12:31:34,217,134,76
+CE,13897,117,294,FORTALEZA,"4. urna de contingência da lista, recarregada (carga fora da lista)",2402628,2457846,2026-09-25 15:33:00,2026-10-24 12:19:00,2026-10-24 12:19:00,2026-10-24 12:31:34,342,231,105
+CE,13897,118,328,FORTALEZA,"4. urna de contingência da lista, recarregada (carga fora da lista)",2452006,2409916,2026-09-23 14:40:00,2026-10-24 12:02:00,2026-10-24 12:02:00,2026-10-24 12:31:34,357,247,101
+CE,14052,54,131,HIDROLÂNDIA,"4. urna de contingência da lista, recarregada (carga fora da lista)",2240948,2210043,2026-09-29 15:51:00,2026-10-24 13:56:00,2026-10-24 13:56:00,2026-10-24 12:31:34,209,131,75
+CE,14354,72,41,JAGUARETAMA,"4. urna de contingência da lista, recarregada (carga fora da lista)",1772742,1655747,2026-09-28 14:32:00,2026-10-24 14:30:00,2026-10-24 14:30:00,2026-10-24 12:31:34,245,194,46
+CE,14370,72,77,JAGUARIBARA,"4. urna de contingência da lista, recarregada (carga fora da lista)",1773214,1659606,2026-09-28 14:18:00,2026-10-24 15:32:00,2026-10-24 15:32:00,2026-10-24 12:31:34,266,213,48
+CE,14370,72,78,JAGUARIBARA,"4. urna de contingência da lista, recarregada (carga fora da lista)",1817183,1659671,2026-09-28 16:20:00,2026-10-24 15:40:00,2026-10-24 15:40:00,2026-10-24 12:31:34,229,179,47
+CE,14370,72,101,JAGUARIBARA,"4. urna de contingência da lista, recarregada (carga fora da lista)",1757484,1758281,2026-09-28 11:09:00,2026-10-24 15:12:00,2026-10-24 15:12:00,2026-10-24 12:31:34,299,230,60
+CE,15598,121,308,SOBRAL,"4. urna de contingência da lista, recarregada (carga fora da lista)",1665575,1667998,2026-09-29 10:21:00,2026-10-24 12:03:00,2026-10-24 12:03:00,2026-10-24 12:31:34,236,148,82
+CE,15695,81,224,TIANGUÁ,"4. urna de contingência da lista, recarregada (carga fora da lista)",2243446,2241884,2026-09-23 14:56:00,2026-10-24 12:02:00,2026-10-24 12:02:00,2026-10-24 12:31:34,231,161,66
+CE,15717,97,61,TRAIRI,"4. urna de contingência da lista, recarregada (carga fora da lista)",2187657,2237338,2026-09-23 14:40:00,2026-10-24 13:03:00,2026-10-24 13:03:00,2026-10-24 12:31:34,176,136,36
+CE,15881,74,102,CROATÁ,"4. urna de contingência da lista, recarregada (carga fora da lista)",2186309,2240896,2026-09-29 09:38:00,2026-10-24 13:06:00,2026-10-24 13:06:00,2026-10-24 12:31:34,188,155,29
+CE,15938,8,137,ICAPUÍ,"4. urna de contingência da lista, recarregada (carga fora da lista)",2292976,2266728,2026-10-01 15:50:00,2026-10-24 10:52:00,2026-10-24 10:52:00,2026-10-24 12:31:34,219,149,65
+ES,56111,20,184,ARACRUZ,"4. urna de contingência da lista, recarregada (carga fora da lista)",2035302,2039862,2026-09-23 13:16:00,2026-10-24 10:33:00,2026-10-24 10:33:00,2026-10-24 12:31:34,248,73,164
+GO,92215,3,397,ANÁPOLIS,"4. urna de contingência da lista, recarregada (carga fora da lista)",2337941,2357272,2026-09-21 12:29:00,2026-10-24 11:19:00,2026-10-24 11:19:00,2026-10-24 12:31:34,254,71,170
+GO,92770,5,24,BURITI ALEGRE,"4. urna de contingência da lista, recarregada (carga fora da lista)",1759965,1757511,2026-09-26 12:15:00,2026-10-24 12:57:00,2026-10-24 12:57:00,2026-10-24 12:31:34,208,78,122
+GO,92800,128,94,TURVELÂNDIA,"4. urna de contingência da lista, recarregada (carga fora da lista)",2196775,2159628,2026-09-24 11:23:00,2026-10-24 11:13:00,2026-10-24 11:13:00,2026-10-24 12:31:34,209,117,86
+GO,93327,4,88,NOVO GAMA,"4. urna de contingência da lista, recarregada (carga fora da lista)",2158305,2188186,2026-09-22 10:26:00,2026-10-24 13:13:00,2026-10-24 13:13:00,2026-10-24 12:31:34,272,125,134
+GO,93378,13,76,DAMOLÂNDIA,"4. urna de contingência da lista, recarregada (carga fora da lista)",2200658,2201324,2026-09-22 16:17:00,2026-10-24 14:40:00,2026-10-24 14:40:00,2026-10-24 12:31:34,263,106,144
+GO,93572,63,22,FIRMINÓPOLIS,"4. urna de contingência da lista, recarregada (carga fora da lista)",2200899,2035086,2026-09-27 08:18:00,2026-10-24 13:04:00,2026-10-24 13:04:00,2026-10-24 12:31:34,236,72,161
+GO,93890,132,599,HIDROLÂNDIA,"4. urna de contingência da lista, recarregada (carga fora da lista)",2335242,2286508,2026-09-21 16:38:00,2026-10-24 11:32:00,2026-10-24 11:32:00,2026-10-24 12:31:34,282,123,153
+GO,94439,141,301,LEOPOLDO DE BULHÕES,"4. urna de contingência da lista, recarregada (carga fora da lista)",2338691,2307587,2026-09-22 13:39:00,2026-10-24 11:50:00,2026-10-24 11:50:00,2026-10-24 12:31:34,259,96,157
+GO,94650,80,126,MOIPORÁ,"4. urna de contingência da lista, recarregada (carga fora da lista)",2177670,2184471,2026-09-28 13:44:00,2026-10-24 09:26:00,2026-10-24 09:26:00,2026-10-24 12:31:34,117,67,44
+GO,95397,25,63,PIRACANJUBA,"4. urna de contingência da lista, recarregada (carga fora da lista)",2031954,2184744,2026-09-28 11:58:00,2026-10-24 14:06:00,2026-10-24 14:06:00,2026-10-24 12:31:34,226,112,110
+MA,7536,26,88,CAROLINA,"4. urna de contingência da lista, recarregada (carga fora da lista)",2309878,2287775,2026-09-23 13:15:00,2026-10-20 09:46:00,2026-10-20 09:46:00,2026-10-24 12:31:34,254,160,87
+MA,8001,80,110,NOVA OLINDA DO MARANHÃO,"4. urna de contingência da lista, recarregada (carga fora da lista)",2026585,2100292,2026-09-30 08:51:00,2026-10-24 12:34:00,2026-10-24 12:34:00,2026-10-24 12:31:34,276,169,103
+MA,8672,43,17,PINDARÉ-MIRIM,"4. urna de contingência da lista, recarregada (carga fora da lista)",2357070,2416149,2026-09-23 13:41:00,2026-10-24 10:46:00,2026-10-24 10:46:00,2026-10-24 12:31:34,189,141,43
+MA,9210,1,139,SÃO LUÍS,"4. urna de contingência da lista, recarregada (carga fora da lista)",1814514,1656613,2026-09-28 09:19:00,2026-10-24 11:13:00,2026-10-24 11:13:00,2026-10-24 12:31:34,297,202,89
+MA,9210,1,211,SÃO LUÍS,"4. urna de contingência da lista, recarregada (carga fora da lista)",1790861,1674136,2026-09-28 09:53:00,2026-10-24 11:28:00,2026-10-24 11:28:00,2026-10-24 12:31:34,301,218,78
+MA,9610,71,505,AÇAILÂNDIA,"4. urna de contingência da lista, recarregada (carga fora da lista)",2092892,2093519,2026-09-29 14:30:00,2026-10-24 14:27:00,2026-10-24 14:27:00,2026-10-24 12:31:34,275,140,131
+MG,40266,348,69,IPABA,"4. urna de contingência da lista, recarregada (carga fora da lista)",2329571,2255603,2026-09-21 17:35:00,2026-10-24 17:46:00,2026-10-24 17:46:00,2026-10-24 12:31:34,277,125,148
+MG,40312,8,104,ALFENAS,"4. urna de contingência da lista, recarregada (carga fora da lista)",2448957,2408768,2026-09-20 13:55:00,2026-10-24 09:15:00,2026-10-24 09:15:00,2026-10-24 12:31:34,199,76,119
+MG,41238,33,276,BELO HORIZONTE,"4. urna de contingência da lista, recarregada (carga fora da lista)",2298912,2420777,2026-10-03 10:56:00,2026-10-24 09:32:00,2026-10-24 09:32:00,2026-10-24 12:31:34,403,179,213
+MG,41238,33,278,BELO HORIZONTE,"4. urna de contingência da lista, recarregada (carga fora da lista)",2269483,2449784,2026-09-22 13:31:00,2026-10-24 09:50:00,2026-10-24 09:50:00,2026-10-24 12:31:34,416,200,203
+MG,41238,33,283,BELO HORIZONTE,"4. urna de contingência da lista, recarregada (carga fora da lista)",2322803,2255518,2026-10-03 11:12:00,2026-10-24 09:57:00,2026-10-24 09:57:00,2026-10-24 12:31:34,403,174,222
+MG,41238,34,202,BELO HORIZONTE,"4. urna de contingência da lista, recarregada (carga fora da lista)",2258132,2269520,2026-09-23 09:49:00,2026-10-24 09:18:00,2026-10-24 09:18:00,2026-10-24 12:31:34,341,133,199
+MG,46639,138,10,ITANHOMI,"4. urna de contingência da lista, recarregada (carga fora da lista)",2401018,2415197,2026-09-22 14:40:00,2026-10-24 09:16:00,2026-10-24 09:16:00,2026-10-24 12:31:34,155,82,64
+MG,47333,153,300,JUIZ DE FORA,"4. urna de contingência da lista, recarregada (carga fora da lista)",2414203,2300443,2026-09-23 13:05:00,2026-10-24 09:00:00,2026-10-24 09:00:00,2026-10-24 12:31:34,241,125,107
+MG,47511,157,26,LAGOA SANTA,"4. urna de contingência da lista, recarregada (carga fora da lista)",2253172,2262880,2026-09-22 13:15:00,2026-10-24 12:23:00,2026-10-24 12:23:00,2026-10-24 12:31:34,257,112,132
+MG,47554,159,111,LAMBARI,"4. urna de contingência da lista, recarregada (carga fora da lista)",2135035,2084950,2026-09-26 16:35:00,2026-10-24 15:47:00,2026-10-24 15:47:00,2026-10-24 12:31:34,291,120,160
+MG,48658,317,243,MONTES CLAROS,"4. urna de contingência da lista, recarregada (carga fora da lista)",2134304,2068075,2026-09-20 13:13:00,2026-10-24 08:29:00,2026-10-24 08:29:00,2026-10-24 12:31:34,168,87,77
+MG,51071,235,9,RIO NOVO,"4. urna de contingência da lista, recarregada (carga fora da lista)",2276118,2324635,2026-09-23 15:17:00,2026-10-24 13:57:00,2026-10-24 13:57:00,2026-10-24 12:31:34,247,133,111
+MG,53414,262,55,SERRO,"4. urna de contingência da lista, recarregada (carga fora da lista)",1750935,1776113,2026-09-19 14:24:00,2026-10-24 10:21:00,2026-10-24 10:21:00,2026-10-24 12:31:34,172,100,62
+MS,90034,23,55,ÁGUA CLARA,"4. urna de contingência da lista, recarregada (carga fora da lista)",2002705,2023738,2026-09-28 09:21:00,2026-10-24 12:14:00,2026-10-24 13:14:00,2026-10-24 12:31:34,231,97,130
+MS,90514,8,486,CAMPO GRANDE,"4. urna de contingência da lista, recarregada (carga fora da lista)",2452434,2338906,2026-09-23 17:24:00,2026-10-25 06:55:00,2026-10-25 07:55:00,2026-10-24 12:31:34,280,109,163
+MS,90514,35,155,CAMPO GRANDE,"4. urna de contingência da lista, recarregada (carga fora da lista)",2451528,2448814,2026-09-21 09:56:00,2026-10-24 08:36:00,2026-10-24 09:36:00,2026-10-24 12:31:34,273,110,154
+MS,90514,44,85,CAMPO GRANDE,"4. urna de contingência da lista, recarregada (carga fora da lista)",2338580,2450226,2026-09-23 17:36:00,2026-10-24 16:06:00,2026-10-24 17:06:00,2026-10-24 12:31:34,238,87,147
+MS,90514,54,156,CAMPO GRANDE,"4. urna de contingência da lista, recarregada (carga fora da lista)",2334117,2338835,2026-09-23 18:28:00,2026-10-24 08:46:00,2026-10-24 09:46:00,2026-10-24 12:31:34,219,79,133
+MS,90735,18,449,DOURADOS,"4. urna de contingência da lista, recarregada (carga fora da lista)",2001811,2152054,2026-09-28 10:17:00,2026-10-24 10:03:00,2026-10-24 11:03:00,2026-10-24 12:31:34,223,103,118
+MS,91073,16,58,MARACAJU,"4. urna de contingência da lista, recarregada (carga fora da lista)",1843102,1674894,2026-09-24 15:52:00,2026-10-24 09:38:00,2026-10-24 10:38:00,2026-10-24 12:31:34,261,85,171
+MS,91154,45,21,NIOAQUE,"4. urna de contingência da lista, recarregada (carga fora da lista)",2009118,2008050,2026-09-28 12:21:00,2026-10-24 12:03:00,2026-10-24 13:03:00,2026-10-24 12:31:34,242,83,157
+MS,91413,32,76,RIBAS DO RIO PARDO,"4. urna de contingência da lista, recarregada (carga fora da lista)",2021580,2023497,2026-09-23 15:28:00,2026-10-24 12:18:00,2026-10-24 13:18:00,2026-10-24 12:31:34,231,102,125
+MS,91430,11,11,RIO BRILHANTE,"4. urna de contingência da lista, recarregada (carga fora da lista)",2339002,2334060,2026-09-23 13:21:00,2026-10-24 10:10:00,2026-10-24 11:10:00,2026-10-24 12:31:34,263,95,166
+MS,91650,51,44,TRÊS LAGOAS,"4. urna de contingência da lista, recarregada (carga fora da lista)",2024419,2001864,2026-09-22 10:07:00,2026-10-25 07:36:00,2026-10-25 08:36:00,2026-10-24 12:31:34,218,98,118
+MS,98094,40,15,SÃO GABRIEL DO OESTE,"4. urna de contingência da lista, recarregada (carga fora da lista)",1844678,1665177,2026-09-26 11:18:00,2026-10-24 09:42:00,2026-10-24 10:42:00,2026-10-24 12:31:34,240,49,188
+MT,90077,45,171,ALTO GARÇAS,"4. urna de contingência da lista, recarregada (carga fora da lista)",2134521,2009343,2026-09-21 08:47:00,2026-10-24 11:35:00,2026-10-24 12:35:00,2026-10-24 12:31:34,219,80,134
+MT,90336,13,7,BARRA DO BUGRES,"4. urna de contingência da lista, recarregada (carga fora da lista)",2266864,2454964,2026-09-22 09:36:00,2026-10-24 11:01:00,2026-10-24 12:01:00,2026-10-24 12:31:34,223,69,152
+MT,90476,6,70,CÁCERES,"4. urna de contingência da lista, recarregada (carga fora da lista)",2135260,2271573,2026-09-24 16:49:00,2026-10-24 13:35:00,2026-10-24 14:35:00,2026-10-24 12:31:34,209,91,116
+MT,90590,34,120,CHAPADA DOS GUIMARÃES,"4. urna de contingência da lista, recarregada (carga fora da lista)",2274526,2457738,2026-09-22 14:58:00,2026-10-24 10:57:00,2026-10-24 11:57:00,2026-10-24 12:31:34,276,142,129
+MT,90956,14,73,JACIARA,"4. urna de contingência da lista, recarregada (carga fora da lista)",2468159,2270471,2026-09-24 11:05:00,2026-10-24 15:18:00,2026-10-24 16:18:00,2026-10-24 12:31:34,277,76,193
+MT,91553,38,113,SANTO ANTÔNIO DO LEVERGER,"4. urna de contingência da lista, recarregada (carga fora da lista)",2023944,2256442,2026-09-25 10:13:00,2026-10-24 14:55:00,2026-10-24 15:55:00,2026-10-24 12:31:34,252,132,117
+PA,4014,7,343,ABAETETUBA,"4. urna de contingência da lista, recarregada (carga fora da lista)",2026875,2025057,2026-09-22 18:38:00,2026-10-24 11:17:00,2026-10-24 11:17:00,2026-10-24 12:31:34,316,230,81
+PA,4278,29,112,BELÉM,"4. urna de contingência da lista, recarregada (carga fora da lista)",2199142,2187378,2026-09-26 09:11:00,2026-10-24 10:48:00,2026-10-24 10:48:00,2026-10-24 12:31:34,293,159,127
+PA,4278,76,475,BELÉM,"4. urna de contingência da lista, recarregada (carga fora da lista)",2148669,2026654,2026-09-24 08:43:00,2026-10-24 10:11:00,2026-10-24 10:11:00,2026-10-24 12:31:34,323,138,180
+PA,4278,95,37,BELÉM,"4. urna de contingência da lista, recarregada (carga fora da lista)",2199463,2177115,2026-09-25 10:39:00,2026-10-24 12:10:00,2026-10-24 12:10:00,2026-10-24 12:31:34,312,164,139
+PA,4278,96,95,BELÉM,"4. urna de contingência da lista, recarregada (carga fora da lista)",2183394,2192419,2026-09-27 09:46:00,2026-10-24 11:19:00,2026-10-24 11:19:00,2026-10-24 12:31:34,304,175,121
+PA,4278,98,273,BELÉM,"4. urna de contingência da lista, recarregada (carga fora da lista)",2169930,2157972,2026-09-22 10:10:00,2026-10-24 10:42:00,2026-10-24 10:42:00,2026-10-24 12:31:34,283,135,141
+PA,4472,50,324,CASTANHAL,"4. urna de contingência da lista, recarregada (carga fora da lista)",1806730,1658122,2026-09-25 12:01:00,2026-10-24 10:13:00,2026-10-24 10:13:00,2026-10-24 12:31:34,270,123,140
+PA,4650,6,31,IGARAPÉ-MIRI,"4. urna de contingência da lista, recarregada (carga fora da lista)",2169847,2181989,2026-09-24 14:38:00,2026-10-24 12:33:00,2026-10-24 12:33:00,2026-10-24 12:31:34,217,114,95
+PA,5355,104,279,SANTARÉM,"4. urna de contingência da lista, recarregada (carga fora da lista)",2410645,2423409,2026-09-23 10:24:00,2026-10-16 17:21:00,2026-10-16 17:21:00,2026-10-24 12:31:34,265,68,192
+PA,5630,8,325,VIGIA,"4. urna de contingência da lista, recarregada (carga fora da lista)",1824691,1656304,2026-09-23 12:39:00,2026-10-24 10:22:00,2026-10-24 10:22:00,2026-10-24 12:31:34,179,111,58
+PB,19208,20,283,RIACHÃO,"4. urna de contingência da lista, recarregada (carga fora da lista)",2241305,2203723,2026-09-22 16:02:00,2026-10-24 12:36:00,2026-10-24 12:36:00,2026-10-24 12:31:34,276,221,49
+PE,23205,85,102,ARAÇOIABA,"4. urna de contingência da lista, recarregada (carga fora da lista)",2172928,2160473,2026-09-26 08:41:00,2026-10-24 11:36:00,2026-10-24 11:36:00,2026-10-24 12:31:34,348,243,94
+PI,10294,45,24,BATALHA,"4. urna de contingência da lista, recarregada (carga fora da lista)",1842376,1799613,2026-09-28 16:07:00,2026-10-24 10:37:00,2026-10-24 10:37:00,2026-10-24 12:31:34,260,205,41
+PI,10375,15,5,BOM JESUS,"4. urna de contingência da lista, recarregada (carga fora da lista)",2138776,2203180,2026-09-29 10:02:00,2026-10-24 14:56:00,2026-10-24 14:56:00,2026-10-24 12:31:34,234,168,59
+PI,10430,96,100,CAMPO MAIOR,"4. urna de contingência da lista, recarregada (carga fora da lista)",1801318,1801102,2026-09-30 13:39:00,2026-10-24 15:22:00,2026-10-24 15:22:00,2026-10-24 12:31:34,209,192,10
+PI,10731,41,10,ESPERANTINA,"4. urna de contingência da lista, recarregada (carga fora da lista)",1801205,1677367,2026-09-24 10:01:00,2026-10-24 11:10:00,2026-10-24 11:10:00,2026-10-24 12:31:34,247,172,64
+PI,10820,4,49,ILHA GRANDE,"4. urna de contingência da lista, recarregada (carga fora da lista)",2196123,2030997,2026-09-22 10:41:00,2026-10-24 14:23:00,2026-10-24 14:23:00,2026-10-24 12:31:34,180,137,33
+PI,10898,46,37,GUADALUPE,"4. urna de contingência da lista, recarregada (carga fora da lista)",2035238,2196650,2026-09-29 10:29:00,2026-10-24 15:25:00,2026-10-24 15:25:00,2026-10-24 12:31:34,230,179,48
+PI,11134,91,40,LUIS CORREIA,"4. urna de contingência da lista, recarregada (carga fora da lista)",2351512,2362234,2026-09-30 10:18:00,2026-10-24 11:37:00,2026-10-24 11:37:00,2026-10-24 12:31:34,284,216,63
+PI,11150,27,106,LUZILÂNDIA,"4. urna de contingência da lista, recarregada (carga fora da lista)",2344553,2194736,2026-09-29 15:10:00,2026-10-24 16:16:00,2026-10-24 16:16:00,2026-10-24 12:31:34,233,152,64
+PI,11576,12,167,PEDRO II,"4. urna de contingência da lista, recarregada (carga fora da lista)",2399967,2359462,2026-09-29 12:24:00,2026-10-24 15:45:00,2026-10-24 15:45:00,2026-10-24 12:31:34,231,157,65
+PI,11991,20,12,SÃO JOÃO DO PIAUÍ,"4. urna de contingência da lista, recarregada (carga fora da lista)",2031480,2206133,2026-09-30 21:16:00,2026-10-24 12:18:00,2026-10-24 12:18:00,2026-10-24 12:31:34,248,183,58
+PI,12122,38,32,BETÂNIA DO PIAUÍ,"4. urna de contingência da lista, recarregada (carga fora da lista)",2032987,2206159,2026-09-28 09:22:00,2026-10-24 15:14:00,2026-10-24 15:14:00,2026-10-24 12:31:34,224,195,22
+PI,12157,37,172,SIMPLÍCIO MENDES,"4. urna de contingência da lista, recarregada (carga fora da lista)",2033577,2030712,2026-09-22 16:28:00,2026-10-24 12:19:00,2026-10-24 12:19:00,2026-10-24 12:31:34,209,153,52
+PI,12190,98,211,TERESINA,"4. urna de contingência da lista, recarregada (carga fora da lista)",2384262,2400323,2026-09-22 16:28:00,2026-10-24 10:17:00,2026-10-24 10:17:00,2026-10-24 12:31:34,295,117,167
+PI,12190,98,373,TERESINA,"4. urna de contingência da lista, recarregada (carga fora da lista)",2410387,2399324,2026-09-22 17:07:00,2026-10-24 10:18:00,2026-10-24 10:18:00,2026-10-24 12:31:34,288,126,156
+PI,12211,16,35,UNIÃO,"4. urna de contingência da lista, recarregada (carga fora da lista)",1800761,1662314,2026-09-28 11:53:00,2026-10-24 17:48:00,2026-10-24 17:48:00,2026-10-24 12:31:34,179,122,51
+PR,74098,87,52,ALTO PARANÁ,"4. urna de contingência da lista, recarregada (carga fora da lista)",1777955,1660474,2026-09-24 13:52:00,2026-10-24 12:16:00,2026-10-24 12:16:00,2026-10-24 12:31:34,291,138,144
+PR,74250,28,281,APUCARANA,"4. urna de contingência da lista, recarregada (carga fora da lista)",2425887,2384119,2026-09-24 10:02:00,2026-10-24 12:39:00,2026-10-24 12:39:00,2026-10-24 12:31:34,292,74,202
+PR,74292,164,39,ARAPOTI,"4. urna de contingência da lista, recarregada (carga fora da lista)",2383076,2393020,2026-09-19 12:34:00,2026-10-24 15:04:00,2026-10-24 15:04:00,2026-10-24 12:31:34,211,75,125
+PR,74411,71,9,ATALAIA,"4. urna de contingência da lista, recarregada (carga fora da lista)",1780963,1826142,2026-09-23 14:07:00,2026-10-24 10:06:00,2026-10-24 10:06:00,2026-10-24 12:31:34,245,99,141
+PR,74918,56,37,CARLÓPOLIS,"4. urna de contingência da lista, recarregada (carga fora da lista)",1803403,1797363,2026-09-22 20:36:00,2026-10-25 09:20:00,2026-10-25 09:20:00,2026-10-24 12:31:34,278,85,177
+PR,74934,143,418,CASCAVEL,"4. urna de contingência da lista, recarregada (carga fora da lista)",2400882,2422034,2026-09-26 11:12:00,2026-10-24 14:09:00,2026-10-24 14:09:00,2026-10-24 12:31:34,250,51,197
+PR,75256,26,151,CORNÉLIO PROCÓPIO,"4. urna de contingência da lista, recarregada (carga fora da lista)",1663359,1652369,2026-09-23 10:28:00,2026-10-24 13:18:00,2026-10-24 13:18:00,2026-10-24 12:31:34,191,72,115
+PR,75353,2,525,CURITIBA,"4. urna de contingência da lista, recarregada (carga fora da lista)",2326780,2317676,2026-09-22 09:36:00,2026-10-24 11:15:00,2026-10-24 11:15:00,2026-10-24 12:31:34,318,118,191
+PR,75353,177,470,CURITIBA,"4. urna de contingência da lista, recarregada (carga fora da lista)",2327154,2349031,2026-09-20 14:42:00,2026-10-24 10:04:00,2026-10-24 10:04:00,2026-10-24 12:31:34,221,140,75
+PR,75353,177,712,CURITIBA,"4. urna de contingência da lista, recarregada (carga fora da lista)",2259811,2260976,2026-09-20 11:18:00,2026-10-24 10:02:00,2026-10-24 10:02:00,2026-10-24 12:31:34,193,89,97
+PR,75639,46,161,FOZ DO IGUAÇU,"4. urna de contingência da lista, recarregada (carga fora da lista)",2005249,2008772,2026-09-25 09:50:00,2026-10-24 10:03:00,2026-10-24 10:03:00,2026-10-24 12:31:34,248,73,168
+PR,75833,43,397,GUARAPUAVA,"4. urna de contingência da lista, recarregada (carga fora da lista)",2436579,2462584,2026-09-23 09:43:00,2026-10-25 10:04:00,2026-10-25 10:04:00,2026-10-24 12:31:34,38,22,15
+PR,75876,161,10,GUARATUBA,"4. urna de contingência da lista, recarregada (carga fora da lista)",2090888,2141017,2026-09-26 13:16:00,2026-10-24 12:13:00,2026-10-24 12:13:00,2026-10-24 12:31:34,291,87,196
+PR,75876,161,69,GUARATUBA,"4. urna de contingência da lista, recarregada (carga fora da lista)",2081179,2081223,2026-09-26 11:21:00,2026-10-24 11:05:00,2026-10-24 11:05:00,2026-10-24 12:31:34,257,72,177
+PR,76074,34,40,IRATI,"4. urna de contingência da lista, recarregada (carga fora da lista)",2089573,2141635,2026-09-25 11:06:00,2026-10-24 15:10:00,2026-10-24 15:10:00,2026-10-24 12:31:34,279,89,184
+PR,76678,41,247,LONDRINA,"4. urna de contingência da lista, recarregada (carga fora da lista)",2426151,2472350,2026-09-19 09:31:00,2026-10-24 14:29:00,2026-10-24 14:29:00,2026-10-24 12:31:34,252,55,191
+PR,76759,102,30,MANDAGUAÇU,"4. urna de contingência da lista, recarregada (carga fora da lista)",1823480,1652626,2026-09-25 15:06:00,2026-10-24 14:50:00,2026-10-24 14:50:00,2026-10-24 12:31:34,198,78,115
+PR,76872,81,53,MARIALVA,"4. urna de contingência da lista, recarregada (carga fora da lista)",2436068,2438887,2026-09-23 14:02:00,2026-10-24 16:35:00,2026-10-24 16:35:00,2026-10-24 12:31:34,214,70,138
+PR,76910,137,332,MARINGÁ,"4. urna de contingência da lista, recarregada (carga fora da lista)",2082309,2139108,2026-09-26 09:05:00,2026-10-24 14:40:00,2026-10-24 14:40:00,2026-10-24 12:31:34,272,96,172
+PR,77399,124,85,PALOTINA,"4. urna de contingência da lista, recarregada (carga fora da lista)",1780809,1661979,2026-09-24 12:06:00,2026-10-14 16:37:00,2026-10-14 16:37:00,2026-10-24 12:31:34,243,88,148
+PR,77577,74,89,PEABIRU,"4. urna de contingência da lista, recarregada (carga fora da lista)",1785155,1803995,2026-09-22 14:57:00,2026-10-24 15:10:00,2026-10-24 15:10:00,2026-10-24 12:31:34,264,123,128
+PR,77798,65,88,PORECATU,"4. urna de contingência da lista, recarregada (carga fora da lista)",1841053,1658933,2026-09-24 17:38:00,2026-10-24 12:28:00,2026-10-24 12:28:00,2026-10-24 12:31:34,215,115,98
+PR,78379,162,18,SALTO DO LONTRA,"4. urna de contingência da lista, recarregada (carga fora da lista)",2281855,2313919,2026-09-27 08:03:00,2026-10-24 15:24:00,2026-10-24 15:24:00,2026-10-24 12:31:34,258,115,141
+PR,79235,17,29,TIBAGI,"4. urna de contingência da lista, recarregada (carga fora da lista)",2077107,2068066,2026-09-27 09:29:00,2026-10-24 14:12:00,2026-10-24 14:12:00,2026-10-24 12:31:34,233,107,116
+PR,79375,33,51,UNIÃO DA VITÓRIA,"4. urna de contingência da lista, recarregada (carga fora da lista)",2092067,2064385,2026-09-22 13:32:00,2026-10-24 13:37:00,2026-10-24 13:37:00,2026-10-24 12:31:34,246,90,149
+PR,79596,136,4,GRANDES RIOS,"4. urna de contingência da lista, recarregada (carga fora da lista)",2089388,2068448,2026-09-24 08:19:00,2026-10-24 15:38:00,2026-10-24 15:38:00,2026-10-24 12:31:34,223,70,148
+PR,79650,120,60,NOVA AURORA,"4. urna de contingência da lista, recarregada (carga fora da lista)",1834615,1673531,2026-09-25 17:20:00,2026-10-24 11:00:00,2026-10-24 11:00:00,2026-10-24 12:31:34,178,67,109
+PR,79715,129,19,SANTA HELENA,"4. urna de contingência da lista, recarregada (carga fora da lista)",1774744,1809708,2026-09-27 09:43:00,2026-10-24 16:15:00,2026-10-24 16:15:00,2026-10-24 12:31:34,219,89,126
+PR,79995,123,100,SÃO JORGE DO PATROCÍNIO,"4. urna de contingência da lista, recarregada (carga fora da lista)",1770076,1837578,2026-09-25 15:28:00,2026-10-24 14:53:00,2026-10-24 14:53:00,2026-10-24 12:31:34,300,97,197
+RJ,58041,154,22,BELFORD ROXO,"4. urna de contingência da lista, recarregada (carga fora da lista)",2218061,2238012,2026-09-23 10:47:00,2026-10-24 12:30:00,2026-10-24 12:30:00,2026-10-24 12:31:34,192,65,116
+RJ,58050,93,80,BARRA DO PIRAÍ,"4. urna de contingência da lista, recarregada (carga fora da lista)",2397899,2415599,2026-09-22 09:34:00,2026-10-24 12:13:00,2026-10-24 12:13:00,2026-10-24 12:31:34,206,104,98
+RJ,58149,139,175,JAPERI,"4. urna de contingência da lista, recarregada (carga fora da lista)",2468205,2434141,2026-09-23 13:30:00,2026-10-24 11:03:00,2026-10-24 11:03:00,2026-10-24 12:31:34,248,106,132
+RJ,58262,181,2,IGUABA GRANDE,"4. urna de contingência da lista, recarregada (carga fora da lista)",2397590,2377641,2026-09-22 10:19:00,2026-10-24 15:29:00,2026-10-24 15:29:00,2026-10-24 12:31:34,274,92,173
+RJ,58270,51,60,CONCEIÇÃO DE MACABU,"4. urna de contingência da lista, recarregada (carga fora da lista)",2351845,2337672,2026-09-22 10:58:00,2026-10-24 12:36:00,2026-10-24 12:36:00,2026-10-24 12:31:34,232,109,114
+RJ,58416,106,8,ITAOCARA,"4. urna de contingência da lista, recarregada (carga fora da lista)",2429034,2405422,2026-09-22 14:20:00,2026-10-24 15:41:00,2026-10-24 15:41:00,2026-10-24 12:31:34,184,61,116
+RJ,58475,109,277,MACAÉ,"4. urna de contingência da lista, recarregada (carga fora da lista)",2437321,2463239,2026-09-25 11:35:00,2026-10-24 12:03:00,2026-10-24 12:03:00,2026-10-24 12:31:34,281,116,163
+RJ,58696,27,308,NOVA IGUAÇU,"4. urna de contingência da lista, recarregada (carga fora da lista)",2194142,2217709,2026-09-22 11:46:00,2026-10-24 11:31:00,2026-10-24 11:31:00,2026-10-24 12:31:34,173,66,102
+RJ,58734,28,78,PARAÍBA DO SUL,"4. urna de contingência da lista, recarregada (carga fora da lista)",2467529,2432223,2026-09-21 14:01:00,2026-10-24 12:06:00,2026-10-24 12:06:00,2026-10-24 12:31:34,262,109,147
+RJ,59013,88,310,SÃO JOÃO DE MERITI,"4. urna de contingência da lista, recarregada (carga fora da lista)",2028429,2223409,2026-09-21 13:35:00,2026-10-24 15:13:00,2026-10-24 15:13:00,2026-10-24 12:31:34,261,118,138
+RJ,59250,131,60,VOLTA REDONDA,"4. urna de contingência da lista, recarregada (carga fora da lista)",2417952,2421964,2026-09-24 10:35:00,2026-10-24 11:20:00,2026-10-24 11:20:00,2026-10-24 12:31:34,239,134,99
+RJ,59315,48,155,PATY DO ALFERES,"4. urna de contingência da lista, recarregada (carga fora da lista)",2461382,2467193,2026-09-25 09:14:00,2026-10-24 12:23:00,2026-10-24 12:23:00,2026-10-24 12:31:34,189,96,91
+RN,16195,35,165,APODI,"4. urna de contingência da lista, recarregada (carga fora da lista)",2345701,2351360,2026-09-25 10:50:00,2026-10-24 12:29:00,2026-10-24 12:29:00,2026-10-24 12:31:34,329,264,59
+RO,19,1,26,GUAJARÁ-MIRIM,"4. urna de contingência da lista, recarregada (carga fora da lista)",2258127,2275190,2026-09-21 09:46:00,2026-10-24 09:02:00,2026-10-24 10:02:00,2026-10-24 12:31:34,177,55,117
+RO,51,30,123,JI-PARANÁ,"4. urna de contingência da lista, recarregada (carga fora da lista)",2293033,2273941,2026-09-23 11:36:00,2026-10-24 18:03:00,2026-10-24 19:03:00,2026-10-24 12:31:34,251,62,183
+RO,78,7,39,ARIQUEMES,"4. urna de contingência da lista, recarregada (carga fora da lista)",2294190,2291187,2026-09-21 14:33:00,2026-10-24 15:28:00,2026-10-24 16:28:00,2026-10-24 12:31:34,209,39,165
+RO,94,11,332,CACOAL,"4. urna de contingência da lista, recarregada (carga fora da lista)",2018059,2018314,2026-09-29 09:20:00,2026-10-24 09:46:00,2026-10-24 10:46:00,2026-10-24 12:31:34,244,52,181
+RO,116,9,29,PIMENTA BUENO,"4. urna de contingência da lista, recarregada (carga fora da lista)",2018348,2016735,2026-09-24 08:44:00,2026-10-24 14:20:00,2026-10-24 15:20:00,2026-10-24 12:31:34,124,43,77
+RS,88013,161,23,PORTO ALEGRE,"4. urna de contingência da lista, recarregada (carga fora da lista)",2463359,2242560,2026-09-24 09:20:00,2026-10-24 11:11:00,2026-10-24 11:11:00,2026-10-24 12:31:34,252,126,116
+RS,88161,98,100,BOA VISTA DO SUL,"4. urna de contingência da lista, recarregada (carga fora da lista)",1827974,1650716,2026-09-18 12:32:00,2026-10-24 09:48:00,2026-10-24 09:48:00,2026-10-24 12:31:34,282,46,232
+RS,89010,108,163,SAPUCAIA DO SUL,"4. urna de contingência da lista, recarregada (carga fora da lista)",2198917,2210659,2026-09-23 11:09:00,2026-10-24 11:16:00,2026-10-24 11:16:00,2026-10-24 12:31:34,235,106,123
+SC,80233,2,91,ANTÔNIO CARLOS,"4. urna de contingência da lista, recarregada (carga fora da lista)",2047263,2017310,2026-10-18 10:33:00,2026-10-18 14:19:00,2026-10-18 14:19:00,2026-10-24 12:31:34,260,31,224
+SC,81051,12,218,FLORIANÓPOLIS,"4. urna de contingência da lista, recarregada (carga fora da lista)",2376001,2398880,2026-09-22 17:42:00,2026-10-24 10:52:00,2026-10-24 10:52:00,2026-10-24 12:31:34,227,119,99
+SC,81051,12,290,FLORIANÓPOLIS,"4. urna de contingência da lista, recarregada (carga fora da lista)",2396323,2393848,2026-10-03 10:59:00,2026-10-24 10:54:00,2026-10-24 10:54:00,2026-10-24 12:31:34,219,116,96
+SC,81051,13,433,FLORIANÓPOLIS,"4. urna de contingência da lista, recarregada (carga fora da lista)",2461862,2398523,2026-09-20 14:48:00,2026-10-24 10:23:00,2026-10-24 10:23:00,2026-10-24 12:31:34,291,127,154
+SC,82210,106,131,NAVEGANTES,"4. urna de contingência da lista, recarregada (carga fora da lista)",1774881,1680595,2026-09-21 16:24:00,2026-10-24 09:33:00,2026-10-24 09:33:00,2026-10-24 12:31:34,302,72,221
+SC,83119,30,203,SÃO BENTO DO SUL,"4. urna de contingência da lista, recarregada (carga fora da lista)",1843534,1846295,2026-09-21 19:00:00,2026-10-24 10:06:00,2026-10-24 10:06:00,2026-10-24 12:31:34,248,49,194
+SC,83275,29,63,SÃO JOSÉ,"4. urna de contingência da lista, recarregada (carga fora da lista)",2441629,2394101,2026-09-23 15:49:00,2026-10-24 10:49:00,2026-10-24 10:49:00,2026-10-24 12:31:34,294,97,184
+SP,61417,9,22,ANDRADINA,"4. urna de contingência da lista, recarregada (carga fora da lista)",2314346,2260797,2026-09-28 11:44:00,2026-10-24 11:05:00,2026-10-24 11:05:00,2026-10-24 12:31:34,225,74,147
+SP,61573,294,156,ARAÇOIABA DA SERRA,"4. urna de contingência da lista, recarregada (carga fora da lista)",1812728,1803073,2026-09-26 14:45:00,2026-10-24 11:41:00,2026-10-24 11:41:00,2026-10-24 12:31:34,258,95,152
+SP,61816,16,436,ATIBAIA,"4. urna de contingência da lista, recarregada (carga fora da lista)",2068831,2295578,2026-09-26 15:53:00,2026-10-25 07:58:00,2026-10-25 07:58:00,2026-10-24 12:31:34,297,111,174
+SP,62090,21,234,BARRETOS,"4. urna de contingência da lista, recarregada (carga fora da lista)",2293058,2296365,2026-09-26 10:58:00,2026-10-24 10:13:00,2026-10-24 10:13:00,2026-10-24 12:31:34,271,85,181
+SP,64777,393,168,GUARULHOS,"4. urna de contingência da lista, recarregada (carga fora da lista)",1804569,1804088,2026-09-26 15:25:00,2026-10-24 12:20:00,2026-10-24 12:20:00,2026-10-24 12:31:34,266,104,149
+SP,64874,410,19,IBATÉ,"4. urna de contingência da lista, recarregada (carga fora da lista)",2291707,2145226,2026-09-27 10:27:00,2026-10-24 11:39:00,2026-10-24 11:39:00,2026-10-24 12:31:34,184,76,95
+SP,65439,189,131,ITANHAÉM,"4. urna de contingência da lista, recarregada (carga fora da lista)",2013679,2143336,2026-09-25 16:49:00,2026-10-24 10:17:00,2026-10-24 10:17:00,2026-10-24 12:31:34,271,133,126
+SP,65471,52,36,ITAPETININGA,"4. urna de contingência da lista, recarregada (carga fora da lista)",1840289,2066099,2026-09-24 10:56:00,2026-10-24 12:45:00,2026-10-24 12:45:00,2026-10-24 12:31:34,206,67,134
+SP,65471,52,125,ITAPETININGA,"4. urna de contingência da lista, recarregada (carga fora da lista)",1798796,2273287,2026-10-02 13:42:00,2026-10-24 12:41:00,2026-10-24 12:41:00,2026-10-24 12:31:34,235,68,157
+SP,66010,304,139,JANDIRA,"4. urna de contingência da lista, recarregada (carga fora da lista)",1845174,1843800,2026-09-25 16:26:00,2026-10-24 14:47:00,2026-10-24 14:47:00,2026-10-24 12:31:34,232,137,86
+SP,66192,281,254,JUNDIAÍ,"4. urna de contingência da lista, recarregada (carga fora da lista)",2168249,2161815,2026-09-26 11:06:00,2026-10-24 11:58:00,2026-10-24 11:58:00,2026-10-24 12:31:34,328,124,190
+SP,66818,400,107,MARÍLIA,"4. urna de contingência da lista, recarregada (carga fora da lista)",1805534,1678047,2026-09-26 10:21:00,2026-10-24 13:19:00,2026-10-24 13:19:00,2026-10-24 12:31:34,185,54,122
+SP,67890,277,5,OSASCO,"4. urna de contingência da lista, recarregada (carga fora da lista)",1832027,1830779,2026-09-26 09:16:00,2026-10-24 14:37:00,2026-10-24 14:37:00,2026-10-24 12:31:34,235,102,123
+SP,68977,219,304,POÁ,"4. urna de contingência da lista, recarregada (carga fora da lista)",1784844,1779362,2026-09-28 11:27:00,2026-10-24 16:34:00,2026-10-24 16:34:00,2026-10-24 12:31:34,289,142,143
+SP,69817,244,112,RIO DAS PEDRAS,"4. urna de contingência da lista, recarregada (carga fora da lista)",2214401,2214340,2026-09-25 10:52:00,2026-10-24 11:45:00,2026-10-24 11:45:00,2026-10-24 12:31:34,318,138,172
+SP,70335,187,123,SANTA FÉ DO SUL,"4. urna de contingência da lista, recarregada (carga fora da lista)",1794247,1820267,2026-09-26 12:18:00,2026-10-24 10:38:00,2026-10-24 10:38:00,2026-10-24 12:31:34,271,82,179
+SP,70378,115,155,SANTA ISABEL,"4. urna de contingência da lista, recarregada (carga fora da lista)",2256625,2288835,2026-09-24 11:46:00,2026-10-24 14:43:00,2026-10-24 14:43:00,2026-10-24 12:31:34,272,111,151
+SP,70718,273,270,SANTOS,"4. urna de contingência da lista, recarregada (carga fora da lista)",1823747,1679332,2026-09-26 14:51:00,2026-10-24 13:36:00,2026-10-24 13:36:00,2026-10-24 12:31:34,292,135,147
+SP,70793,410,226,SÃO CARLOS,"4. urna de contingência da lista, recarregada (carga fora da lista)",1820761,1836387,2026-09-26 10:53:00,2026-10-24 13:55:00,2026-10-24 13:55:00,2026-10-24 12:31:34,272,128,136
+SP,70998,412,225,SÃO JOSÉ DOS CAMPOS,"4. urna de contingência da lista, recarregada (carga fora da lista)",1834073,1824662,2026-09-25 14:45:00,2026-10-24 11:08:00,2026-10-24 11:08:00,2026-10-24 12:31:34,336,126,204
+SP,71072,4,114,SÃO PAULO,"4. urna de contingência da lista, recarregada (carga fora da lista)",1807314,1847509,2026-09-23 17:10:00,2026-10-24 14:20:00,2026-10-24 14:20:00,2026-10-24 12:31:34,268,103,152
+SP,71072,5,36,SÃO PAULO,"4. urna de contingência da lista, recarregada (carga fora da lista)",2050346,2255250,2026-09-24 14:06:00,2026-10-24 09:49:00,2026-10-24 09:49:00,2026-10-24 12:31:34,275,109,158
+SP,71072,247,68,SÃO PAULO,"4. urna de contingência da lista, recarregada (carga fora da lista)",2046600,2050833,2026-09-27 12:03:00,2026-10-24 13:31:00,2026-10-24 13:31:00,2026-10-24 12:31:34,241,127,97
+SP,71072,248,13,SÃO PAULO,"4. urna de contingência da lista, recarregada (carga fora da lista)",2051267,2349170,2026-09-24 17:42:00,2026-10-24 13:17:00,2026-10-24 13:17:00,2026-10-24 12:31:34,294,149,131
+SP,71072,253,302,SÃO PAULO,"4. urna de contingência da lista, recarregada (carga fora da lista)",1816338,1815997,2026-09-26 16:44:00,2026-10-24 11:27:00,2026-10-24 11:27:00,2026-10-24 12:31:34,234,89,136
+SP,71072,255,72,SÃO PAULO,"4. urna de contingência da lista, recarregada (carga fora da lista)",2358515,2258864,2026-09-25 12:05:00,2026-10-24 13:40:00,2026-10-24 13:40:00,2026-10-24 12:31:34,287,126,146
+SP,71072,256,171,SÃO PAULO,"4. urna de contingência da lista, recarregada (carga fora da lista)",2364465,2277528,2026-09-26 15:52:00,2026-10-24 14:00:00,2026-10-24 14:00:00,2026-10-24 12:31:34,254,117,124
+SP,71072,257,32,SÃO PAULO,"4. urna de contingência da lista, recarregada (carga fora da lista)",2364091,2362612,2026-09-24 10:36:00,2026-10-24 12:22:00,2026-10-24 12:22:00,2026-10-24 12:31:34,283,178,94
+SP,71072,320,521,SÃO PAULO,"4. urna de contingência da lista, recarregada (carga fora da lista)",1823117,1819373,2026-09-29 10:22:00,2026-10-24 13:16:00,2026-10-24 13:16:00,2026-10-24 12:31:34,241,135,93
+SP,71072,327,256,SÃO PAULO,"4. urna de contingência da lista, recarregada (carga fora da lista)",2146734,2146928,2026-09-26 15:38:00,2026-10-24 12:11:00,2026-10-24 12:11:00,2026-10-24 12:31:34,199,89,102
+SP,71072,371,501,SÃO PAULO,"4. urna de contingência da lista, recarregada (carga fora da lista)",1823336,1822842,2026-09-26 14:12:00,2026-10-24 12:27:00,2026-10-24 12:27:00,2026-10-24 12:31:34,312,165,133
+SP,71072,372,69,SÃO PAULO,"4. urna de contingência da lista, recarregada (carga fora da lista)",1809820,1807445,2026-09-25 09:24:00,2026-10-24 10:27:00,2026-10-24 10:27:00,2026-10-24 12:31:34,296,216,71
+SP,71072,372,460,SÃO PAULO,"4. urna de contingência da lista, recarregada (carga fora da lista)",1807482,1813300,2026-09-25 15:05:00,2026-10-24 09:41:00,2026-10-24 09:41:00,2026-10-24 12:31:34,318,199,102
+SP,71072,389,219,SÃO PAULO,"4. urna de contingência da lista, recarregada (carga fora da lista)",2079941,2079146,2026-09-25 12:20:00,2026-10-24 10:49:00,2026-10-24 10:49:00,2026-10-24 12:31:34,327,178,136
+SP,71072,392,67,SÃO PAULO,"4. urna de contingência da lista, recarregada (carga fora da lista)",2010096,2013612,2026-09-24 11:01:00,2026-10-24 14:54:00,2026-10-24 14:54:00,2026-10-24 12:31:34,307,137,153
+SP,71072,392,244,SÃO PAULO,"4. urna de contingência da lista, recarregada (carga fora da lista)",2269099,2269313,2026-09-25 09:09:00,2026-10-24 14:32:00,2026-10-24 14:32:00,2026-10-24 12:31:34,274,120,138
+SP,71072,397,66,SÃO PAULO,"4. urna de contingência da lista, recarregada (carga fora da lista)",1825119,1847966,2026-09-25 15:06:00,2026-10-24 17:06:00,2026-10-24 17:06:00,2026-10-24 12:31:34,302,156,126
+SP,71072,405,256,SÃO PAULO,"4. urna de contingência da lista, recarregada (carga fora da lista)",1836882,1665566,2026-09-24 13:34:00,2026-10-24 11:18:00,2026-10-24 11:18:00,2026-10-24 12:31:34,275,188,77
+SP,71072,418,293,SÃO PAULO,"4. urna de contingência da lista, recarregada (carga fora da lista)",2089026,2404301,2026-09-25 15:27:00,2026-10-24 11:52:00,2026-10-24 11:52:00,2026-10-24 12:31:34,269,159,95
+SP,71218,177,70,SÃO VICENTE,"4. urna de contingência da lista, recarregada (carga fora da lista)",1828659,1817282,2026-09-25 15:12:00,2026-10-24 13:47:00,2026-10-24 13:47:00,2026-10-24 12:31:34,250,124,116
+SP,71455,356,57,SOROCABA,"4. urna de contingência da lista, recarregada (carga fora da lista)",1826050,1670541,2026-10-19 11:08:00,2026-10-24 12:42:00,2026-10-24 12:42:00,2026-10-24 12:31:34,245,81,153
+SP,71455,356,59,SOROCABA,"4. urna de contingência da lista, recarregada (carga fora da lista)",1825894,1657500,2026-09-24 09:02:00,2026-10-24 12:43:00,2026-10-24 12:43:00,2026-10-24 12:31:34,250,112,127
+SP,72370,345,16,VINHEDO,"4. urna de contingência da lista, recarregada (carga fora da lista)",2214549,2326420,2026-10-24 09:58:00,2026-10-24 11:34:00,2026-10-24 11:34:00,2026-10-24 12:31:34,277,89,178
+TO,73040,27,87,PALMEIRAS DO TOCANTINS,"4. urna de contingência da lista, recarregada (carga fora da lista)",2153008,2264997,2026-09-24 10:15:00,2026-10-24 09:45:00,2026-10-24 09:45:00,2026-10-24 12:31:34,232,125,94
+TO,73610,32,58,BARRA DO OURO,"4. urna de contingência da lista, recarregada (carga fora da lista)",2467046,2468523,2026-09-23 10:34:00,2026-10-24 11:02:00,2026-10-24 11:02:00,2026-10-24 12:31:34,204,118,76
+TO,92487,16,28,PEQUIZEIRO,"4. urna de contingência da lista, recarregada (carga fora da lista)",2279346,2152674,2026-09-24 12:07:00,2026-10-24 11:03:00,2026-10-24 11:03:00,2026-10-24 12:31:34,172,96,71
+TO,93114,4,163,COLINAS DO TOCANTINS,"4. urna de contingência da lista, recarregada (carga fora da lista)",2259430,2279545,2026-10-24 10:07:00,2026-10-24 11:39:00,2026-10-24 11:39:00,2026-10-24 12:31:34,211,80,125
+TO,95192,7,238,PARAÍSO DO TOCANTINS,"4. urna de contingência da lista, recarregada (carga fora da lista)",2151366,2153125,2026-09-24 10:23:00,2026-10-24 14:38:00,2026-10-24 14:38:00,2026-10-24 12:31:34,220,51,167
+TO,95591,3,18,PORTO NACIONAL,"4. urna de contingência da lista, recarregada (carga fora da lista)",2293136,2279677,2026-09-24 14:25:00,2026-10-24 15:02:00,2026-10-24 15:02:00,2026-10-24 12:31:34,223,157,58
+AM,2550,1,778,MANAUS,"5. urna fora das listas, carregada DEPOIS que a lista foi gerada",1789291,1828410,2026-10-03 12:28:00,2026-10-24 12:17:00,2026-10-24 13:17:00,2026-10-24 12:31:34,245,106,134
+AM,2550,2,755,MANAUS,"5. urna fora das listas, carregada DEPOIS que a lista foi gerada",1789537,1831445,2026-09-23 09:20:00,2026-10-24 12:20:00,2026-10-24 13:20:00,2026-10-24 12:31:34,236,105,123
+AM,2550,31,577,MANAUS,"5. urna fora das listas, carregada DEPOIS que a lista foi gerada",1789757,1760106,2026-09-23 15:58:00,2026-10-24 12:19:00,2026-10-24 13:19:00,2026-10-24 12:31:34,300,167,117
+AM,2550,37,606,MANAUS,"5. urna fora das listas, carregada DEPOIS que a lista foi gerada",1789731,1773434,2026-09-28 08:53:00,2026-10-24 12:20:00,2026-10-24 13:20:00,2026-10-24 12:31:34,316,116,186
+AM,2550,40,626,MANAUS,"5. urna fora das listas, carregada DEPOIS que a lista foi gerada",2084595,2125171,2026-09-24 15:39:00,2026-10-24 12:10:00,2026-10-24 13:10:00,2026-10-24 12:31:34,243,100,136
+AM,2550,58,876,MANAUS,"5. urna fora das listas, carregada DEPOIS que a lista foi gerada",1786997,1761229,2026-10-01 10:08:00,2026-10-24 12:14:00,2026-10-24 13:14:00,2026-10-24 12:31:34,323,123,193
+AM,2550,59,792,MANAUS,"5. urna fora das listas, carregada DEPOIS que a lista foi gerada",1787400,1842731,2026-09-24 10:31:00,2026-10-24 12:17:00,2026-10-24 13:17:00,2026-10-24 12:31:34,309,178,119
+AM,2550,62,605,MANAUS,"5. urna fora das listas, carregada DEPOIS que a lista foi gerada",2088081,2018306,2026-09-28 15:35:00,2026-10-24 12:09:00,2026-10-24 13:09:00,2026-10-24 12:31:34,303,151,138
+AM,2550,63,688,MANAUS,"5. urna fora das listas, carregada DEPOIS que a lista foi gerada",2086473,2018190,2026-10-01 15:00:00,2026-10-24 12:14:00,2026-10-24 13:14:00,2026-10-24 12:31:34,320,126,188
+AM,2550,65,383,MANAUS,"5. urna fora das listas, carregada DEPOIS que a lista foi gerada",2040420,2086225,2026-09-29 09:44:00,2026-10-24 12:09:00,2026-10-24 13:09:00,2026-10-24 12:31:34,346,112,224
+AM,2550,68,520,MANAUS,"5. urna fora das listas, carregada DEPOIS que a lista foi gerada",2040310,2088328,2026-09-25 10:36:00,2026-10-24 12:10:00,2026-10-24 13:10:00,2026-10-24 12:31:34,330,156,160
+AM,2550,70,784,MANAUS,"5. urna fora das listas, carregada DEPOIS que a lista foi gerada",1789086,1839558,2026-09-30 08:40:00,2026-10-24 12:13:00,2026-10-24 13:13:00,2026-10-24 12:31:34,316,120,186
+AM,98418,51,78,PRESIDENTE FIGUEIREDO,"5. urna fora das listas, carregada DEPOIS que a lista foi gerada",2350654,2357659,2026-09-24 16:11:00,2026-10-24 12:37:00,2026-10-24 13:37:00,2026-10-24 12:31:34,190,85,101
+AP,6092,4,24,OIAPOQUE,"5. urna fora das listas, carregada DEPOIS que a lista foi gerada",2015963,2019093,2026-10-01 10:05:00,2026-10-24 14:01:00,2026-10-24 14:01:00,2026-10-24 12:31:34,182,103,72
+AP,6092,4,86,OIAPOQUE,"5. urna fora das listas, carregada DEPOIS que a lista foi gerada",2014545,2017582,2026-10-01 09:59:00,2026-10-24 14:01:00,2026-10-24 14:01:00,2026-10-24 12:31:34,224,211,12
+BA,37818,84,382,PAULO AFONSO,"5. urna fora das listas, carregada DEPOIS que a lista foi gerada",1767664,1753327,2026-09-28 10:24:00,2026-10-24 16:04:00,2026-10-24 16:04:00,2026-10-24 12:31:34,258,210,40
+BA,37877,105,145,PIATÃ,"5. urna fora das listas, carregada DEPOIS que a lista foi gerada",2306347,2303690,2026-10-01 14:19:00,2026-10-24 14:37:00,2026-10-24 14:37:00,2026-10-24 12:31:34,300,217,66
+CE,14818,79,214,MUCAMBO,"5. urna fora das listas, carregada DEPOIS que a lista foi gerada",1794159,1671949,2026-09-22 16:14:00,2026-10-24 13:33:00,2026-10-24 13:33:00,2026-10-24 12:31:34,253,178,70
+CE,14818,79,241,MUCAMBO,"5. urna fora das listas, carregada DEPOIS que a lista foi gerada",1766001,1819939,2026-09-22 17:52:00,2026-10-24 13:50:00,2026-10-24 13:50:00,2026-10-24 12:31:34,239,183,45
+MA,7110,99,27,AMARANTE DO MARANHÃO,"5. urna fora das listas, carregada DEPOIS que a lista foi gerada",2126133,2023064,2026-09-30 11:44:00,2026-10-24 17:16:00,2026-10-24 17:16:00,2026-10-24 12:31:34,260,116,142
+MG,40690,16,263,ARAGUARI,"5. urna fora das listas, carregada DEPOIS que a lista foi gerada",2061473,2091501,2026-09-19 15:42:00,2026-10-24 16:00:00,2026-10-24 16:00:00,2026-10-24 12:31:34,265,123,141
+MG,45730,125,119,GUAXUPÉ,"5. urna fora das listas, carregada DEPOIS que a lista foi gerada",2089070,2065232,2026-09-21 10:36:00,2026-10-24 15:22:00,2026-10-24 15:22:00,2026-10-24 12:31:34,303,138,159
+MG,47554,159,71,LAMBARI,"5. urna fora das listas, carregada DEPOIS que a lista foi gerada",2090990,2007867,2026-09-26 16:26:00,2026-10-24 16:26:00,2026-10-24 16:26:00,2026-10-24 12:31:34,293,109,174
+MG,48658,184,163,MONTES CLAROS,"5. urna fora das listas, carregada DEPOIS que a lista foi gerada",2089910,2011733,2026-09-22 11:34:00,2026-10-24 14:20:00,2026-10-24 14:20:00,2026-10-24 12:31:34,265,135,122
+PB,19798,29,2,CAMALAÚ,"5. urna fora das listas, carregada DEPOIS que a lista foi gerada",2451140,2382503,2026-09-23 08:10:00,2026-10-24 12:52:00,2026-10-24 12:52:00,2026-10-24 12:31:34,311,276,31
+PB,20974,75,76,MULUNGU,"5. urna fora das listas, carregada DEPOIS que a lista foi gerada",2077320,2242188,2026-09-21 10:03:00,2026-10-24 12:53:00,2026-10-24 12:53:00,2026-10-24 12:31:34,249,179,65
+PB,21350,47,101,PILÕEZINHOS,"5. urna fora das listas, carregada DEPOIS que a lista foi gerada",2450901,2337177,2026-09-23 10:18:00,2026-10-24 12:47:00,2026-10-24 12:47:00,2026-10-24 12:31:34,176,135,35
+PE,23094,64,184,ÁGUAS BELAS,"5. urna fora das listas, carregada DEPOIS que a lista foi gerada",1819158,1774396,2026-09-25 08:32:00,2026-10-24 15:08:00,2026-10-24 15:08:00,2026-10-24 12:31:34,216,156,53
+PE,23264,89,71,JATOBÁ,"5. urna fora das listas, carregada DEPOIS que a lista foi gerada",2349385,2321401,2026-09-25 09:46:00,2026-10-24 14:09:00,2026-10-24 14:09:00,2026-10-24 12:31:34,202,162,34
+PE,23450,39,51,BONITO,"5. urna fora das listas, carregada DEPOIS que a lista foi gerada",1814993,1821759,2026-09-21 10:08:00,2026-10-24 12:45:00,2026-10-24 12:45:00,2026-10-24 12:31:34,332,206,111
+PE,24236,25,18,GOIANA,"5. urna fora das listas, carregada DEPOIS que a lista foi gerada",2161251,2173687,2026-09-28 10:07:00,2026-10-24 14:12:00,2026-10-24 14:12:00,2026-10-24 12:31:34,333,203,121
+PE,24775,24,94,LIMOEIRO,"5. urna fora das listas, carregada DEPOIS que a lista foi gerada",2195341,2041752,2026-09-24 08:43:00,2026-10-24 13:04:00,2026-10-24 13:04:00,2026-10-24 12:31:34,273,179,89
+PE,25135,114,230,PAULISTA,"5. urna fora das listas, carregada DEPOIS que a lista foi gerada",2218332,2173609,2026-09-24 08:58:00,2026-10-24 13:47:00,2026-10-24 13:47:00,2026-10-24 12:31:34,336,195,130
+PE,25313,8,244,RECIFE,"5. urna fora das listas, carregada DEPOIS que a lista foi gerada",2370523,2337587,2026-09-24 08:14:00,2026-10-24 13:38:00,2026-10-24 13:38:00,2026-10-24 12:31:34,338,183,151
+PE,25313,8,246,RECIFE,"5. urna fora das listas, carregada DEPOIS que a lista foi gerada",2313795,2374681,2026-09-24 08:30:00,2026-10-24 13:43:00,2026-10-24 13:43:00,2026-10-24 12:31:34,337,194,138
+PE,25836,26,127,SIRINHAÉM,"5. urna fora das listas, carregada DEPOIS que a lista foi gerada",1775106,1767268,2026-09-23 10:16:00,2026-10-24 12:49:00,2026-10-24 12:49:00,2026-10-24 12:31:34,315,216,89
+PI,10430,7,240,CAMPO MAIOR,"5. urna fora das listas, carregada DEPOIS que a lista foi gerada",1801290,1847816,2026-10-01 13:28:00,2026-10-24 12:44:00,2026-10-24 12:44:00,2026-10-24 12:31:34,267,221,40
+RN,16217,32,79,AREIA BRANCA,"5. urna fora das listas, carregada DEPOIS que a lista foi gerada",2360738,2103133,2026-09-22 13:26:00,2026-10-24 13:02:00,2026-10-24 13:02:00,2026-10-24 12:31:34,268,183,72
+RN,16519,6,57,CEARÁ-MIRIM,"5. urna fora das listas, carregada DEPOIS que a lista foi gerada",2058738,2049069,2026-09-23 10:40:00,2026-10-24 12:51:00,2026-10-24 12:51:00,2026-10-24 12:31:34,279,233,35
+RN,18473,43,47,SÃO MIGUEL,"5. urna fora das listas, carregada DEPOIS que a lista foi gerada",2339209,2062688,2026-09-24 09:12:00,2026-10-24 13:09:00,2026-10-24 13:09:00,2026-10-24 12:31:34,150,113,34
+RS,88013,159,150,PORTO ALEGRE,"5. urna fora das listas, carregada DEPOIS que a lista foi gerada",2412839,2408580,2026-10-03 15:13:00,2026-10-24 14:48:00,2026-10-24 14:48:00,2026-10-24 12:31:34,180,107,71
+RS,88013,159,166,PORTO ALEGRE,"5. urna fora das listas, carregada DEPOIS que a lista foi gerada",2472482,2409009,2026-09-18 10:01:00,2026-10-24 15:00:00,2026-10-24 15:00:00,2026-10-24 12:31:34,188,101,85
+RS,88013,159,170,PORTO ALEGRE,"5. urna fora das listas, carregada DEPOIS que a lista foi gerada",2427392,2428555,2026-10-03 15:31:00,2026-10-24 14:58:00,2026-10-24 14:58:00,2026-10-24 12:31:34,174,96,76
+SC,82210,106,19,NAVEGANTES,"5. urna fora das listas, carregada DEPOIS que a lista foi gerada",1678471,1681441,2026-09-21 11:41:00,2026-10-24 14:18:00,2026-10-24 14:18:00,2026-10-24 12:31:34,243,66,171
+SC,82210,106,92,NAVEGANTES,"5. urna fora das listas, carregada DEPOIS que a lista foi gerada",1777510,1677014,2026-09-21 14:17:00,2026-10-24 14:36:00,2026-10-24 14:36:00,2026-10-24 12:31:34,246,58,183
+AM,2232,23,80,CAREIRO,"6. urna fora das listas, mesmo cartão de carga da urna prevista",2345158,2340769,2026-09-30 15:41:00,2026-10-24 10:09:00,2026-10-24 11:09:00,2026-10-24 12:31:34,182,105,72
+AM,2410,3,162,ITACOATIARA,"6. urna fora das listas, mesmo cartão de carga da urna prevista",2350260,2342812,2026-09-29 09:26:00,2026-10-24 10:00:00,2026-10-24 11:00:00,2026-10-24 12:31:34,284,172,102
+AM,2437,24,30,ITAPIRANGA,"6. urna fora das listas, mesmo cartão de carga da urna prevista",2338973,2355841,2026-09-21 20:55:00,2026-10-24 10:00:00,2026-10-24 11:00:00,2026-10-24 12:31:34,263,160,97
+AM,2534,6,54,MANACAPURU,"6. urna fora das listas, mesmo cartão de carga da urna prevista",2460788,2330486,2026-09-28 15:09:00,2026-10-24 10:19:00,2026-10-24 11:19:00,2026-10-24 12:31:34,299,153,137
+AM,98353,56,34,IRANDUBA,"6. urna fora das listas, mesmo cartão de carga da urna prevista",2040639,2039387,2026-09-29 14:47:00,2026-10-24 11:25:00,2026-10-24 12:25:00,2026-10-24 12:31:34,125,86,37
+BA,33391,90,208,ARACATU,"6. urna fora das listas, mesmo cartão de carga da urna prevista",2309813,2308311,2026-10-01 13:36:00,2026-10-24 09:57:00,2026-10-24 09:57:00,2026-10-24 12:31:34,270,220,41
+BA,33774,71,150,BOM JESUS DA LAPA,"6. urna fora das listas, mesmo cartão de carga da urna prevista",1780000,1843885,2026-09-21 12:13:00,2026-10-21 10:50:00,2026-10-21 10:50:00,2026-10-24 12:31:34,288,266,14
+BA,39144,71,170,SÍTIO DO MATO,"6. urna fora das listas, mesmo cartão de carga da urna prevista",1771106,1844077,2026-09-21 16:44:00,2026-10-21 11:12:00,2026-10-21 11:12:00,2026-10-24 12:31:34,300,241,51
+BA,39934,183,320,TEIXEIRA DE FREITAS,"6. urna fora das listas, mesmo cartão de carga da urna prevista",2251166,2386005,2026-09-23 21:13:00,2026-10-24 09:49:00,2026-10-24 09:49:00,2026-10-24 12:31:34,231,92,130
+CE,13234,67,34,ARACOIABA,"6. urna fora das listas, mesmo cartão de carga da urna prevista",2227027,2322962,2026-10-20 11:15:00,2026-10-24 11:09:00,2026-10-24 11:09:00,2026-10-24 12:31:34,255,207,45
+CE,15318,29,240,QUIXERÉ,"6. urna fora das listas, mesmo cartão de carga da urna prevista",1750675,1767281,2026-09-28 08:40:00,2026-10-24 12:13:00,2026-10-24 12:13:00,2026-10-24 12:31:34,193,120,59
+DF,97012,1,9,BRASÍLIA,"6. urna fora das listas, mesmo cartão de carga da urna prevista",2013159,2026554,2026-09-29 08:46:00,2026-10-24 09:54:00,2026-10-24 09:54:00,2026-10-24 12:31:34,204,99,99
+DF,97012,2,270,BRASÍLIA,"6. urna fora das listas, mesmo cartão de carga da urna prevista",2465687,2102557,2026-09-30 09:23:00,2026-10-24 11:14:00,2026-10-24 11:14:00,2026-10-24 12:31:34,304,150,148
+DF,97012,3,418,BRASÍLIA,"6. urna fora das listas, mesmo cartão de carga da urna prevista",2014078,2103108,2026-09-24 09:55:00,2026-10-24 10:45:00,2026-10-24 10:45:00,2026-10-24 12:31:34,311,137,160
+DF,97012,5,36,BRASÍLIA,"6. urna fora das listas, mesmo cartão de carga da urna prevista",2454210,2026141,2026-09-27 09:50:00,2026-10-24 11:15:00,2026-10-24 11:15:00,2026-10-24 12:31:34,277,120,152
+DF,97012,6,200,BRASÍLIA,"6. urna fora das listas, mesmo cartão de carga da urna prevista",2456865,2011531,2026-09-28 09:39:00,2026-10-24 10:46:00,2026-10-24 10:46:00,2026-10-24 12:31:34,204,83,114
+DF,97012,8,626,BRASÍLIA,"6. urna fora das listas, mesmo cartão de carga da urna prevista",2226731,2013313,2026-09-25 11:41:00,2026-10-24 11:16:00,2026-10-24 11:16:00,2026-10-24 12:31:34,206,95,103
+DF,97012,9,360,BRASÍLIA,"6. urna fora das listas, mesmo cartão de carga da urna prevista",2012410,2229518,2026-09-28 09:36:00,2026-10-24 10:23:00,2026-10-24 10:23:00,2026-10-24 12:31:34,236,118,108
+DF,97012,11,229,BRASÍLIA,"6. urna fora das listas, mesmo cartão de carga da urna prevista",2026114,2010261,2026-09-30 08:52:00,2026-10-24 09:50:00,2026-10-24 09:50:00,2026-10-24 12:31:34,316,157,145
+DF,97012,15,318,BRASÍLIA,"6. urna fora das listas, mesmo cartão de carga da urna prevista",2230344,2233101,2026-09-26 08:48:00,2026-10-24 10:49:00,2026-10-24 10:49:00,2026-10-24 12:31:34,290,123,158
+DF,97012,16,480,BRASÍLIA,"6. urna fora das listas, mesmo cartão de carga da urna prevista",2028374,2026817,2026-10-15 13:42:00,2026-10-24 10:44:00,2026-10-24 10:44:00,2026-10-24 12:31:34,232,90,136
+ES,57916,7,146,LARANJA DA TERRA,"6. urna fora das listas, mesmo cartão de carga da urna prevista",2361908,2353106,2026-09-22 08:14:00,2026-10-24 10:19:00,2026-10-24 10:19:00,2026-10-24 12:31:34,284,104,170
+MA,7137,109,1,ANAJATUBA,"6. urna fora das listas, mesmo cartão de carga da urna prevista",1766364,1761446,2026-09-23 09:17:00,2026-10-24 09:29:00,2026-10-24 09:29:00,2026-10-24 12:31:34,180,130,45
+MA,9210,1,124,SÃO LUÍS,"6. urna fora das listas, mesmo cartão de carga da urna prevista",1656375,1813889,2026-10-03 15:08:00,2026-09-28 09:00:00,2026-09-28 09:00:00,2026-10-24 12:31:34,297,216,75
+MA,9210,1,125,SÃO LUÍS,"6. urna fora das listas, mesmo cartão de carga da urna prevista",1651908,1813386,2026-10-03 15:19:00,2026-09-28 09:10:00,2026-09-28 09:10:00,2026-10-24 12:31:34,306,218,79
+MG,41238,331,1,BELO HORIZONTE,"6. urna fora das listas, mesmo cartão de carga da urna prevista",2465586,2441970,2026-09-20 08:30:00,2026-10-13 10:51:00,2026-10-13 10:51:00,2026-10-24 12:31:34,374,169,192
+MT,90670,39,376,CUIABÁ,"6. urna fora das listas, mesmo cartão de carga da urna prevista",2447087,2473230,2026-09-23 14:49:00,2026-10-24 10:00:00,2026-10-24 11:00:00,2026-10-24 12:31:34,284,106,171
+MT,90670,55,192,CUIABÁ,"6. urna fora das listas, mesmo cartão de carga da urna prevista",1762405,1839518,2026-09-25 11:31:00,2026-10-24 10:03:00,2026-10-24 11:03:00,2026-10-24 12:31:34,350,125,212
+MT,91294,4,44,POCONÉ,"6. urna fora das listas, mesmo cartão de carga da urna prevista",2448226,2468615,2026-09-23 11:23:00,2026-10-24 09:57:00,2026-10-24 10:57:00,2026-10-24 12:31:34,255,145,103
+MT,91855,19,39,TANGARÁ DA SERRA,"6. urna fora das listas, mesmo cartão de carga da urna prevista",2011066,2445672,2026-09-22 15:17:00,2026-10-24 10:18:00,2026-10-24 11:18:00,2026-10-24 12:31:34,241,57,181
+PA,4278,30,295,BELÉM,"6. urna fora das listas, mesmo cartão de carga da urna prevista",2155867,2148509,2026-09-26 08:49:00,2026-10-24 10:43:00,2026-10-24 10:43:00,2026-10-24 12:31:34,277,160,113
+PA,4278,73,802,BELÉM,"6. urna fora das listas, mesmo cartão de carga da urna prevista",2187333,2200024,2026-10-03 11:06:00,2026-10-24 10:44:00,2026-10-24 10:44:00,2026-10-24 12:31:34,336,166,160
+PA,4278,73,807,BELÉM,"6. urna fora das listas, mesmo cartão de carga da urna prevista",2185033,2178916,2026-09-23 11:46:00,2026-10-24 10:38:00,2026-10-24 10:38:00,2026-10-24 12:31:34,335,187,142
+PA,4995,33,12,NOVA TIMBOTEUA,"6. urna fora das listas, mesmo cartão de carga da urna prevista",2432058,2329864,2026-09-25 09:38:00,2026-10-24 09:49:00,2026-10-24 09:49:00,2026-10-24 12:31:34,299,192,105
+PB,22330,34,209,TAVARES,"6. urna fora das listas, mesmo cartão de carga da urna prevista",2372437,2463474,2026-09-23 12:22:00,2026-10-24 11:46:00,2026-10-24 11:46:00,2026-10-24 12:31:34,188,157,28
+PB,22411,18,110,UMBUZEIRO,"6. urna fora das listas, mesmo cartão de carga da urna prevista",2205726,2169702,2026-09-23 15:57:00,2026-10-24 11:36:00,2026-10-24 11:36:00,2026-10-24 12:31:34,260,206,44
+PE,23272,42,90,BARREIROS,"6. urna fora das listas, mesmo cartão de carga da urna prevista",1774508,1769537,2026-09-26 10:28:00,2026-10-24 12:25:00,2026-10-24 12:25:00,2026-10-24 12:31:34,280,190,81
+PE,25313,149,63,RECIFE,"6. urna fora das listas, mesmo cartão de carga da urna prevista",2389731,2348464,2026-09-25 10:55:00,2026-10-24 11:22:00,2026-10-24 11:22:00,2026-10-24 12:31:34,237,117,112
+PE,25518,81,164,SANTA MARIA DA BOA VISTA,"6. urna fora das listas, mesmo cartão de carga da urna prevista",2339852,2339247,2026-09-24 08:34:00,2026-10-24 11:56:00,2026-10-24 11:56:00,2026-10-24 12:31:34,105,90,13
+PE,25852,79,158,MOREILÂNDIA,"6. urna fora das listas, mesmo cartão de carga da urna prevista",2320627,2312082,2026-09-26 09:54:00,2026-10-24 12:20:00,2026-10-24 12:20:00,2026-10-24 12:31:34,75,58,15
+PE,26298,138,81,CAMARAGIBE,"6. urna fora das listas, mesmo cartão de carga da urna prevista",2360779,2378984,2026-09-26 09:02:00,2026-10-24 11:47:00,2026-10-24 11:47:00,2026-10-24 12:31:34,341,189,145
+PI,11398,5,331,OEIRAS,"6. urna fora das listas, mesmo cartão de carga da urna prevista",2219050,2196269,2026-09-30 09:58:00,2026-10-24 10:29:00,2026-10-24 10:29:00,2026-10-24 12:31:34,205,158,43
+RN,16390,25,67,CAICÓ,"6. urna fora das listas, mesmo cartão de carga da urna prevista",2385116,2385427,2026-09-23 10:51:00,2026-10-24 11:46:00,2026-10-24 11:46:00,2026-10-24 12:31:34,274,180,80
+RN,16977,68,30,JAÇANÃ,"6. urna fora das listas, mesmo cartão de carga da urna prevista",2059397,2048996,2026-09-24 15:56:00,2026-10-24 10:00:00,2026-10-24 10:00:00,2026-10-24 12:31:34,298,211,79
+RN,17612,2,326,NATAL,"6. urna fora das listas, mesmo cartão de carga da urna prevista",1762667,1787619,2026-09-18 18:19:00,2026-10-24 11:23:00,2026-10-24 11:23:00,2026-10-24 12:31:34,331,150,175
+RN,17612,2,366,NATAL,"6. urna fora das listas, mesmo cartão de carga da urna prevista",1784469,1793619,2026-09-18 17:38:00,2026-10-24 10:17:00,2026-10-24 10:17:00,2026-10-24 12:31:34,300,82,213
+RN,17736,54,135,PARAÚ,"6. urna fora das listas, mesmo cartão de carga da urna prevista",2365646,2344809,2026-09-21 15:49:00,2026-10-24 08:23:00,2026-10-24 08:23:00,2026-10-24 12:31:34,176,122,46
+RN,18910,13,98,VÁRZEA,"6. urna fora das listas, mesmo cartão de carga da urna prevista",2236939,2236419,2026-09-22 16:38:00,2026-10-24 12:25:00,2026-10-24 12:25:00,2026-10-24 12:31:34,170,121,47
+SC,83275,84,99,SÃO JOSÉ,"6. urna fora das listas, mesmo cartão de carga da urna prevista",2454868,2472827,2026-09-21 10:34:00,2026-10-24 10:13:00,2026-10-24 10:13:00,2026-10-24 12:31:34,239,85,150
+SE,31054,2,60,ARACAJU,"6. urna fora das listas, mesmo cartão de carga da urna prevista",1785934,1766766,2026-09-28 08:21:00,2026-10-19 08:13:00,2026-10-19 08:13:00,2026-10-24 12:31:34,227,129,89
+SE,31690,12,87,LAGARTO,"6. urna fora das listas, mesmo cartão de carga da urna prevista",2302312,2351482,2026-10-03 09:26:00,2026-09-19 15:57:00,2026-09-19 15:57:00,2026-10-24 12:31:34,183,141,36
+SE,31712,13,82,LARANJEIRAS,"6. urna fora das listas, mesmo cartão de carga da urna prevista",2175982,2048848,2026-10-03 08:08:00,2026-09-21 07:22:00,2026-09-21 07:22:00,2026-10-24 12:31:34,192,129,59
+SE,31755,5,143,MALHADA DOS BOIS,"6. urna fora das listas, mesmo cartão de carga da urna prevista",2294017,2283497,2026-10-03 09:27:00,2026-09-18 13:08:00,2026-09-18 13:08:00,2026-10-24 12:31:34,174,123,50
+SE,32476,23,118,TOBIAS BARRETO,"6. urna fora das listas, mesmo cartão de carga da urna prevista",2354969,2286014,2026-10-03 08:52:00,2026-09-22 13:23:00,2026-09-22 13:23:00,2026-10-24 12:31:34,279,179,89
+SE,32514,35,57,UMBAÚBA,"6. urna fora das listas, mesmo cartão de carga da urna prevista",2174458,2312114,2026-10-03 09:45:00,2026-09-24 13:30:00,2026-09-24 13:30:00,2026-10-24 12:31:34,263,179,73
+SP,68314,323,75,PAULÍNIA,"6. urna fora das listas, mesmo cartão de carga da urna prevista",1830007,1842471,2026-09-28 09:05:00,2026-10-24 11:05:00,2026-10-24 11:05:00,2026-10-24 12:31:34,291,113,170
+SP,69051,135,332,PONTAL,"6. urna fora das listas, mesmo cartão de carga da urna prevista",2394607,2181097,2026-09-24 09:18:00,2026-10-24 09:45:00,2026-10-24 09:45:00,2026-10-24 12:31:34,241,98,137
+TO,73440,29,95,PALMAS,"6. urna fora das listas, mesmo cartão de carga da urna prevista",2151792,2029919,2026-09-24 11:28:00,2026-10-24 10:22:00,2026-10-24 10:22:00,2026-10-24 12:31:34,299,121,167
+TO,73440,29,115,PALMAS,"6. urna fora das listas, mesmo cartão de carga da urna prevista",2151414,2454581,2026-09-24 11:35:00,2026-10-24 10:28:00,2026-10-24 10:28:00,2026-10-24 12:31:34,311,115,185
+AM,2011,34,12,NOVO AIRÃO,"7. urna fora das listas, sem explicação nos dados",2460665,2456949,2026-09-26 09:54:00,2026-10-24 10:56:00,2026-10-24 11:56:00,2026-10-24 12:31:34,234,120,106
+AM,2437,24,3,ITAPIRANGA,"7. urna fora das listas, sem explicação nos dados",2350798,2040426,2026-09-21 20:49:00,2026-10-24 10:30:00,2026-10-24 11:30:00,2026-10-24 12:31:34,290,161,124
+GO,95818,66,107,SANTA HELENA DE GOIÁS,"7. urna fora das listas, sem explicação nos dados",2202617,2030569,2026-09-25 13:21:00,2026-10-24 12:02:00,2026-10-24 12:02:00,2026-10-24 12:31:34,244,129,106
+MG,41238,331,197,BELO HORIZONTE,"7. urna fora das listas, sem explicação nos dados",2282675,2474562,2026-09-20 11:08:00,2026-10-13 10:00:00,2026-10-13 10:00:00,2026-10-24 12:31:34,327,167,158
+PA,4952,19,58,MONTE ALEGRE,"7. urna fora das listas, sem explicação nos dados",1794410,1804671,2026-10-24 10:23:00,2026-09-24 09:20:00,2026-09-24 09:20:00,2026-10-24 12:31:34,159,63,95
+PA,5355,104,93,SANTARÉM,"7. urna fora das listas, sem explicação nos dados",2403815,2324636,2026-09-23 09:05:00,2026-10-03 13:24:00,2026-10-03 13:24:00,2026-10-24 12:31:34,293,123,162
+RJ,60011,185,158,RIO DE JANEIRO,"7. urna fora das listas, sem explicação nos dados",1793140,1793722,2026-09-28 13:28:00,2026-10-24 11:55:00,2026-10-24 11:55:00,2026-10-24 12:31:34,330,143,174
+SC,80454,2,192,BIGUAÇU,"7. urna fora das listas, sem explicação nos dados",2190373,2122428,2026-09-26 12:04:00,2026-10-18 14:53:00,2026-10-18 14:53:00,2026-10-24 12:31:34,290,90,192
+SE,31054,2,87,ARACAJU,"7. urna fora das listas, sem explicação nos dados",1790675,1767744,2026-09-26 14:36:00,2026-10-19 09:51:00,2026-10-19 09:51:00,2026-10-24 12:31:34,226,125,95
+SE,31054,2,345,ARACAJU,"7. urna fora das listas, sem explicação nos dados",1771913,1791305,2026-09-26 15:31:00,2026-10-19 08:15:00,2026-10-19 08:15:00,2026-10-24 12:31:34,283,132,145
+SE,31054,2,524,ARACAJU,"7. urna fora das listas, sem explicação nos dados",1676696,1791181,2026-09-26 10:09:00,2026-10-19 14:17:00,2026-10-19 14:17:00,2026-10-24 12:31:34,230,139,87
+SE,31054,2,535,ARACAJU,"7. urna fora das listas, sem explicação nos dados",1784380,1789920,2026-09-28 08:43:00,2026-10-19 13:01:00,2026-10-19 13:01:00,2026-10-24 12:31:34,277,152,115
+SE,31054,2,551,ARACAJU,"7. urna fora das listas, sem explicação nos dados",1768680,1796060,2026-09-26 14:42:00,2026-10-19 09:27:00,2026-10-19 09:27:00,2026-10-24 12:31:34,245,154,80
+SP,69213,317,270,PRAIA GRANDE,"7. urna fora das listas, sem explicação nos dados",2307183,2144351,2026-09-26 10:54:00,2026-10-15 15:24:00,2026-10-15 15:24:00,2026-10-24 12:31:34,298,138,147
+SP,69213,317,294,PRAIA GRANDE,"7. urna fora das listas, sem explicação nos dados",2144530,2376839,2026-09-26 14:59:00,2026-10-15 15:17:00,2026-10-15 15:17:00,2026-10-24 12:31:34,284,99,178
+SP,71072,422,222,SÃO PAULO,"7. urna fora das listas, sem explicação nos dados",1830833,1830519,2026-09-28 10:19:00,2026-10-01 10:57:00,2026-10-01 10:57:00,2026-10-24 12:31:34,265,131,121
+AC,1015,2,93,CAPIXABA,"9. seção fora da lista, urna de contingência da lista",,2293878,,2026-09-24 08:26:00,2026-09-24 10:26:00,2026-10-24 12:31:34,174,46,118
+MG,40932,270,175,ATALÉIA,"9. seção fora da lista, urna de contingência da lista",,2080741,,2026-10-24 14:52:00,2026-10-24 14:52:00,2026-10-24 12:31:34,229,137,89
+MT,90670,51,270,CUIABÁ,"9. seção fora da lista, urna de contingência da lista",,1666122,,2026-09-25 15:21:00,2026-09-25 16:21:00,2026-10-24 12:31:34,281,151,123
+RJ,59153,195,303,TERESÓPOLIS,"9. seção fora da lista, urna de contingência da lista",,2434147,,2026-10-01 11:00:00,2026-10-01 11:00:00,2026-10-24 12:31:34,258,102,145
+RJ,60011,185,50,RIO DE JANEIRO,"9. seção fora da lista, urna de contingência da lista",,1672065,,2026-09-28 14:06:00,2026-09-28 14:06:00,2026-10-24 12:31:34,299,163,124
+RN,16055,18,46,AFONSO BEZERRA,"9. seção fora da lista, urna de contingência da lista",,2031546,,2026-10-03 18:55:00,2026-10-03 18:55:00,2026-10-24 12:31:34,240,167,64
+RN,18538,27,71,SÃO RAFAEL,"9. seção fora da lista, urna de contingência da lista",,2063812,,2026-09-21 12:04:00,2026-09-21 12:04:00,2026-10-24 12:31:34,256,173,62
+SE,32239,31,42,SALGADO,"9. seção fora da lista, urna de contingência da lista",,2045938,,2026-10-15 10:37:00,2026-10-15 10:37:00,2026-10-24 12:31:34,257,191,64
+SE,32336,21,264,SÃO CRISTÓVÃO,"9. seção fora da lista, urna de contingência da lista",,2309435,,2026-09-25 07:46:00,2026-09-25 07:46:00,2026-10-24 12:31:34,289,173,107
+SE,32417,22,39,SIMÃO DIAS,"9. seção fora da lista, urna de contingência da lista",,2274550,,2026-09-22 13:08:00,2026-09-22 13:08:00,2026-10-24 12:31:34,239,151,83
+SE,32417,22,133,SIMÃO DIAS,"9. seção fora da lista, urna de contingência da lista",,2401645,,2026-10-15 08:06:00,2026-10-15 08:06:00,2026-10-24 12:31:34,197,134,51
