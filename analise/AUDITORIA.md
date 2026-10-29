@@ -56,6 +56,19 @@ mostra que não é isso.
   dia em que a lista foi gerada, então provavelmente são substituições posteriores a ela. O próximo passo é pedir as atas
   dessas seções aos TREs.
 
+## 4b. Soma dos BUs × resultado oficial — [`TOTALIZACAO.md`](TOTALIZACAO.md)
+
+A soma dos BUs bate exatamente com o Relatório Resultado da Totalização oficial (PDF) em 29 de 29 regiões
+(27 UFs + exterior + Brasil), nos dois turnos. No 1º turno, os 5.246 votos do nº 28 são exatamente os
+"nulos técnicos" do relatório oficial.
+
+## 4c. 1º turno × 2º turno — [`PRIMEIRO_TURNO.md`](PRIMEIRO_TURNO.md)
+
+Um modelo que prevê a % de Lula no 2º turno a partir do 1º turno da mesma seção explica 97,9% da variação
+(R² = 0,979). As seções que fecharam às 19h e as com muita liberação manual ficaram levemente **abaixo**
+do previsto para Lula. Há 747 seções fora do padrão (0,15%), divididas entre os dois lados, com efeito
+líquido de 3.487 votos.
+
 ## 5. Réplica do relatório — [`RESULTADOS.md`](RESULTADOS.md)
 
 **Todos os números do relatório se reproduzem** quando se usa o relógio local da urna e as faixas
